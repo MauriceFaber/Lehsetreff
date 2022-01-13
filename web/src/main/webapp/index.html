@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="/android-icon-192x192.png"
+    />
+    <meta name="theme-color" content="#343E8C" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- <meta name="msapplication-TileColor" content="#ffffff"> -->
+
+    <!-- <meta name="msapplication-TileImage" content="/ms-icon-144x144.png"> -->
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="apple-mobile-web-app-title" content="Meshenger" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="description" content="Let's mesh the world up!" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let newWorker;
+      let refreshing;
+      let hasBadge = false;
+      if ("setAppBadge" in navigator && "clearAppBadge" in navigator) {
+        hasBadge = true;
+      }
+      function notify() {
+        if (hasBadge) {
+          var count = 0;
+          $(".badge").each(function (index, item) {
+            if (this.innerText === "1") {
+              count++;
+            }
+          });
+          navigator.setAppBadge(count).catch((error) => {
+            console.log("error setting badge");
+          });
+          const canVibrate = window.navigator.vibrate;
+          if (canVibrate) {
+            navigator.vibrate(200);
+          }
+        }
+      }
+      function deleteNotification() {
+        if (hasBadge) {
+          navigator.clearAppBadge().catch((error) => {
+            console.log("error deleting badge");
+          });
+        }
+      }
+      function reload() {
+        console.log(newWorker);
+        newWorker.postMessage({
+          action: "skipWaiting",
+        });
+      }
+      navigator.serviceWorker.addEventListener("controllerchange", function () {
+        if (refreshing) return;
+        window.location.reload();
+        refreshing = true;
+      });
+      if ("serviceWorker" in navigator) {
+        // Register the service worker
+        navigator.serviceWorker.register("/service-worker.js").then((reg) => {
+          reg.addEventListener("updatefound", () => {
+            // An updated service worker has appeared in reg.installing!
+            newWorker = reg.installing;
+            newWorker.addEventListener("statechange", () => {
+              // Has service worker state changed?
+              switch (newWorker.state) {
+                case "installed":
+                  // There is a new service worker available, show the notification
+                  if (navigator.serviceWorker.controller) {
+                    $("#notification").css("z-index", "999");
+                    $("#notification").addClass("show");
+                    // alert("Neue Version verfügbar.");
+                    // reload();
+                  }
+                  break;
+              }
+            });
+          });
+        });
+      }
+    </script>
+    <script src="script.js"></script>
+    <script src="sidebar.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="sidebar.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="canvas.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <title>Meshenger</title>
+    <link rel="apple-touch-icon" href="apple-icon-180.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-2048-2732.jpg"
+      media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-2732-2048.jpg"
+      media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1668-2388.jpg"
+      media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-2388-1668.jpg"
+      media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1536-2048.jpg"
+      media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-2048-1536.jpg"
+      media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1668-2224.jpg"
+      media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-2224-1668.jpg"
+      media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1620-2160.jpg"
+      media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-2160-1620.jpg"
+      media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1284-2778.jpg"
+      media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-2778-1284.jpg"
+      media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1170-2532.jpg"
+      media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-2532-1170.jpg"
+      media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1125-2436.jpg"
+      media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-2436-1125.jpg"
+      media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1242-2688.jpg"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-2688-1242.jpg"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-828-1792.jpg"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1792-828.jpg"
+      media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1242-2208.jpg"
+      media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-2208-1242.jpg"
+      media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-750-1334.jpg"
+      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1334-750.jpg"
+      media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-640-1136.jpg"
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="apple-splash-1136-640.jpg"
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
+    />
+  </head>
+  <body>
+    <!-- LoginModal-->
+    <div class="modal" tabindex="-1" id="loginModal" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">Meshenger<small>&nbsp;Login</small></h2>
+            <img src="android-chrome-384x384.png" class="bigIcon" />
+          </div>
+          <form onsubmit="return false">
+            <div class="modal-body">
+              <div
+                class="alert alert-danger"
+                style="display: none"
+                role="alert"
+                id="errorMessage"
+              ></div>
+              <div class="form-group">
+                <label for="userNameInput">Benutzername</label>
+                <input
+                  class="form-control needs-validation"
+                  id="userNameInput"
+                  type="text"
+                  placeholder="user name"
+                  required=""
+                />
+              </div>
+              <div class="form-group">
+                <label for="passwordInput">Passwort</label>
+                <input
+                  class="form-control"
+                  id="passwordInput"
+                  type="password"
+                  placeholder="password"
+                  required=""
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input
+                id="loginButton"
+                class="btn btn-success"
+                type="submit"
+                role="button"
+                value="login"
+              />
+              <input
+                class="btn btn-primary"
+                type="button"
+                id="openRegisterModal"
+                data-toggle="modal"
+                data-target="#registerModal"
+                value="register"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- CanvasModal-->
+    <div class="modal noselect" tabindex="-1" id="canvasModal" role="dialog">
+      <div class="modal-dialog noselect" role="document">
+        <div class="modal-content noselect">
+          <div class="modal-header">
+            <h2 class="modal-title">Zeichnen</h2>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <form onsubmit="return false">
+            <div class="modal-body noselect">
+              <canvas
+                class="noselect"
+                id="canvas"
+                width="1000"
+                height="1000"
+              ></canvas>
+            </div>
+            <div class="modal-footer"></div>
+            <div class="drawPalette"></div>
+            <div class="modal-footer">
+              <input
+                id="clearCanvasButton"
+                class="btn btn-secondary"
+                type="submit"
+                role="button"
+                value="Löschen"
+              />
+              <input
+                id="sendCanvasButton"
+                class="btn btn-success"
+                type="submit"
+                role="button"
+                value="Senden"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ImageModal-->
+    <div class="modal" tabindex="-1" id="imageModal" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <form onsubmit="return false">
+            <div class="modal-body">
+              <img id="popUpImage" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- RegisterModal -->
+    <div class="modal" tabindex="-1" id="registerModal" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">Registrieren</h2>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <form onsubmit="return false">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="userNameInputReg">Benutzername</label>
+                <input
+                  class="form-control needs-validation"
+                  id="userNameInputReg"
+                  type="text"
+                  placeholder="user name"
+                  required=""
+                />
+              </div>
+              <div class="form-group">
+                <label for="passwordInputReg">Passwort</label>
+                <input
+                  class="form-control"
+                  id="passwordInputReg"
+                  type="password"
+                  placeholder="password"
+                  required=""
+                />
+                <label for="avatarFile">Avatar</label>
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="avatarFile"
+                    required=""
+                    value=""
+                  />
+                  <label class="custom-file-label" for="avatarFile"
+                    >Choose file...</label
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input
+                class="btn btn-primary"
+                id="registerButton"
+                type="submit"
+                role="button"
+                value="Registrieren"
+              />
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Abbrechen
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- startSingleChatModal-->
+    <div class="modal" id="startSingleChat">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Konversation starten</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Schließen
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- addNewContact-->
+    <div class="modal" id="addNewContact">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Kontakt hinzufügen</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <input
+                id="contactId"
+                class="form-control"
+                type="number"
+                placeholder="Kontakt ID"
+              />
+              <input
+                id="contactName"
+                class="form-control"
+                type="text"
+                placeholder="Kontaktname"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Schließen
+            </button>
+            <input
+              class="btn btn-primary"
+              id="addContactButton"
+              type="button"
+              role="button"
+              value="Hinzufügen"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- showContactsModal -->
+    <div class="modal" id="showContacts">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Deine Kontakte</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <ul id="contactsList" class="list-group"></ul>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Schließen
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- showAddUserToChatModal -->
+    <div class="modal" id="addUserToChat">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Benutzer zum Chat hinzufügen</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <ul id="contactsToAddList" class="list-group" multiple=""></ul>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Schließen
+            </button>
+            <input
+              class="btn btn-primary"
+              data-dismiss="modal"
+              data-toggle="modal"
+              id="addUserToChatSubmit"
+              type="button"
+              role="button"
+              value="Hinzufügen"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- StartGroupChat -->
+    <div class="modal" id="startGroupChat">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Chatraum erstellen</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <input
+                id="chatName"
+                class="form-control"
+                type="text"
+                placeholder="Name des Chatraums"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Schließen
+            </button>
+            <input
+              class="btn btn-primary"
+              id="createChatButton"
+              type="button"
+              role="button"
+              value="Erstellen"
+              data-dismiss="modal"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- changeChatroomName -->
+    <div class="modal" id="changeChatroomName">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Name ändern</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <input
+                id="changeChatNameInput"
+                class="form-control"
+                type="text"
+                placeholder="Name des Chatraums"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Schließen
+            </button>
+            <input
+              class="btn btn-primary"
+              id="changeChatNameButton"
+              type="button"
+              role="button"
+              value="Speichern"
+              data-dismiss="modal"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div class="modal" id="openSettings">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Einstellungen</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <img id="memberinfoAvatar" />
+            <input type="file" class="form-control" id="memberAvatarSelect" />
+            <p id="memberinfo"></p>
+            <button class="btn btn-secondary" role="button" onclick="reload()">
+              Software Update
+            </button>
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-toggle="collapse"
+              data-target="#collapseExample"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              apiKey anzeigen
+            </button>
+            <div class="collapse" id="collapseExample">
+              <div class="card card-body">
+                <span id="apiKeyContainer"></span>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Schließen
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout -->
+    <div class="modal" id="logoutModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Ausloggen</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <p>Bischt du sicher?</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Abbrechen
+            </button>
+            <input
+              id="logoutButton"
+              class="btn btn-primary"
+              type="button"
+              role="button"
+              value="Logout"
+              data-dismiss="modal"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--AddParticipant-->
+    <div class="modal" id="addParticipantModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Teilnehmer hinzufügen</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <input
+                id="Participant"
+                class="form-control"
+                type="text"
+                placeholder="Name oder ID des Kontaktes einfügen"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Schließen
+            </button>
+            <input
+              class="btn btn-primary"
+              id="addParticipantButton"
+              type="button"
+              role="button"
+              value="Hinzufügen"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--ChangeGroupeName-->
+    <div class="modal" id="changeGroupeNameModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Gruppennamen ändern</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <input
+                id="changeGroupeName"
+                class="form-control"
+                type="text"
+                placeholder="Neuen Gruppenname einfügen"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Schließen
+            </button>
+            <input
+              class="btn btn-primary"
+              id="changeGroupeNameButton"
+              type="button"
+              role="button"
+              value="Ändern"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--ChangeGroupeAvatar-->
+    <div class="modal" id="changeGroupeAvatarModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Gruppenavatar ändern</h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <input
+                type="file"
+                class="form-control"
+                name="img"
+                id="groupeAvatarSelection"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Schließen
+            </button>
+            <input
+              class="btn btn-primary"
+              id="changeGroupeAvatarButton"
+              type="button"
+              role="button"
+              value="Speichern"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MainView -->
+    <div id="bg"></div>
+    <div id="bgOverlay"></div>
+
+    <img
+      src="android-chrome-384x384.png"
+      id="appIcon"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    />
+
+    <div class="dropdown-menu glass" aria-labelledby="dropdownMenuButton">
+      <a
+        class="dropdown-item"
+        href="#"
+        data-toggle="modal"
+        data-target="#showContacts"
+        >Kontakte anzeigen</a
+      >
+      <a
+        class="dropdown-item"
+        href="#"
+        data-toggle="modal"
+        data-target="#addNewContact"
+        >Kontakt hinzufügen</a
+      >
+      <a
+        class="dropdown-item"
+        href="#"
+        data-toggle="modal"
+        data-target="#startGroupChat"
+        >Chatraum erstellen</a
+      >
+      <a
+        class="dropdown-item"
+        href="#"
+        data-toggle="modal"
+        data-target="#openSettings"
+        >Einstellungen</a
+      >
+      <a
+        class="dropdown-item"
+        href="#"
+        data-toggle="modal"
+        data-target="#logoutModal"
+        >Logout</a
+      >
+    </div>
+
+    <div
+      id="notification"
+      class="alert alert-dismissible fade glass dark"
+      role="alert"
+    >
+      <h4 class="alert-heading">Neue Version verfügbar!</h4>
+      <button role="button" class="btn" onclick="reload()">
+        Aktualisieren
+      </button>
+    </div>
+
+    <div id="mainContent">
+      <div class="sidebar" id="mySidebar">
+        <div id="chatroomscontainer" class="list-group"></div>
+      </div>
+
+      <div id="rightPart">
+        <div>
+          <button class="btn" role="button" onclick="toggleSidebar()">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <label id="chatroomTitle">&nbsp;</label>
+        </div>
+
+        <div id="messagescontainer" class="glass">
+          <div id="chatroomInfo" style="display: none"></div>
+          <div id="messagesinnercontainer">
+            <div id="messagesLoader" class="lds-ellipsis"></div>
+          </div>
+        </div>
+
+        <div class="inputcontainer glass">
+          <form onsubmit="return false">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <button
+                  id="openCanvasModalButton"
+                  class="btn btn-default"
+                  type="button"
+                  role="button"
+                  data-toggle="modal"
+                  data-target="#canvasModal"
+                >
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button
+                  id="sendImageButton"
+                  class="btn btn-default"
+                  type="button"
+                  role="button"
+                >
+                  <i class="fa fa-image"></i>
+                </button>
+                <input
+                  id="hiddenSendImageButton"
+                  type="file"
+                  style="display: none"
+                />
+              </div>
+              <input
+                id="message"
+                type="text"
+                class="form-control"
+                placeholder="Schreibe eine Nachricht..."
+                aria-label="Input group example"
+                aria-describedby="btnGroupAddon2"
+              />
+              <div class="input-group-prepend">
+                <button
+                  id="sendMessageButton"
+                  class="btn btn-default"
+                  type="submit"
+                  role="button"
+                >
+                  Senden
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
