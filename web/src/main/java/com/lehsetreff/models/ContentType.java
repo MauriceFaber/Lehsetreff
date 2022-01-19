@@ -4,7 +4,8 @@ public enum ContentType {
     Text(0),
     Image(1),
     Quote(2),
-    Link(3);
+    Link(3),
+    DELETED(4);
 
     private int contentId;
 

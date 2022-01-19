@@ -9,7 +9,7 @@ public class Message {
 	private int senderId;
 	private int threadId;
 	private String content;
-	private int contentId;
+	private ContentType contentId;
 	private Timestamp timeStamp;
     private boolean wasModified;
     private String senderName; //Maurice Senpai brauche ma das hier noch?
@@ -44,12 +44,12 @@ public class Message {
     public String getContent(){
         return content;
     }
-    public void setContent(String content, int type){
+    public void setContent(String content, ContentType type){
         this.content = content;
         contentId = type;
     }
 
-    public int getContentId(){
+    public ContentType getContentId(){
         return contentId;
     }
 

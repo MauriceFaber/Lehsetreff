@@ -5,15 +5,16 @@ import java.util.List;
 
 public class ThreadGroup {
     
-    private String Caption;
+    private String caption;
+    private int threadGroupId;
     private List<Thread> threads = new ArrayList<Thread>();
 
     public String getCaption() {
-        return Caption;
+        return caption;
     }
 
     public void setCaption(String caption) {
-        Caption = caption;
+        this.caption = caption;
     }
 
     public List<Thread> getThreads(){
@@ -22,4 +23,13 @@ public class ThreadGroup {
 	public void setMembers(List<Thread> threads){
 		this.threads = threads;
 	}
+
+    public int getThreadGroupId() {
+        return threadGroupId;
+    }
+
+    public void setThreadGroupId(int threadGroupId) {
+        this.threadGroupId = threadGroupId;
+    }
+    
 }

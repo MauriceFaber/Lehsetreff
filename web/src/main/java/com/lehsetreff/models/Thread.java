@@ -9,9 +9,8 @@ public class Thread implements Serializable {
     private int ownerId;
     private int groupId;
     private String caption;
+    private int threadId;
     
-    
-
     public java.sql.Timestamp latestMessage;
 	public java.sql.Timestamp latestUserMessage;
 
@@ -21,6 +20,14 @@ public class Thread implements Serializable {
 
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public int getThreadId() {
+        return threadId;
+    }
+
+    public void setThreadId(int threadId) {
+        this.threadId = threadId;
     }
 
     public int getGroupId() {
