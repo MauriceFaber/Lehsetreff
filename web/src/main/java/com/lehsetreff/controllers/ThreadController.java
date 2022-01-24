@@ -33,7 +33,7 @@ public class ThreadController {
             ResultSet rs = st.getGeneratedKeys();
 
             if(rs.next()){
-                thread = getThread(userId, rs.getInt("ID"));
+                thread = getThread(rs.getInt("ID"));
                 OffsetDateTime utc = OffsetDateTime.now(ZoneOffset.UTC);
 				Timestamp timestamp =  new Timestamp(utc.toInstant().toEpochMilli());
 				thread.setLatestMessage(timestamp);
@@ -60,7 +60,7 @@ public class ThreadController {
 		return false;
 	}
 
-    public Thread getThread(int userId, int threadId){
+    public Thread getThread(int threadId){
         Thread thread = null;
         try {
 			PreparedStatement st = db.createStatement("select * from threads where ID = ?", false);
@@ -87,7 +87,7 @@ public class ThreadController {
     }
 
     public Thread setLatestMessage(int userId, int threadId, java.sql.Timestamp timestamp) {
-		Thread thread = getThread(userId, threadId);
+		Thread thread = getThread(threadId);
 		try {
 			PreparedStatement st = db.createStatement("update threads set latestMessage = ? where ID = ?", true);
 			st.setTimestamp(1, timestamp);
@@ -127,6 +127,26 @@ public class ThreadController {
 
 		return result;
 	}
+
+	public Thread renameThread(int threadId, int userId, String caption){
+        Thread thread = getThread(threadId);
+        try {
+			PreparedStatement st = db.createStatement("update threads set caption = ? where ID = ?", true);
+			st.setString(1, caption);
+			st.setInt(2, threadId);
+
+			st.executeUpdate();
+			ResultSet rs = st.getGeneratedKeys();
+
+            if(rs.next()){
+				thread.setCaption(rs.getString("caption"));
+			}
+		} catch(Exception e){
+				System.out.println(e.getMessage());
+		}
+        return thread;
+
+    }
 
     // public void setLatestUserMessage(int threadId, int userId) {
 	// 	try {

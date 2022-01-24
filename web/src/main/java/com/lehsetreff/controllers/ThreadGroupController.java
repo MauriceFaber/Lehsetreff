@@ -89,5 +89,25 @@ public class ThreadGroupController {
         return result;
     }
 
+    public ThreadGroup renameThreadGroup(int threadGroupId, String caption){
+        ThreadGroup tGroup = getThreadGroup(threadGroupId);
+        try {
+			PreparedStatement st = db.createStatement("update threadGroups set caption = ? where ID = ?", true);
+			st.setString(1, caption);
+			st.setInt(2, threadGroupId);
+
+			st.executeUpdate();
+			ResultSet rs = st.getGeneratedKeys();
+
+            if(rs.next()){
+				tGroup.setCaption(rs.getString("caption"));
+			}
+		} catch(Exception e){
+				System.out.println(e.getMessage());
+		}
+        return tGroup;
+
+    }
+
     
 }
