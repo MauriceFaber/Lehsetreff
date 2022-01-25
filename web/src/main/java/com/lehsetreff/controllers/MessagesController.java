@@ -131,11 +131,33 @@ public class MessagesController {
 	}	
 	
 
-	public List<Message> getMessages(int chatroomId, int userId) {
+	public Message modifyMessage(String content , int contentType, int messageID){
+		Message m = getMessage(messageID);
+
+		try {
+			PreparedStatement st = db.createStatement("update messages contentType = ? and content = ? where ID = ?", true);
+			st.setInt(1, contentType);
+            st.setString(2, content);
+			st.setInt(3, messageID);
+			
+			st.executeUpdate();
+			ResultSet rs = st.getGeneratedKeys();
+
+            if(rs.next()){
+				return m;
+			}
+		} catch(Exception e){
+				System.out.println(e.getMessage());
+		}
+
+		return m;
+	}
+
+	public List<Message> getMessages(int threadId, int userId) {
 		List<Message> result = new ArrayList<Message>();
 		try {
 			PreparedStatement st = db.createStatement("select * from messages where threadID = ?", true);
-			st.setInt(1, chatroomId);
+			st.setInt(1, threadId);
 
 			ResultSet rs = db.executeQuery(st);
 

@@ -7,6 +7,7 @@ public class ThreadGroup {
     
     private String caption;
     private int threadGroupId;
+    private int ownerId;
     private List<Thread> threads = new ArrayList<Thread>();
 
     public String getCaption() {
@@ -30,6 +31,14 @@ public class ThreadGroup {
 
     public void setThreadGroupId(int threadGroupId) {
         this.threadGroupId = threadGroupId;
+    }
+
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
     }
     
 }

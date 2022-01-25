@@ -12,14 +12,16 @@ public class ThreadGroupController {
 
     private Database db = Database.getInstance();
 
-    public ThreadGroup addThreadGroup(String caption){
+    public ThreadGroup addThreadGroup(String caption, int ownerId){
         ThreadGroup tGroup = new ThreadGroup();
         
         tGroup.setCaption(caption);
+        tGroup.setOwnerId(ownerId);
         
         try{
-            PreparedStatement st = db.createStatement("insert into threadGroups (caption) values(?)", true);
+            PreparedStatement st = db.createStatement("insert into threadGroups (caption, ownerID) values (?,?)", true);
             st.setString(1, tGroup.getCaption());
+            st.setInt(2, tGroup.getOwnerId());
            
 
             st.executeUpdate();

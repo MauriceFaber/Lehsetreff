@@ -3,6 +3,7 @@ CREATE DATABASE lehsetreff;
 
 Create table lehsetreff.threadGroups(ID int NOT NULL AUTO_INCREMENT,
                                     caption varchar(50) NOT NULL,
+                                    ownerID int NOT NULL,
                                     primary key(ID)
                                     );
 
