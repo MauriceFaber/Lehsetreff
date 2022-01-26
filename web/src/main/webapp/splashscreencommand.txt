@@ -1,1 +1,0 @@
-pwa-asset-generator android-chrome-384x384.png -i ./index.html -m ./manifest.json -b "linear-gradient(to right, #343E8C 0%, #A000FF 100%);"
