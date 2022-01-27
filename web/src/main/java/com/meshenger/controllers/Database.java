@@ -159,7 +159,7 @@ public class Database {
 	 * @return result
 	 * Rueckgabe Ergebnisses der Query
 	 */
-	ResultSet executeQuery(PreparedStatement statement){
+	public ResultSet executeQuery(PreparedStatement statement){
 		ResultSet result = null;
 		try{
 			result = statement.executeQuery();

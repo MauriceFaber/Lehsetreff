@@ -14,9 +14,11 @@ import com.lehsetreff.models.UserRole;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.MessageHandler;
 
 public class UserController {
     private Database db = Database.getInstance();
+    private com.meshenger.controllers.Database meshengerDb = com.meshenger.controllers.Database.getInstance();
 
     Random r = new Random();
 
@@ -309,10 +311,10 @@ public class UserController {
 	public User getUserFromKey(String apiKey){
 		User u = null;
 		try {
-			PreparedStatement st = db.createStatement("select * from users where apiKey = ?", false);
+			PreparedStatement st = meshengerDb.createStatement("select * from users where apiKey = ?", false);
 			st.setString(1, apiKey);
 
-			ResultSet result = db.executeQuery(st);
+			ResultSet result = meshengerDb.executeQuery(st);
 
 			if(result.next()){
 				u = new User();
@@ -339,10 +341,10 @@ public class UserController {
 	public User getUser(int id, boolean withAvatar) {
 		User u = null;
 		try {
-			PreparedStatement st = db.createStatement("select * from users where ID = ?", false);
+			PreparedStatement st = meshengerDb.createStatement("select * from users where ID = ?", false);
 			st.setInt(1, id);
 
-			ResultSet result = db.executeQuery(st);
+			ResultSet result = meshengerDb.executeQuery(st);
 			if(result.next()){
 				u = new User();
 				u.setId(result.getInt("ID"));
@@ -369,11 +371,11 @@ public class UserController {
 	public User getUser(String name, String passphrase) {
 		User u = null;
 		try {
-			PreparedStatement st = db.createStatement("select * from meshenger.users where userName = ? && passphrase = ?", false);
+			PreparedStatement st = meshengerDb.createStatement("select * from users where userName = ? && passphrase = ?", false);
 			st.setString(1, name);
 			st.setString(2, passphrase);
 
-			ResultSet result = db.executeQuery(st);
+			ResultSet result = meshengerDb.executeQuery(st);
 
 			if(result.next()){
 				u = new User();

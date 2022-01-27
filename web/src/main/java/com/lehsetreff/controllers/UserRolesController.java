@@ -1,14 +1,12 @@
 package com.lehsetreff.controllers;
 
 import com.lehsetreff.models.*;
-import com.meshenger.models.User;
-
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class UserRolesController {
-    private Database db = Database.getInstance();
+    private com.meshenger.controllers.Database db = com.meshenger.controllers.Database.getInstance();
 
 	private boolean isRoleSet(int userId){
 		boolean result = false;
@@ -66,7 +64,9 @@ public class UserRolesController {
             if(rs.next()){
                 int roleId = rs.getInt("roleID");
 				role = UserRole.values()[roleId]; 
-            }
+            }else if(userId > -1){
+				role = UserRole.User;
+			}
         } catch (Exception e) {
             System.out.println(e);
         }
