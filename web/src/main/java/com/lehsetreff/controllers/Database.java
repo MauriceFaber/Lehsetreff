@@ -44,6 +44,7 @@ public class Database {
     private ThreadController threadController;
 	private MessagesController messagesController;
 	private ThreadGroupController threadGroupController;
+	private UserRolesController rolesController;
 	//private ContactsController contactsController;
 
 	/**
@@ -77,6 +78,13 @@ public class Database {
 			messagesController = new MessagesController();
 		}
 		return messagesController;
+	}
+
+	public UserRolesController getRolesController(){
+		if (rolesController == null) {
+			rolesController = new UserRolesController();
+		}
+		return rolesController;
 	}
 
 
