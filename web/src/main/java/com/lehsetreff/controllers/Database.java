@@ -12,7 +12,7 @@ public class Database {
 	private static final String CONNECTION_STRING = "(jdbc:mysql://meshenger.de:3306/lehsetreff)";
     private static final String USER_NAME = "lehsetreffuser";
 	private static final String PASSWORD = "Lehsertron21";
-	private static final String IMAGE_DIRECTORY = "/lehsetree/images";
+	private static final String IMAGE_DIRECTORY = "/lehsetreff/images";
 
 	/**
 	 * Bild-Speicherort einer Nachricht zurueckgeben.

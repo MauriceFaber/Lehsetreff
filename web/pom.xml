@@ -4,11 +4,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.meshenger</groupId>
-  <artifactId>meshenger</artifactId>
+  <groupId>com.lehsetreff</groupId>
+  <artifactId>lehsetreff</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>Meshenger</name>
+  <name>Lehsetreff</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -76,13 +76,13 @@
 <distributionManagement>
 	<repository>
 		<uniqueVersion>false</uniqueVersion>
-		<id>meshenger</id>
-		<name>Meshenger</name>
+		<id>lehsetreff</id>
+		<name>Lehsetreff</name>
 	</repository>
 </distributionManagement>
 
   <build>
-    <finalName>meshenger</finalName>
+    <finalName>lehsetreff</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
 		<plugin>
@@ -91,7 +91,7 @@
 			<configuration>
 				<url>http://192.168.2.57:8080/manager/text</url>
 				<server>raspiTomcat</server>
-				<path>/meshenger</path>
+				<path>/lehsetreff</path>
 			</configuration>
 		</plugin>
         <plugin>
