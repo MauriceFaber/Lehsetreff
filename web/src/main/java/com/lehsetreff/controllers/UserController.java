@@ -10,6 +10,8 @@ import java.util.Random;
 
 import com.meshenger.Extensions;
 import com.meshenger.models.User;
+import com.lehsetreff.models.UserRole;
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -171,6 +173,30 @@ public class UserController {
 		}
 		return result;
 	}
+
+	public boolean hasRights(HttpServletRequest req){
+		try {
+			UserRole role = db.getRolesController().getUserRole(getUserId(req));
+
+			switch (role) {
+				case Guest:
+				case User:
+					return false;
+				case Mod:
+				case Admin:
+					return true;
+				default:
+					return false;
+			}
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+		return false;
+
+	}
+
 
 	/**
 	 * Login des Benutzers.
@@ -365,5 +391,71 @@ public class UserController {
 			u = null;
 		}
 		return u;
+	}
+
+	public boolean isThreadOwner(int threadId, HttpServletRequest request){
+
+		try {
+			PreparedStatement st = db.createStatement("select ID = ? from threads where ownerID = ? ", false);
+			st.setInt(1, threadId);
+			st.setInt(2, getUserId(request));
+
+			ResultSet result = db.executeQuery(st);
+			if(result.next()){
+				int tmp = result.getInt("ID");
+				int temp = result.getInt("ownerID");
+				if (tmp == threadId && temp == getUserId(request)){
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+
+	public boolean isThreadGroupOwner(int threadGroupId, HttpServletRequest request){
+
+		try {
+			PreparedStatement st = db.createStatement("select ID = ? from threadGroups where ownerID = ? ", false);
+			st.setInt(1, threadGroupId);
+			st.setInt(2, getUserId(request));
+
+			ResultSet result = db.executeQuery(st);
+			if(result.next()){
+				int tmp = result.getInt("ID");
+				int temp = result.getInt("ownerID");
+				if (tmp == threadGroupId && temp == getUserId(request)){
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+
+	public boolean isMessageSender(int messageId, HttpServletRequest request){
+
+		try {
+			PreparedStatement st = db.createStatement("select ID = ? from messages where senderID = ? ", false);
+			st.setInt(1, messageId);
+			st.setInt(2, getUserId(request));
+
+			ResultSet result = db.executeQuery(st);
+			// if (result != null) { // Maurice geht die form auch? weil eigentlich müsste oben die Abfrage ja nur was zurückgeben wenn
+			// 	return true;		 // wenn e Naricht mit den ID und dem sender gefunden wurde oder?
+			// }
+			if(result.next()){
+				int tmp = result.getInt("ID");
+				int temp = result.getInt("ownerID");
+				if (tmp == messageId && temp == getUserId(request)){
+					return true;
+				}
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
 	}
 }

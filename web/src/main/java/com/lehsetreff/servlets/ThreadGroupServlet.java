@@ -61,6 +61,10 @@ public class ThreadGroupServlet extends HttpServlet{
 		String caption = request.getParameter("threadGroupCaption");
         int threadGroupId = Integer.parseInt(request.getParameter("threadGroupID"));
         
+		if(!Extensions.hasRights(request, response) || !Extensions.isThreadGroupOwner(request, response, threadGroupId)){
+			return;
+		}
+
 		ThreadGroup tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, caption);
 		if(tGroup != null){		
             Extensions.sendJsonResponse(response, tGroup);
@@ -78,6 +82,9 @@ public class ThreadGroupServlet extends HttpServlet{
 		}
 
 		int threadGroupId = Integer.parseInt(Extensions.getParameterFromMap(request, "threadGroupId"));
+		if(!Extensions.hasRights(request, response) || !Extensions.isThreadGroupOwner(request, response, threadGroupId)){
+			return;
+		}
 		try{
 			boolean result = db.getThreadGroupController().deleteThreadGroup(threadGroupId);
 			if(result){

@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
-import com.meshenger.controllers.Database;
+import com.lehsetreff.controllers.Database;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -46,6 +46,38 @@ public class Extensions {
 	public static boolean isAuthenticated(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		if(!db.getUserController().isAuthenticated(request)){
 			response.sendError(401, "not authenticated");
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean hasRights(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		if(!db.getUserController().hasRights(request)){
+			response.sendError(401, "no rights");
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean isSender(HttpServletRequest request, HttpServletResponse response, int messageID) throws IOException{
+		if(!db.getUserController().isMessageSender(messageID, request)){
+			response.sendError(401, "not the sender");
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean isThreadOwner(HttpServletRequest request, HttpServletResponse response, int threadID) throws IOException{
+		if(!db.getUserController().isThreadOwner(threadID, request)){
+			response.sendError(401, "not the owner");
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean isThreadGroupOwner(HttpServletRequest request, HttpServletResponse response, int threadGroupID) throws IOException{
+		if(!db.getUserController().isThreadGroupOwner(threadGroupID, request)){
+			response.sendError(401, "not the group owner");
 			return false;
 		}
 		return true;

@@ -22,6 +22,8 @@ public class MessagesServlet extends HttpServlet {
 			return;
 		}
 
+		
+
 		int userId = db.getUserController().getUserId(request);
         int contentType = Integer.parseInt(request.getParameter("contentType"));
         int threadId = Integer.parseInt(request.getParameter("threadId"));
@@ -70,12 +72,14 @@ public class MessagesServlet extends HttpServlet {
         int messageId = Integer.parseInt(request.getParameter("messageID"));
         int contentType = Integer.parseInt(request.getParameter("contentType"));
         
-		Message m = db.getMessagesController().modifyMessage(content, contentType,messageId);
-		if(m != null){		
-            Extensions.sendJsonResponse(response, m);
-        } else {
-            response.sendError(400, "Modify Message failed");
-        }
+		if (Extensions.isSender(request, response, messageId)){
+			Message m = db.getMessagesController().modifyMessage(content, contentType,messageId);
+			if(m != null){		
+				Extensions.sendJsonResponse(response, m);
+			} else {
+				response.sendError(400, "Modify Message failed");
+			}
+		}
 	}
 
 
@@ -87,6 +91,10 @@ public class MessagesServlet extends HttpServlet {
 		}
 
 		int messageId = Integer.parseInt(Extensions.getParameterFromMap(request, "messageId"));
+
+		if(!Extensions.isSender(request, response, messageId)){
+			return;
+		}
 		try{
 			boolean result = db.getMessagesController().deleteMessage(messageId);
 			if(result){

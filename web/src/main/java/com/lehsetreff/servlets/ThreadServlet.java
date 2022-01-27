@@ -65,6 +65,9 @@ public class ThreadServlet extends HttpServlet {
 		int userId =Integer.parseInt(request.getParameter("userId"));
 		String caption = (String) request.getParameter("caption");
 
+		if(!Extensions.hasRights(request, response) || !Extensions.isThreadOwner(request, response, threadId)){
+			return;
+		}
 		Thread thread = db.getThreadController().renameThread(threadId, userId, caption);
 		if(thread != null){		
             Extensions.sendJsonResponse(response, thread);
@@ -83,6 +86,10 @@ public class ThreadServlet extends HttpServlet {
 		}
 
 		int threadId = Integer.parseInt(Extensions.getParameterFromMap(request, "threadId"));
+		if(!Extensions.hasRights(request, response) || !Extensions.isThreadOwner(request, response, threadId)){
+			Extensions.removeHashmap(request);
+			return;
+		}
 		try{
 			boolean result = db.getThreadController().deleteThread(threadId);
 			if(result){

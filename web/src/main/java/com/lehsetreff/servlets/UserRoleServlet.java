@@ -22,6 +22,10 @@ public class UserRoleServlet extends HttpServlet {
 			return;
 		}
 
+        if(!Extensions.hasRights(request, response)){
+			return;
+		}
+
 		int userId = db.getUserController().getUserId(request);
         int roleId = Integer.parseInt(request.getParameter("roleID"));
 
@@ -36,6 +40,9 @@ public class UserRoleServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(!Extensions.isAuthenticated(request, response)){
+			return;
+		}
+        if(!Extensions.hasRights(request, response)){
 			return;
 		}
 
