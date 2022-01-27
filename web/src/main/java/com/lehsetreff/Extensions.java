@@ -1,4 +1,4 @@
-package com.meshenger;
+package com.lehsetreff;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -51,9 +51,17 @@ public class Extensions {
 		return true;
 	}
 
-	public static boolean hasRights(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		if(!db.getUserController().hasRights(request)){
-			response.sendError(401, "no rights");
+	public static boolean isAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		if(!db.getUserController().isAdmin(request)){
+			response.sendError(401, "no admin rights");
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean isModerator(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		if(!db.getUserController().isModerator(request)){
+			response.sendError(401, "no moderator rights");
 			return false;
 		}
 		return true;

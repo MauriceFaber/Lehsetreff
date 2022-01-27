@@ -8,10 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Random;
 
-import com.meshenger.Extensions;
 import com.meshenger.models.User;
 import com.lehsetreff.models.UserRole;
-
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -174,27 +172,23 @@ public class UserController {
 		return result;
 	}
 
-	public boolean hasRights(HttpServletRequest req){
-		try {
-			UserRole role = db.getRolesController().getUserRole(getUserId(req));
+	public boolean isAdmin(HttpServletRequest req) {
+		return db.getRolesController().getUserRole(getUserId(req)) == UserRole.Admin;
+	}
 
-			switch (role) {
-				case Guest:
-				case User:
-					return false;
-				case Mod:
-				case Admin:
-					return true;
-				default:
-					return false;
-			}
+	public boolean isModerator(HttpServletRequest req) {
+		UserRole role = db.getRolesController().getUserRole(getUserId(req));
+		return role == UserRole.Admin || role == UserRole.Moderator;
+	}
 
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+	public boolean isUser(HttpServletRequest req) {
+		UserRole role = db.getRolesController().getUserRole(getUserId(req));
+		return role == UserRole.Admin || role == UserRole.Moderator || role == UserRole.User;
+	}
 
-		return false;
-
+	public boolean isGuest(HttpServletRequest req) {
+		UserRole role = db.getRolesController().getUserRole(getUserId(req));
+		return role == UserRole.Guest;
 	}
 
 

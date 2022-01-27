@@ -1,4 +1,4 @@
-package com.meshenger;
+package com.lehsetreff;
 
 import java.io.IOException;
 
