@@ -9,7 +9,7 @@ import com.lehsetreff.models.Thread;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 
-import com.meshenger.Extensions;
+import com.lehsetreff.Extensions;
 
 public class ThreadServlet extends HttpServlet {
     
@@ -65,7 +65,7 @@ public class ThreadServlet extends HttpServlet {
 		int userId =Integer.parseInt(request.getParameter("userId"));
 		String caption = (String) request.getParameter("caption");
 
-		if(!Extensions.hasRights(request, response) || !Extensions.isThreadOwner(request, response, threadId)){
+		if(!Extensions.isModerator(request, response) || !Extensions.isThreadOwner(request, response, threadId)){
 			return;
 		}
 		Thread thread = db.getThreadController().renameThread(threadId, userId, caption);
@@ -86,7 +86,7 @@ public class ThreadServlet extends HttpServlet {
 		}
 
 		int threadId = Integer.parseInt(Extensions.getParameterFromMap(request, "threadId"));
-		if(!Extensions.hasRights(request, response) || !Extensions.isThreadOwner(request, response, threadId)){
+		if(!Extensions.isModerator(request, response) || !Extensions.isThreadOwner(request, response, threadId)){
 			Extensions.removeHashmap(request);
 			return;
 		}

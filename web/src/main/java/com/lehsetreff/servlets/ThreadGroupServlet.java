@@ -11,7 +11,7 @@ import com.lehsetreff.models.ThreadGroup;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 
-import com.meshenger.Extensions;
+import com.lehsetreff.Extensions;
 
 public class ThreadGroupServlet extends HttpServlet{
 
@@ -61,7 +61,7 @@ public class ThreadGroupServlet extends HttpServlet{
 		String caption = request.getParameter("threadGroupCaption");
         int threadGroupId = Integer.parseInt(request.getParameter("threadGroupID"));
         
-		if(!Extensions.hasRights(request, response) || !Extensions.isThreadGroupOwner(request, response, threadGroupId)){
+		if(!Extensions.isModerator(request, response) || !Extensions.isThreadGroupOwner(request, response, threadGroupId)){
 			return;
 		}
 
@@ -82,7 +82,7 @@ public class ThreadGroupServlet extends HttpServlet{
 		}
 
 		int threadGroupId = Integer.parseInt(Extensions.getParameterFromMap(request, "threadGroupId"));
-		if(!Extensions.hasRights(request, response) || !Extensions.isThreadGroupOwner(request, response, threadGroupId)){
+		if(!Extensions.isModerator(request, response) || !Extensions.isThreadGroupOwner(request, response, threadGroupId)){
 			return;
 		}
 		try{

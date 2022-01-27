@@ -153,7 +153,7 @@ public class MessagesController {
 		return m;
 	}
 
-	public List<Message> getMessages(int threadId, int userId) {
+	public List<Message> getMessages(int threadId) {
 		List<Message> result = new ArrayList<Message>();
 		try {
 			PreparedStatement st = db.createStatement("select * from messages where threadID = ?", true);
@@ -173,7 +173,7 @@ public class MessagesController {
 				m.setSenderName(sender.getName());
 				result.add(m);
 			}
-			//db.getThreadController().setLatestUserMessage(chatroomId, userId);
+
 			} catch(Exception e){
 			result.clear();
 			Message t = new Message();

@@ -3,6 +3,7 @@ package com.lehsetreff.servlets;
 import java.io.IOException;
 import java.util.List;
 
+import com.lehsetreff.Extensions;
 import com.lehsetreff.controllers.Database;
 import com.lehsetreff.models.Message;
 
@@ -10,7 +11,7 @@ import com.lehsetreff.models.Message;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 
-import com.meshenger.Extensions;
+
 
 public class MessagesServlet extends HttpServlet {
 
@@ -21,8 +22,6 @@ public class MessagesServlet extends HttpServlet {
 		if(!Extensions.isAuthenticated(request, response)){
 			return;
 		}
-
-		
 
 		int userId = db.getUserController().getUserId(request);
         int contentType = Integer.parseInt(request.getParameter("contentType"));
@@ -46,14 +45,9 @@ public class MessagesServlet extends HttpServlet {
 
     @Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
-		if(!Extensions.isAuthenticated(request, response)){
-			return;
-		}
 
-
-        int userId = db.getUserController().getUserId(request);
         int threadId = Integer.parseInt(request.getParameter("threadId"));
-		List<Message> messages = db.getMessagesController().getMessages(threadId, userId);
+		List<Message> messages = db.getMessagesController().getMessages(threadId);
 		if(messages != null){		
             Extensions.sendJsonResponse(response, messages);
         } else {

@@ -22,7 +22,7 @@
   <!--login-->
 	<servlet>  
 		<servlet-name>LoginServlet</servlet-name>  
-		<servlet-class>com.meshenger.LoginServlet</servlet-class>  
+		<servlet-class>com.lehsetreff.LoginServlet</servlet-class>  
 	  </servlet>  
 	  
 	  <servlet-mapping>  
@@ -32,8 +32,17 @@
 
 
 	<servlet>  
+			<servlet-name>UserRoleServlet</servlet-name>  
+			<servlet-class>com.lehsetreff.UserRoleServlet</servlet-class>  
+		</servlet>  
+		
+		<servlet-mapping>  
+			<servlet-name>UserRoleServlet</servlet-name>  
+			<url-pattern>/userRole</url-pattern>  
+		</servlet-mapping> 
+	<servlet>  
 			<servlet-name>MessagesServlet</servlet-name>  
-			<servlet-class>com.meshenger.MessagesServlet</servlet-class>  
+			<servlet-class>com.lehsetreff.MessagesServlet</servlet-class>  
 		</servlet>  
 		
 		<servlet-mapping>  
@@ -43,7 +52,7 @@
 
 	<servlet>  
 			<servlet-name>UsersServlet</servlet-name>  
-			<servlet-class>com.meshenger.UsersServlet</servlet-class>  
+			<servlet-class>com.lehsetreff.UsersServlet</servlet-class>  
 		</servlet>  
 		
 		<servlet-mapping>  
@@ -53,7 +62,7 @@
 	
 	<servlet>  
 			<servlet-name>MembersServlet</servlet-name>  
-			<servlet-class>com.meshenger.MembersServlet</servlet-class>  
+			<servlet-class>com.lehsetreff.MembersServlet</servlet-class>  
 		</servlet>  
 		
 		<servlet-mapping>  
@@ -62,24 +71,25 @@
 		</servlet-mapping> 
 
 	<servlet>  
-			<servlet-name>ChatroomServlet</servlet-name>  
-			<servlet-class>com.meshenger.ChatroomServlet</servlet-class>  
+			<servlet-name>ThreadServlet</servlet-name>  
+			<servlet-class>com.lehsetreff.ThreadServlet</servlet-class>  
 		</servlet>  
 		
 		<servlet-mapping>  
-			<servlet-name>ChatroomServlet</servlet-name> 
-			<url-pattern>/chatrooms</url-pattern>  
+			<servlet-name>ThreadServlet</servlet-name> 
+			<url-pattern>/threads</url-pattern>  
 		</servlet-mapping>
 
 	<servlet>  
-			<servlet-name>ContactsServlet</servlet-name>  
-			<servlet-class>com.meshenger.ContactsServlet</servlet-class>  
+			<servlet-name>ThreadGroupServlet</servlet-name>  
+			<servlet-class>com.lehsetreff.ThreadGroupServlet</servlet-class>  
 		</servlet>  
 		
 		<servlet-mapping>  
-			<servlet-name>ContactsServlet</servlet-name> 
-			<url-pattern>/contacts</url-pattern>  
+			<servlet-name>ThreadGroupServlet</servlet-name> 
+			<url-pattern>/threadGroups</url-pattern>  
 		</servlet-mapping>  
+		
 		<filter>
 			<filter-name>CorsFilter</filter-name>
 			<filter-class>com.meshenger.CorsFilter</filter-class>

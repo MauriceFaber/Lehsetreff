@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.Random;
 
 import com.meshenger.models.User;
+import com.lehsetreff.Extensions;
 import com.lehsetreff.models.UserRole;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -178,12 +179,12 @@ public class UserController {
 
 	public boolean isModerator(HttpServletRequest req) {
 		UserRole role = db.getRolesController().getUserRole(getUserId(req));
-		return role == UserRole.Admin || role == UserRole.Moderator;
+		return role == UserRole.Admin || role == UserRole.Mod;
 	}
 
 	public boolean isUser(HttpServletRequest req) {
 		UserRole role = db.getRolesController().getUserRole(getUserId(req));
-		return role == UserRole.Admin || role == UserRole.Moderator || role == UserRole.User;
+		return role == UserRole.Admin || role == UserRole.Mod || role == UserRole.User;
 	}
 
 	public boolean isGuest(HttpServletRequest req) {

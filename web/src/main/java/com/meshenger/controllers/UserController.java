@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Random;
 
-import com.meshenger.Extensions;
+import com.lehsetreff.Extensions;
 import com.meshenger.models.User;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -197,22 +197,6 @@ public class UserController {
 		return u;
 	}
 
-	/**
-	 * Logout des Benutzers.
-	 * @param req
-	 * http request
-	 * @return
-	 * Logout funktioniert/fehlgeschalgen
-	 */
-	public boolean logout(HttpServletRequest req){
-		boolean result = false;
-		HttpSession s = req.getSession(false);
-		if(s != null){
-			s.invalidate();
-			result = true;
-		}
-		return result;
-	}
 
 	/**
 	 * Ueberprueft/legt Verzeichnis zum Ablegen der Avatare an.

@@ -65,7 +65,7 @@ public class UserRolesController {
             ResultSet rs = db.executeQuery(st);
             if(rs.next()){
                 int roleId = rs.getInt("roleID");
-				role = (UserRole)roleId;
+				role = UserRole.values()[roleId]; 
             }
         } catch (Exception e) {
             System.out.println(e);

@@ -10,7 +10,7 @@ import com.lehsetreff.models.UserRole;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 
-import com.meshenger.Extensions;
+import com.lehsetreff.Extensions;
 
 public class UserRoleServlet extends HttpServlet {
 
@@ -22,16 +22,16 @@ public class UserRoleServlet extends HttpServlet {
 			return;
 		}
 
-        if(!Extensions.hasRights(request, response)){
+        if(!Extensions.isAdmin(request, response)){
 			return;
 		}
 
 		int userId = db.getUserController().getUserId(request);
         int roleId = Integer.parseInt(request.getParameter("roleID"));
 
-		UserRole role = db.getRolesController().setUserRole(roleId, userId);
-		if(role != null){		
-            Extensions.sendJsonResponse(response, role);
+		boolean result = db.getRolesController().setUserRole(roleId, userId);
+		if(result){		
+            response.sendError(200);
         } else {
             response.sendError(400, "Set Role failed");
         }
@@ -39,12 +39,6 @@ public class UserRoleServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(!Extensions.isAuthenticated(request, response)){
-			return;
-		}
-        if(!Extensions.hasRights(request, response)){
-			return;
-		}
 
         int userId = db.getUserController().getUserId(request);
 
