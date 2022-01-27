@@ -22,7 +22,7 @@
   <!--login-->
 	<servlet>  
 		<servlet-name>LoginServlet</servlet-name>  
-		<servlet-class>com.lehsetreff.LoginServlet</servlet-class>  
+		<servlet-class>com.lehsetreff.servlets.LoginServlet</servlet-class>  
 	  </servlet>  
 	  
 	  <servlet-mapping>  
@@ -33,7 +33,7 @@
 
 	<servlet>  
 			<servlet-name>UserRoleServlet</servlet-name>  
-			<servlet-class>com.lehsetreff.UserRoleServlet</servlet-class>  
+			<servlet-class>com.lehsetreff.servlets.UserRoleServlet</servlet-class>  
 		</servlet>  
 		
 		<servlet-mapping>  
@@ -42,7 +42,7 @@
 		</servlet-mapping> 
 	<servlet>  
 			<servlet-name>MessagesServlet</servlet-name>  
-			<servlet-class>com.lehsetreff.MessagesServlet</servlet-class>  
+			<servlet-class>com.lehsetreff.servlets.MessagesServlet</servlet-class>  
 		</servlet>  
 		
 		<servlet-mapping>  
@@ -52,7 +52,7 @@
 
 	<servlet>  
 			<servlet-name>UsersServlet</servlet-name>  
-			<servlet-class>com.lehsetreff.UsersServlet</servlet-class>  
+			<servlet-class>com.lehsetreff.servlets.UsersServlet</servlet-class>  
 		</servlet>  
 		
 		<servlet-mapping>  
@@ -62,7 +62,7 @@
 	
 	<servlet>  
 			<servlet-name>MembersServlet</servlet-name>  
-			<servlet-class>com.lehsetreff.MembersServlet</servlet-class>  
+			<servlet-class>com.lehsetreff.servlets.MembersServlet</servlet-class>  
 		</servlet>  
 		
 		<servlet-mapping>  
@@ -72,7 +72,7 @@
 
 	<servlet>  
 			<servlet-name>ThreadServlet</servlet-name>  
-			<servlet-class>com.lehsetreff.ThreadServlet</servlet-class>  
+			<servlet-class>com.lehsetreff.servlets.ThreadServlet</servlet-class>  
 		</servlet>  
 		
 		<servlet-mapping>  
@@ -82,7 +82,7 @@
 
 	<servlet>  
 			<servlet-name>ThreadGroupServlet</servlet-name>  
-			<servlet-class>com.lehsetreff.ThreadGroupServlet</servlet-class>  
+			<servlet-class>com.lehsetreff.servlets.ThreadGroupServlet</servlet-class>  
 		</servlet>  
 		
 		<servlet-mapping>  
@@ -92,7 +92,7 @@
 		
 		<filter>
 			<filter-name>CorsFilter</filter-name>
-			<filter-class>com.meshenger.CorsFilter</filter-class>
+			<filter-class>com.lehsetreff.CorsFilter</filter-class>
 		</filter>
 		<filter-mapping>
 			<filter-name>CorsFilter</filter-name>
