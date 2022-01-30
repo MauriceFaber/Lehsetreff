@@ -4,7 +4,8 @@ CREATE DATABASE lehsetreff;
 Create table lehsetreff.threadGroups(ID int NOT NULL AUTO_INCREMENT,
                                     caption varchar(50) NOT NULL,
                                     ownerID int NOT NULL,
-                                    primary key(ID)
+                                    primary key(ID),
+                                    foreign key(ownerID) References users(ID)
                                     );
 
 
@@ -13,8 +14,8 @@ Create table lehsetreff.threads(ID int NOT NULL AUTO_INCREMENT,
                                 latestMessage timestamp NOT NULL,
                                 ownerID int NOT NULL,
                                 groupID int NOT NULL,
-                                foreign key(ownerID) references meshenger.users(ID) ON DELETE CASCADE,
-                                foreign key(groupID) references threadGroup(ID) ON DELETE CASCADE,
+                                foreign key(ownerID) references users(ID),
+                                foreign key(groupID) references threadGroups(ID) ON DELETE CASCADE,
                                 primary key(ID)
                                 );
 
@@ -29,7 +30,7 @@ Create table lehsetreff.threads(ID int NOT NULL AUTO_INCREMENT,
 
 Create table lehsetreff.userRoles(userID int NOT NULL,
                                 roleID int NOT NULL,
-                                foreign key(userID) references meshenger.users(ID) ON DELETE CASCADE,
+                                foreign key(userID) references users(ID) ON DELETE CASCADE,
                                 primary key(userID)
                                 );
 
@@ -43,5 +44,5 @@ Create table lehsetreff.messages(ID int NOT NULL AUTO_INCREMENT,
                                 wasModified boolean,
                                 primary key(ID),
                                 foreign key(threadID) References threads(ID) ON DELETE CASCADE,
-                                foreign key(senderID) References meshenger.users(ID) ON DELETE CASCADE
+                                foreign key(senderID) References users(ID)
                                 );  
