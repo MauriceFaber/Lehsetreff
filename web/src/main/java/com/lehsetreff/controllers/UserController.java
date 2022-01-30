@@ -167,7 +167,7 @@ public class UserController {
 	public boolean isAuthenticated(HttpServletRequest req){
 		boolean result = false;
 		try{
-			User tmp = db.getUserController().getUserFromApiKey(req);
+			User tmp = meshengerDb.getUserController().getUserFromApiKey(req);
 			return tmp != null;
 		} catch (Exception e){
 			System.out.println(e.getMessage());
@@ -251,7 +251,7 @@ public class UserController {
 	private String getImage(String fileName){
 		String result = "";
 		try {
-			result = Files.readString(Paths.get(fileName));
+			result = Paths.get(fileName).toFile().getAbsolutePath();
 		}catch(Exception e){
 			result = null;
 		}

@@ -230,7 +230,7 @@ public class MessagesController {
 	private String getImage(String fileName){
 		String result = "";
 		try {
-			result = Files.readString(Paths.get(fileName));
+			result = Paths.get(fileName).toFile().getAbsolutePath();
 		}catch(Exception e){
 			result = null;
 		}
