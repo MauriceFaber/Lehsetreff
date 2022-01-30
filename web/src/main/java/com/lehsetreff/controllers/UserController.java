@@ -1,8 +1,5 @@
 package com.lehsetreff.controllers;
 
-import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,11 +11,9 @@ import com.lehsetreff.models.UserRole;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.MessageHandler;
 
 public class UserController {
     private Database db = Database.getInstance();
-    private com.meshenger.controllers.Database meshengerDb = com.meshenger.controllers.Database.getInstance();
 
     Random r = new Random();
 
@@ -167,7 +162,7 @@ public class UserController {
 	public boolean isAuthenticated(HttpServletRequest req){
 		boolean result = false;
 		try{
-			User tmp = meshengerDb.getUserController().getUserFromApiKey(req);
+			User tmp = db.getUserController().getUserFromApiKey(req);
 			return tmp != null;
 		} catch (Exception e){
 			System.out.println(e.getMessage());
@@ -311,10 +306,10 @@ public class UserController {
 	public User getUserFromKey(String apiKey){
 		User u = null;
 		try {
-			PreparedStatement st = meshengerDb.createStatement("select * from users where apiKey = ?", false);
+			PreparedStatement st = db.createStatement("select * from users where apiKey = ?", false);
 			st.setString(1, apiKey);
 
-			ResultSet result = meshengerDb.executeQuery(st);
+			ResultSet result = db.executeQuery(st);
 
 			if(result.next()){
 				u = new User();
@@ -341,10 +336,10 @@ public class UserController {
 	public User getUser(int id, boolean withAvatar) {
 		User u = null;
 		try {
-			PreparedStatement st = meshengerDb.createStatement("select * from users where ID = ?", false);
+			PreparedStatement st = db.createStatement("select * from users where ID = ?", false);
 			st.setInt(1, id);
 
-			ResultSet result = meshengerDb.executeQuery(st);
+			ResultSet result = db.executeQuery(st);
 			if(result.next()){
 				u = new User();
 				u.setId(result.getInt("ID"));
@@ -371,11 +366,11 @@ public class UserController {
 	public User getUser(String name, String passphrase) {
 		User u = null;
 		try {
-			PreparedStatement st = meshengerDb.createStatement("select * from users where userName = ? && passphrase = ?", false);
+			PreparedStatement st = db.createStatement("select * from users where userName = ? && passphrase = ?", false);
 			st.setString(1, name);
 			st.setString(2, passphrase);
 
-			ResultSet result = meshengerDb.executeQuery(st);
+			ResultSet result = db.executeQuery(st);
 
 			if(result.next()){
 				u = new User();

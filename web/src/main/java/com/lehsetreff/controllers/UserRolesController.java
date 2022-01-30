@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class UserRolesController {
-    private com.meshenger.controllers.Database db = com.meshenger.controllers.Database.getInstance();
+    private Database db = Database.getInstance();
 
 	private boolean isRoleSet(int userId){
 		boolean result = false;
