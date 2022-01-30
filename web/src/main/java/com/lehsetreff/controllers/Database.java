@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Database {
-	private static final String CONNECTION_STRING = "(jdbc:mysql://lehsetreff.de:3306/lehsetreff)";
+	private static final String CONNECTION_STRING = "jdbc:mysql://lehsetreff.de:3306/lehsetreff";
     private static final String USER_NAME = "lehsetreffuser22";
 	private static final String PASSWORD = "Lehserkalation22";
 	private static final String IMAGE_DIRECTORY = "/lehsetreff/images";
