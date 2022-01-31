@@ -1,6 +1,7 @@
 package com.lehsetreff.controllers;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -207,23 +208,24 @@ public class MessagesController {
 	}
 
 	/**
-	 * Pfad zum Bild zurueckliefern.
+	 * Liefert Pfad zum Bild zurueck.
 	 * @param fileName
 	 * Name der Datei
 	 * @return
-	 * Pfad zum Bild
+	 * Der Inhalt der Datei
 	 */
 	private String getImage(String fileName){
 		String result = "";
 		try {
-			result = Paths.get(fileName).toFile().getAbsolutePath();
+			result = readFile(fileName);
 		}catch(Exception e){
 			result = null;
 		}
 		return result;
 	}
 
-
-
-
+	private String readFile(String path) throws IOException {
+  		byte[] encoded = Files.readAllBytes(Paths.get(path));
+  		return new String(encoded);
+	}
 }
