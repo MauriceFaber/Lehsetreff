@@ -39,10 +39,9 @@ public class UserRoleServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         int userId = db.getUserController().getUserId(request);
 
-        UserRole role = db.getRolesController().getUserRole(userId);
+		UserRole role = db.getRolesController().getUserRole(userId);
         if(role != null){		
             Extensions.sendJsonResponse(response, role);
         } else {

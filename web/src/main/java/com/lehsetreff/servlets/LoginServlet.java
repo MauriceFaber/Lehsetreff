@@ -3,7 +3,7 @@ package com.lehsetreff.servlets;
 import java.io.IOException;
 
 import com.lehsetreff.Extensions;
-import com.meshenger.controllers.Database;
+import com.lehsetreff.controllers.Database;
 import com.meshenger.models.User;
 
 import jakarta.servlet.ServletException;

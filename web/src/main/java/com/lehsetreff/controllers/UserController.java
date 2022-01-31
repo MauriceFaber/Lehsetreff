@@ -7,6 +7,7 @@ import java.util.Random;
 
 import com.meshenger.models.User;
 import com.lehsetreff.Extensions;
+import com.lehsetreff.PasswordAuthentication;
 import com.lehsetreff.models.UserRole;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,9 @@ import jakarta.servlet.http.HttpSession;
 
 public class UserController {
     private Database db = Database.getInstance();
+
+
+	PasswordAuthentication auth = new PasswordAuthentication();
 
     Random r = new Random();
 
@@ -81,9 +85,11 @@ public class UserController {
 		try {
 			String key = generateUniqueApiKey();
 
+			String hashedPassword = auth.hash(passphrase.toCharArray());
+
 			PreparedStatement st = db.createStatement("insert into users (userName, passphrase, avatar, apiKey) values(?,?,?,?)", true);
 			st.setString(1, name);
-			st.setString(2, passphrase);
+			st.setString(2, hashedPassword);
 			st.setString(3, "");
 			st.setString(4, key);
 
@@ -94,7 +100,7 @@ public class UserController {
 				u = getUser(name, passphrase);
 			}
 		} catch(Exception e){
-				System.out.println(e.getMessage());
+			System.out.println(e.getMessage());
 		}
 		return u;
 	}
@@ -131,6 +137,41 @@ public class UserController {
 		}
 		return result;
 	}
+
+	// public void hashPassword(){
+	// 	try {
+	// 		PreparedStatement st = db.createStatement("select * from users", false);
+
+	// 		ResultSet result = db.executeQuery(st);
+
+	// 		while(result.next()){
+	// 			User u = new User();
+	// 			u.setId(result.getInt("ID"));
+	// 			u.setName(result.getString("userName"));
+	// 			String passphrase = result.getString("passphrase");
+	// 			u.setAvatar(getImage(result.getString("avatar")));
+	// 			u.setApiKey(result.getString("apiKey"));
+
+	// 			if(passphrase.charAt(0) == '$'){
+	// 				continue;
+	// 			}
+
+	// 		PasswordAuthentication auth = new PasswordAuthentication();
+	// 		String hashed = auth.hash(passphrase.toCharArray());
+
+	// 		PreparedStatement sta = db.createStatement("update meshenger.users set passphrase = ? where ID = ?", true);
+	// 		sta.setString(1, hashed);
+	// 		sta.setInt(2, u.getId());
+
+	// 		int intResult = sta.executeUpdate();
+	// 		}
+
+
+	// 		} catch (Exception e) {
+	// 			String message = e.getMessage();
+	// 			System.out.println(message);
+	// 		}
+	// }
 
 	/**
 	 * Liefert User anhand des apiKeys zurueck.
@@ -366,9 +407,9 @@ public class UserController {
 	public User getUser(String name, String passphrase) {
 		User u = null;
 		try {
-			PreparedStatement st = db.createStatement("select * from users where userName = ? && passphrase = ?", false);
+			PreparedStatement st = db.createStatement("select * from users where userName = ?", false);
 			st.setString(1, name);
-			st.setString(2, passphrase);
+			// st.setString(2, hashedPassword);
 
 			ResultSet result = db.executeQuery(st);
 
@@ -378,6 +419,11 @@ public class UserController {
 				u.setName(result.getString("userName"));
 				u.setAvatar(getImage(result.getString("avatar")));
 				u.setApiKey(result.getString("apiKey"));
+				String tmpPassphrase = result.getString("passphrase");
+				boolean isAuth = auth.authenticate(passphrase.toCharArray(), tmpPassphrase);
+				if(!isAuth){
+					u = null;
+				}
 			}
 		} catch(Exception e){
 			u = null;

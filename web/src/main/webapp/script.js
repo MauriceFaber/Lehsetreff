@@ -1,4 +1,5 @@
 const domain = "https://lehsetreff.de";
+// const domain = "http://localhost:8080/lehsetreff";
 
 $(document).ready(function () {
   var currentUser = undefined;
