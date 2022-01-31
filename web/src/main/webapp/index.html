@@ -103,25 +103,28 @@
     <h2>Welcome! <small>tbd Lehsetreff</small></h2>
 
     <p id="message">Hello Guest!</p>
+    <p id="userName"></p>
     <br />
-    <div class="input-group">
-      <input
-        id="keyInput"
-        type="text"
-        class="form-control"
-        placeholder="apiKey"
-        aria-label="apiKey"
-        aria-describedby="basic-addon2"
-      />
-      <div class="input-group-append">
-        <button
-          class="input-group-text"
-          id="testButton"
-          class="btn btn-primary"
-        >
-          Test
-        </button>
+    <form onsubmit="return false">
+      <div class="input-group">
+        <input
+          id="keyInput"
+          type="text"
+          class="form-control"
+          placeholder="apiKey"
+          aria-label="apiKey"
+          aria-describedby="basic-addon2"
+        />
+        <div class="input-group-append">
+          <input
+            type="submit"
+            class="input-group-text"
+            id="testButton"
+            class="btn btn-primary"
+            value="Test"
+          />
+        </div>
       </div>
-    </div>
+    </form>
   </body>
 </html>

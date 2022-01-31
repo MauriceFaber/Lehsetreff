@@ -1,6 +1,8 @@
 const domain = "https://lehsetreff.de";
 
 $(document).ready(function () {
+  var currentUser = undefined;
+
   $("#testButton").click(async function () {
     console.log("test");
     var key = $("#keyInput").val();
@@ -19,10 +21,38 @@ $(document).ready(function () {
         $("#message").text("Loading...");
       },
       success: async function (role) {
-        $("#message").text("Hello " + role + "!");
+        $("#message").text("Role: " + role);
+        if (role !== "Guest") {
+          await login(apiKey);
+          $("#keyInput").removeClass("has-Error");
+        } else {
+          $("#userName").text("");
+          $("#keyInput").addClass("has-Error");
+        }
       },
       error: function (err) {
         $("#message").text(err);
+        $("#keyInput").addClass("has-Error");
+      },
+    });
+  }
+
+  async function login(apiKey) {
+    await $.ajax({
+      type: "POST",
+      url: domain + "/login",
+      data: {
+        apiKey: apiKey,
+      },
+      beforeSend: function () {
+        $("#userName").text("Loading...");
+      },
+      success: async function (user) {
+        currentUser = user;
+        $("#userName").text("Name: " + user.userName + "!");
+      },
+      error: function (err) {
+        $("#userName").text("Error loading userName");
       },
     });
   }

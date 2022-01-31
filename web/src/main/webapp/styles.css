@@ -15,3 +15,7 @@
 body {
   margin: 20px;
 }
+
+.has-Error {
+  border-color: red;
+}
