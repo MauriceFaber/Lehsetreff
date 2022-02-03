@@ -9,11 +9,6 @@
     <meta name="description" content="Let's lehs with the community!" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
-      crossorigin="anonymous"
-    ></script>
 
     <!-- <script>
       let newWorker;
@@ -81,14 +76,8 @@
         });
       }
     </script> -->
-    <script src="script.js"></script>
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="halfmoon-1.1.1/css/halfmoon.css" />
 
     <link
       rel="stylesheet"
@@ -99,32 +88,192 @@
 
     <title>Lehsetreff</title>
   </head>
+  <!-- <body data-set-preferred-mode-onload="true"> -->
   <body>
-    <h2>Welcome! <small>tbd Lehsetreff</small></h2>
-
-    <p id="message">Hello Guest!</p>
-    <p id="userName"></p>
-    <br />
-    <form onsubmit="return false">
-      <div class="input-group">
-        <input
-          id="keyInput"
-          type="text"
-          class="form-control"
-          placeholder="apiKey"
-          aria-label="apiKey"
-          aria-describedby="basic-addon2"
-        />
-        <div class="input-group-append">
-          <input
-            type="submit"
-            class="input-group-text"
-            id="testButton"
-            class="btn btn-primary"
-            value="Test"
+    <div
+      class="page-wrapper with-navbar with-sidebar with-navbar-fixed-bottom"
+      data-sidebar-type="full-height"
+    >
+      <!-- Navbar -->
+      <nav class="navbar">
+        <!-- Navbar content (with toggle sidebar button) -->
+        <div class="navbar-content">
+          <button
+            id="toggle-sidebar-btn"
+            class="btn btn-action"
+            type="button"
+            onclick="halfmoon.toggleSidebar()"
+          >
+            <i class="fa fa-bars" aria-hidden="true"></i>
+          </button>
+        </div>
+        <!-- Navbar brand -->
+        <a href="#" class="navbar-brand">
+          <img
+            src="https://i.pinimg.com/originals/1a/8f/64/1a8f649e40083b23476753a0dba92247.png"
+            alt="..."
           />
+          Lehsetreff
+        </a>
+
+        <!-- Navbar text -->
+        <span class="navbar-text text-monospace">v1.0 beta</span>
+        <!-- text-monospace = font-family shifted to monospace -->
+        <!-- Navbar nav -->
+        <ul class="navbar-nav d-none d-md-flex">
+          <!-- d-none = display: none, d-md-flex = display: flex on medium screens and up (width > 768px) -->
+          <li class="nav-item active">
+            <a href="#" class="nav-link">Docs</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Products</a>
+          </li>
+        </ul>
+        <!-- Navbar form (inline form) -->
+        <form
+          class="form-inline d-none d-md-flex ml-auto"
+          action="..."
+          method="..."
+        >
+          <!-- d-none = display: none, d-md-flex = display: flex on medium screens and up (width > 768px), ml-auto = margin-left: auto -->
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Email address"
+            required="required"
+          />
+          <button class="btn btn-primary" type="submit">Sign up</button>
+        </form>
+        <!-- Navbar content (with the dropdown menu) -->
+        <div class="navbar-content d-md-none ml-auto">
+          <!-- d-md-none = display: none on medium screens and up (width > 768px), ml-auto = margin-left: auto -->
+          <div class="dropdown with-arrow">
+            <button
+              class="btn"
+              data-toggle="dropdown"
+              type="button"
+              id="navbar-dropdown-toggle-btn-1"
+            >
+              Menu
+              <i class="fa fa-angle-down" aria-hidden="true"></i>
+            </button>
+            <div
+              class="dropdown-menu dropdown-menu-right w-200"
+              aria-labelledby="navbar-dropdown-toggle-btn-1"
+            >
+              <!-- w-200 = width: 20rem (200px) -->
+              <a href="#" class="dropdown-item">Docs</a>
+              <a href="#" class="dropdown-item">Products</a>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-content">
+                <form action="..." method="...">
+                  <div class="form-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Email address"
+                      required="required"
+                    />
+                  </div>
+                  <button class="btn btn-primary btn-block" type="submit">
+                    Sign up
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div class="sidebar">
+        <div class="sidebar-menu">
+          <h5 class="sidebar-title">Lehsetreff</h5>
+          <div class="sidebar-divider"></div>
+          <a href="#" class="sidebar-link sidebar-link-with-icon">
+            <span
+              class="sidebar-icon bg-transparent justify-content-start mr-0"
+            >
+              <!-- bg-transparent = background-color: transparent, justify-content-start = justify-content: flex-start, mr-0 = margin-right: 0 -->
+              <i class="fa fa-calculator" aria-hidden="true"></i>
+            </span>
+            Calculator
+          </a>
+          <a href="#" class="sidebar-link sidebar-link-with-icon">
+            <span
+              class="sidebar-icon bg-transparent justify-content-start mr-0"
+            >
+              <!-- bg-transparent = background-color: transparent, justify-content-start = justify-content: flex-start, mr-0 = margin-right: 0 -->
+              <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+            </span>
+            News reader
+          </a>
+          <br />
+          <h5 class="sidebar-title">Productivity</h5>
+          <div class="sidebar-divider"></div>
+          <a href="#" class="sidebar-link sidebar-link-with-icon">
+            <span class="sidebar-icon bg-primary text-white rounded-circle">
+              <!-- bg-primary = background-color: var(--primary-color), text-white = color: white, rounded-circle = border-radius: 50% -->
+              <i class="fa fa-file-word-o" aria-hidden="true"></i>
+            </span>
+            Docs
+          </a>
+          <a href="#" class="sidebar-link sidebar-link-with-icon">
+            <span class="sidebar-icon bg-success text-dark rounded-circle">
+              <!-- bg-success = background-color: var(--success-color), text-dark = color: var(--lm-base-text-color), rounded-circle = border-radius: 50% -->
+              <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            </span>
+            Sheets
+          </a>
+          <a href="#" class="sidebar-link sidebar-link-with-icon">
+            <span class="sidebar-icon bg-secondary text-dark rounded-circle">
+              <!-- bg-secondary = background-color: var(--secondary-color), text-dark = color: var(--lm-base-text-color), rounded-circle = border-radius: 50% -->
+              <i class="fa fa-envelope-o" aria-hidden="true"></i>
+            </span>
+            Email
+          </a>
+          <a href="#" class="sidebar-link sidebar-link-with-icon">
+            <span class="sidebar-icon bg-danger text-white rounded-circle">
+              <!-- bg-danger = background-color: var(--danger-color), text-white = color: white, rounded-circle = border-radius: 50% -->
+              <i class="fa fa-file-powerpoint-o" aria-hidden="true"></i>
+            </span>
+            Slides
+          </a>
         </div>
       </div>
-    </form>
+
+      <div class="content-wrapper">
+        <h2>Welcome! <small>tbd Lehsetreff</small></h2>
+
+        <p id="message">Hello Guest!</p>
+        <p id="userName"></p>
+        <br />
+
+        <form onsubmit="return false">
+          <div class="input-group">
+            <input
+              id="keyInput"
+              type="text"
+              class="form-control"
+              placeholder="apiKey"
+              aria-label="apiKey"
+              aria-describedby="basic-addon2"
+            />
+            <div class="input-group-append">
+              <input
+                type="submit"
+                class="input-group-text"
+                id="testButton"
+                class="btn btn-primary"
+                value="Test"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Requires halfmoon.js for the dropdowns -->
+    <script src="halfmoon-1.1.1/js/halfmoon.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>

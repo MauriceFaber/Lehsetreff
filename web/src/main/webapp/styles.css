@@ -1,19 +1,13 @@
 @media (prefers-color-scheme: dark) {
   body {
-    color: aliceblue;
-    background-color: midnightblue;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  body {
-    color: midnightblue;
-    background-color: aliceblue;
+    /* color: aliceblue;
+    background-color: midnightblue; */
   }
 }
 
 body {
-  margin: 20px;
+  color: midnightblue;
+  background-color: aliceblue;
 }
 
 .has-Error {

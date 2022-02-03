@@ -1,6 +1,24 @@
 const domain = "https://lehsetreff.de";
 // const domain = "http://localhost:8080/lehsetreff";
 
+function setTheme() {
+  let theme = matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+  if (theme === "dark") {
+    halfmoon.setDarkMode();
+  } else {
+    halfmoon.setLightMode();
+  }
+}
+
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  setTheme();
+});
+
+setTheme();
+halfmoon.toggleSidebar();
+
 $(document).ready(function () {
   var currentUser = undefined;
 
