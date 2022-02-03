@@ -39,11 +39,8 @@ public class ThreadServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
-		if(!Extensions.isAuthenticated(request, response)){
-			return;
-		}
-
-		int threadGroupId =Integer.parseInt(request.getParameter("threadGroupID"));
+		String idString = request.getParameter("threadGroupID");
+		int threadGroupId = Integer.parseInt(idString);
 
 		List<Thread> threads = db.getThreadController().getThreadsFromThreadGroup(threadGroupId);
 		if(threads != null){		

@@ -6,7 +6,7 @@ import java.util.List;
 public class ThreadGroup {
     
     private String caption;
-    private int threadGroupId;
+    private int id;
     private int ownerId;
     private List<Thread> threads = new ArrayList<Thread>();
 
@@ -25,12 +25,12 @@ public class ThreadGroup {
 		this.threads = threads;
 	}
 
-    public int getThreadGroupId() {
-        return threadGroupId;
+    public int getId() {
+        return id;
     }
 
-    public void setThreadGroupId(int threadGroupId) {
-        this.threadGroupId = threadGroupId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getOwnerId() {

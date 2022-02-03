@@ -13,3 +13,11 @@ body {
 .has-Error {
   border-color: red;
 }
+
+.sidebar-link {
+  cursor: pointer;
+}
+
+.content-wrapper {
+  margin-right: 10px;
+}

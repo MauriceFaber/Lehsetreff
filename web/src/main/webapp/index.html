@@ -7,6 +7,7 @@
     <meta name="apple-mobile-web-app-title" content="Lehsetreff" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="description" content="Let's lehs with the community!" />
+    <meta property="og:image" content="Lehsetreff.png" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -108,11 +109,8 @@
           </button>
         </div>
         <!-- Navbar brand -->
-        <a href="#" class="navbar-brand">
-          <img
-            src="https://i.pinimg.com/originals/1a/8f/64/1a8f649e40083b23476753a0dba92247.png"
-            alt="..."
-          />
+        <a href="#" class="navbar-brand" id="applicationCaption">
+          <img src="Lehsetreff.png" alt="..." />
           Lehsetreff
         </a>
 
@@ -187,88 +185,47 @@
 
       <div class="sidebar">
         <div class="sidebar-menu">
-          <h5 class="sidebar-title">Lehsetreff</h5>
+          <h5 class="sidebar-title">Profil</h5>
           <div class="sidebar-divider"></div>
-          <a href="#" class="sidebar-link sidebar-link-with-icon">
-            <span
-              class="sidebar-icon bg-transparent justify-content-start mr-0"
-            >
-              <!-- bg-transparent = background-color: transparent, justify-content-start = justify-content: flex-start, mr-0 = margin-right: 0 -->
-              <i class="fa fa-calculator" aria-hidden="true"></i>
-            </span>
-            Calculator
-          </a>
-          <a href="#" class="sidebar-link sidebar-link-with-icon">
-            <span
-              class="sidebar-icon bg-transparent justify-content-start mr-0"
-            >
-              <!-- bg-transparent = background-color: transparent, justify-content-start = justify-content: flex-start, mr-0 = margin-right: 0 -->
-              <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-            </span>
-            News reader
-          </a>
           <br />
-          <h5 class="sidebar-title">Productivity</h5>
-          <div class="sidebar-divider"></div>
-          <a href="#" class="sidebar-link sidebar-link-with-icon">
-            <span class="sidebar-icon bg-primary text-white rounded-circle">
-              <!-- bg-primary = background-color: var(--primary-color), text-white = color: white, rounded-circle = border-radius: 50% -->
-              <i class="fa fa-file-word-o" aria-hidden="true"></i>
-            </span>
-            Docs
-          </a>
-          <a href="#" class="sidebar-link sidebar-link-with-icon">
-            <span class="sidebar-icon bg-success text-dark rounded-circle">
-              <!-- bg-success = background-color: var(--success-color), text-dark = color: var(--lm-base-text-color), rounded-circle = border-radius: 50% -->
-              <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-            </span>
-            Sheets
-          </a>
-          <a href="#" class="sidebar-link sidebar-link-with-icon">
-            <span class="sidebar-icon bg-secondary text-dark rounded-circle">
-              <!-- bg-secondary = background-color: var(--secondary-color), text-dark = color: var(--lm-base-text-color), rounded-circle = border-radius: 50% -->
-              <i class="fa fa-envelope-o" aria-hidden="true"></i>
-            </span>
-            Email
-          </a>
-          <a href="#" class="sidebar-link sidebar-link-with-icon">
-            <span class="sidebar-icon bg-danger text-white rounded-circle">
-              <!-- bg-danger = background-color: var(--danger-color), text-white = color: white, rounded-circle = border-radius: 50% -->
-              <i class="fa fa-file-powerpoint-o" aria-hidden="true"></i>
-            </span>
-            Slides
-          </a>
+          <h5 class="sidebar-title">Threads</h5>
+          <div class="sidebar-divider" id="sidebarThreadGroups"></div>
         </div>
       </div>
 
       <div class="content-wrapper">
-        <h2>Welcome! <small>tbd Lehsetreff</small></h2>
+        <div class="content">
+          <nav aria-label="Breadcrumb navigation example">
+            <ul class="breadcrumb" id="breadcrumb"></ul>
+          </nav>
+          <h2 class="content-title">Willkommen</h2>
 
-        <p id="message">Hello Guest!</p>
-        <p id="userName"></p>
-        <br />
+          <p id="message">Hello Guest!</p>
+          <p id="userName"></p>
+          <br />
 
-        <form onsubmit="return false">
-          <div class="input-group">
-            <input
-              id="keyInput"
-              type="text"
-              class="form-control"
-              placeholder="apiKey"
-              aria-label="apiKey"
-              aria-describedby="basic-addon2"
-            />
-            <div class="input-group-append">
+          <form onsubmit="return false">
+            <div class="input-group">
               <input
-                type="submit"
-                class="input-group-text"
-                id="testButton"
-                class="btn btn-primary"
-                value="Test"
+                id="keyInput"
+                type="text"
+                class="form-control"
+                placeholder="apiKey"
+                aria-label="apiKey"
+                aria-describedby="basic-addon2"
               />
+              <div class="input-group-append">
+                <input
+                  type="submit"
+                  class="input-group-text"
+                  id="testButton"
+                  class="btn btn-primary"
+                  value="Test"
+                />
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
 

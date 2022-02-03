@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.lehsetreff.controllers.Database;
-import com.lehsetreff.models.Thread;
 import com.lehsetreff.models.ThreadGroup;
 
 import jakarta.servlet.ServletException;
@@ -39,10 +38,6 @@ public class ThreadGroupServlet extends HttpServlet{
 
     @Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
-		if(!Extensions.isAuthenticated(request, response)){
-			return;
-		}
-
 		List<ThreadGroup> threadGroups = db.getThreadGroupController().getThreadGroups();
 		if(threadGroups != null){		
             Extensions.sendJsonResponse(response, threadGroups);

@@ -63,7 +63,7 @@ public class ThreadGroupController {
             if(result.next()){
                 tGroup = new ThreadGroup();
                 tGroup.setCaption(result.getString("caption"));
-                tGroup.setThreadGroupId(threadGroupId);
+                tGroup.setId(threadGroupId);
             }
         } catch(Exception e){
 			tGroup = null;
@@ -81,7 +81,7 @@ public class ThreadGroupController {
             while(rs.next()){
                 ThreadGroup tGroup = new ThreadGroup();
                 tGroup.setCaption(rs.getString("caption"));
-                tGroup.setThreadGroupId(rs.getInt("ID"));
+                tGroup.setId(rs.getInt("ID"));
                 result.add(tGroup);
             }
         } catch(Exception e){
