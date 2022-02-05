@@ -1,5 +1,5 @@
-// const domain = "https://lehsetreff.de";
-const domain = "";
+const domain = "https://lehsetreff.de";
+// const domain = "";
 // const domain = "http://localhost:8080/lehsetreff";
 
 var threadGroups = [];
@@ -68,7 +68,7 @@ $(document).ready(async function () {
   async function loadThreadGroups() {
     await $.ajax({
       type: "GET",
-      url: domain + "threadGroups",
+      url: domain + "/threadGroups",
       success: function (items) {
         threadGroups = items;
       },
@@ -78,22 +78,25 @@ $(document).ready(async function () {
   async function loadThreads() {
     $(threadGroups).each(async function (index, item) {
       await $.ajax({
-        url: domain + "threads",
+        url: domain + "/threads",
         type: "GET",
         data: {
           threadGroupID: item.id,
         },
         success: function (items) {
           $(items).each(function (index, thread) {
-            var groupLink = $("#tg_" + thread.groupId);
+            var threadGroupSubList = $("#tgl_" + thread.groupId);
+            var listItem = document.createElement("li");
             var threadLink = document.createElement("a");
             threadLink.id = "th_" + thread.id;
-            threadLink.classList.add("sidebar-link");
+            threadLink.classList.add("sub-link");
+            listItem.classList.add("marginLeft10");
             threadLink.innerHTML = thread.caption;
             $(threadLink).click(function () {
               threadSelected(thread);
             });
-            $(groupLink).after(threadLink);
+            $(listItem).append(threadLink);
+            $(threadGroupSubList).append(listItem);
           });
         },
       });
@@ -157,14 +160,21 @@ $(document).ready(async function () {
 
   function listThreadGroups() {
     $(threadGroups).each(function (index, item) {
+      var listItem = document.createElement("li");
+      var subList = document.createElement("ul");
+      $(subList).css("list-style-type", "square");
+      subList.id = "tgl_" + item.id;
       var sideLink = document.createElement("a");
       sideLink.id = "tg_" + item.id;
-      sideLink.classList.add("sidebar-link");
+      sideLink.classList.add("link");
+      //   sideLink.classList.add("sidebar-link");
       sideLink.innerHTML = item.caption;
       $(sideLink).click(function () {
         threadGroupSelected(item);
       });
-      $("#sidebarThreadGroups").append(sideLink);
+      $(listItem).append(sideLink);
+      $("#sidebarThreadGroups").append(listItem);
+      $("#sidebarThreadGroups").append(subList);
     });
   }
 

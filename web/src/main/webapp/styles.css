@@ -21,3 +21,16 @@ body {
 .content-wrapper {
   margin-right: 10px;
 }
+
+.marginLeft10 {
+  margin-left: 20px;
+}
+
+.link {
+  text-decoration: none;
+  list-style-type: none;
+}
+
+.sub-link {
+  text-decoration: none;
+}
