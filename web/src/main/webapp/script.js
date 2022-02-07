@@ -3,6 +3,7 @@ const domain = "https://lehsetreff.de";
 // const domain = "http://localhost:8080/lehsetreff";
 
 var threadGroups = [];
+var threads = [];
 var currentUser = undefined;
 
 function setTheme() {
@@ -58,49 +59,125 @@ function getCookie(name) {
 }
 
 $(document).ready(async function () {
-  const url = $(location).attr("pathname");
-  console.log(url);
+  var url = $(location).attr("pathname");
+
+  $("#homeView").hide();
+  $("#threadView").hide();
+  $("#threadGroupView").hide();
+
   $("#testButton").click(async function () {
     var key = $("#keyInput").val();
     await getRole(key);
   });
 
   async function loadThreadGroups() {
-    await $.ajax({
+    return await $.ajax({
       type: "GET",
       url: domain + "/threadGroups",
-      success: function (items) {
+      success: async function (items) {
         threadGroups = items;
+        $(threadGroups).each(async function (index, threadGroup) {
+          await loadThreads(threadGroup);
+        });
       },
     });
   }
 
-  async function loadThreads() {
-    $(threadGroups).each(async function (index, item) {
-      await $.ajax({
-        url: domain + "/threads",
-        type: "GET",
-        data: {
-          threadGroupID: item.id,
-        },
-        success: function (items) {
-          $(items).each(function (index, thread) {
-            var threadGroupSubList = $("#tgl_" + thread.groupId);
-            var listItem = document.createElement("li");
-            var threadLink = document.createElement("a");
-            threadLink.id = "th_" + thread.id;
-            threadLink.classList.add("sub-link");
-            listItem.classList.add("marginLeft10");
-            threadLink.innerHTML = thread.caption;
-            $(threadLink).click(function () {
-              threadSelected(thread);
-            });
-            $(listItem).append(threadLink);
-            $(threadGroupSubList).append(listItem);
-          });
-        },
-      });
+  function showHomeContent() {
+    $("#threadView").hide();
+    $("#threadGroupView").hide();
+    $("#homeView").show();
+  }
+
+  function showThreadContent() {
+    $("#threadGroupView").hide();
+    $("#homeView").hide();
+    $("#threadView").show();
+  }
+
+  function showThreadGroupContent() {
+    $("#threadView").hide();
+    $("#homeView").hide();
+    $("#threadGroupView").show();
+  }
+
+  function loadContent(href, isInitial) {
+    if (href === "/" || href == "/index.html") {
+      var homePart = buildBreadcrumbPart("/", "Home", false);
+      $("#breadcrumb").html("");
+      $("#breadcrumb").append(homePart);
+      showHomeContent();
+    } else {
+      var count = countCharInString("/", href);
+      if (count === 1) {
+        if (isInitial) {
+          const caption = href.substring(1);
+          const group = threadGroups.find((g) => g.caption === caption);
+          threadGroupSelected(group);
+        }
+        showThreadGroupContent();
+      } else {
+        if (isInitial) {
+          const caption = href.split("/")[2];
+          const thread = threads.find((t) => t.caption === caption);
+          if (!thread) {
+            return false;
+          }
+          threadSelected(thread);
+        }
+        showThreadContent();
+      }
+    }
+    return true;
+  }
+
+  async function loadThreads(threadGroup) {
+    await $.ajax({
+      url: domain + "/threads",
+      type: "GET",
+      data: {
+        threadGroupID: threadGroup.id,
+      },
+      success: function (items) {
+        threadGroup.threads = items;
+        console.log(threadGroup.threads);
+        items.forEach((element) => {
+          console.log(element.caption);
+          threads.push(element);
+        });
+      },
     });
+  }
+
+  function linkClicked(href) {
+    history.pushState({}, null, href);
+    url = href;
+  }
+
+  function countCharInString(char, string) {
+    var count = 0;
+    for (var i = 0; i < string.length; i++) {
+      if (char === string[i]) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  function refreshBreadCrumb(href) {
+    var oldCount = countCharInString("/", url);
+    var delimiterCount = countCharInString("/", href);
+    if (url === "/") {
+      oldCount = 0;
+    }
+    if (href === "/") {
+      delimiterCount = 0;
+    }
+    const delimiterToRemove = oldCount - delimiterCount;
+
+    for (var i = 0; i < delimiterToRemove; i++) {
+      $("#breadcrumb").children().last().remove();
+    }
   }
 
   function buildBreadcrumbPart(href, caption, isFinal) {
@@ -112,21 +189,26 @@ $(document).ready(async function () {
     var link = document.createElement("a");
     link.href = href;
     link.innerText = caption;
+    $(link).click(function (e) {
+      refreshBreadCrumb(href);
+      linkClicked(href);
+      loadContent(href, false);
+      return false;
+    });
     breadcrumb.appendChild(link);
     return breadcrumb;
   }
 
-  //   $("#applicationCaption").click(function () {
-  //     console.log("home clicked");
-  //     showHome();
-  //   });
+  $("#applicationCaption").click(function () {
+    showHome();
+  });
 
   function showHome() {
-    $("#breadcrumb").html("");
+    loadContent("/", false);
   }
 
   function threadSelected(thread) {
-    const group = threadGroups.find((g) => g.id == thread.groupId);
+    const group = threadGroups.find((g) => g.id === thread.groupId);
     const homePart = buildBreadcrumbPart("/", "Home", false);
     const threadGroupPart = buildBreadcrumbPart(
       "/" + group.caption,
@@ -143,6 +225,10 @@ $(document).ready(async function () {
     $("#breadcrumb").append(homePart);
     $("#breadcrumb").append(threadGroupPart);
     $("#breadcrumb").append(threadPart);
+
+    const href = "/" + group.caption + "/" + thread.caption;
+    linkClicked(href);
+    loadContent(href, false);
   }
 
   function threadGroupSelected(group) {
@@ -156,6 +242,10 @@ $(document).ready(async function () {
     $("#breadcrumb").html("");
     $("#breadcrumb").append(homePart);
     $("#breadcrumb").append(threadGroupPart);
+
+    const href = "/" + group.caption;
+    linkClicked(href);
+    loadContent(href, false);
   }
 
   function listThreadGroups() {
@@ -171,10 +261,31 @@ $(document).ready(async function () {
       sideLink.innerHTML = item.caption;
       $(sideLink).click(function () {
         threadGroupSelected(item);
+        halfmoon.toggleSidebar();
       });
       $(listItem).append(sideLink);
       $("#sidebarThreadGroups").append(listItem);
       $("#sidebarThreadGroups").append(subList);
+
+      listThreads(item);
+    });
+  }
+
+  function listThreads(threadGroup) {
+    $(threadGroup.threads).each(function (index, thread) {
+      var threadGroupSubList = $("#tgl_" + thread.groupId);
+      var listItem = document.createElement("li");
+      var threadLink = document.createElement("a");
+      threadLink.id = "th_" + thread.id;
+      threadLink.classList.add("sub-link");
+      listItem.classList.add("marginLeft10");
+      threadLink.innerHTML = thread.caption;
+      $(threadLink).click(function () {
+        threadSelected(thread);
+        halfmoon.toggleSidebar();
+      });
+      $(listItem).append(threadLink);
+      $(threadGroupSubList).append(listItem);
     });
   }
 
@@ -226,7 +337,14 @@ $(document).ready(async function () {
   }
 
   await loadThreadGroups();
-  await loadThreads();
-  listThreadGroups();
-  //   showHome();
+  waitForElement();
+
+  function waitForElement() {
+    if (loadContent(url, true)) {
+      listThreadGroups();
+      console.log(threads.length);
+    } else {
+      setTimeout(waitForElement, 250);
+    }
+  }
 });
