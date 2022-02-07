@@ -197,6 +197,13 @@ $(document).ready(async function () {
     return breadcrumb;
   }
 
+  $("#applicationCaption").click(function (e) {
+    refreshBreadCrumb(href);
+    linkClicked(href);
+    loadContent(href, false);
+    return false;
+  });
+
   $("#applicationCaption").click(function () {
     showHome();
   });
