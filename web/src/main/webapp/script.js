@@ -3,7 +3,6 @@ const domain = "https://lehsetreff.de";
 // const domain = "http://localhost:8080/lehsetreff";
 
 var threadGroups = [];
-var threads = [];
 var currentUser = undefined;
 
 function setTheme() {
@@ -76,8 +75,10 @@ $(document).ready(async function () {
       url: domain + "/threadGroups",
       success: async function (items) {
         threadGroups = items;
+        listThreadGroups();
         $(threadGroups).each(async function (index, threadGroup) {
           await loadThreads(threadGroup);
+          listThreads(threadGroup);
         });
       },
     });
@@ -140,11 +141,6 @@ $(document).ready(async function () {
       },
       success: function (items) {
         threadGroup.threads = items;
-        console.log(threadGroup.threads);
-        items.forEach((element) => {
-          console.log(element.caption);
-          threads.push(element);
-        });
       },
     });
   }
@@ -249,7 +245,7 @@ $(document).ready(async function () {
   }
 
   function listThreadGroups() {
-    $(threadGroups).each(function (index, item) {
+    threadGroups.forEach((item) => {
       var listItem = document.createElement("li");
       var subList = document.createElement("ul");
       $(subList).css("list-style-type", "square");
@@ -266,8 +262,6 @@ $(document).ready(async function () {
       $(listItem).append(sideLink);
       $("#sidebarThreadGroups").append(listItem);
       $("#sidebarThreadGroups").append(subList);
-
-      listThreads(item);
     });
   }
 
@@ -336,15 +330,22 @@ $(document).ready(async function () {
     });
   }
 
+  function isInitialLoaded() {
+    var allThreadsLoaded = true;
+    threadGroups.forEach((g) => {
+      allThreadsLoaded &= g.threads !== undefined;
+    });
+    return allThreadsLoaded;
+  }
+
   await loadThreadGroups();
   waitForElement();
 
   function waitForElement() {
-    if (loadContent(url, true)) {
-      listThreadGroups();
-      console.log(threads.length);
+    if (isInitialLoaded()) {
+      loadContent(url, true);
     } else {
-      setTimeout(waitForElement, 250);
+      setTimeout(waitForElement, 500);
     }
   }
 });
