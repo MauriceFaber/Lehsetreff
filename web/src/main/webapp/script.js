@@ -2,6 +2,7 @@ const domain = "https://lehsetreff.de";
 // const domain = "";
 // const domain = "http://localhost:8080/lehsetreff";
 
+var threads = [];
 var threadGroups = [];
 var currentUser = undefined;
 
@@ -141,6 +142,7 @@ $(document).ready(async function () {
       },
       success: function (items) {
         threadGroup.threads = items;
+        threads = threads.concat(items);
       },
     });
   }
@@ -286,7 +288,7 @@ $(document).ready(async function () {
   async function getRole(apiKey) {
     await $.ajax({
       type: "GET",
-      url: domain + "userRole",
+      url: domain + "/userRole",
       data: {
         apiKey: apiKey,
       },
@@ -313,7 +315,7 @@ $(document).ready(async function () {
   async function login(apiKey) {
     await $.ajax({
       type: "POST",
-      url: domain + "login",
+      url: domain + "/login",
       data: {
         apiKey: apiKey,
       },
@@ -343,9 +345,11 @@ $(document).ready(async function () {
 
   function waitForElement() {
     if (isInitialLoaded()) {
-      loadContent(url, true);
+      if (!loadContent(url, true)) {
+        setTimeout(waitForElement, 100);
+      }
     } else {
-      setTimeout(waitForElement, 500);
+      setTimeout(waitForElement, 100);
     }
   }
 });
