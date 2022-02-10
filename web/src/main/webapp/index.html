@@ -194,48 +194,38 @@
             <ul class="breadcrumb" id="breadcrumb"></ul>
           </nav>
 
-          <div id="threadView">
-            <h2 class="content-title">Thread</h2>
-          </div>
-          <div id="threadGroupView">
-            <h2 class="content-title">ThreadGroup</h2>
-          </div>
-
-          <div id="homeView">
-            <h2 class="content-title">Willkommen</h2>
-
-            <p id="message">Hello Guest!</p>
-            <p id="userName"></p>
-            <br />
-
-            <form onsubmit="return false">
-              <div class="input-group">
-                <input
-                  id="keyInput"
-                  type="text"
-                  class="form-control"
-                  placeholder="apiKey"
-                  aria-label="apiKey"
-                  aria-describedby="basic-addon2"
-                />
-                <div class="input-group-append">
-                  <input
-                    type="submit"
-                    class="input-group-text"
-                    id="testButton"
-                    class="btn btn-primary"
-                    value="Test"
-                  />
-                </div>
-              </div>
-            </form>
-          </div>
+          <div id="threadView" class="content"></div>
+          <div id="threadGroupView" class="content"></div>
+          <div id="homeView" class="content"></div>
         </div>
       </div>
     </div>
 
+    <script id="MyTemplate" type="text/x-jquery-tmpl">
+      <div class="card">
+        <h2 class="card-title">
+      	${caption}
+        </h2>
+        <div class="text-right"> <!-- text-right = text-align: right -->
+      	<a href="#" class="btn">Read more</a>
+        </div>
+      </div>
+    </script>
+
+    <script id="ThreadGroupTemplate" type="text/x-jquery-tmpl">
+      <div class="card">
+        <h2 class="card-title">
+      	${caption}
+        </h2>
+        <div class="text-right"> <!-- text-right = text-align: right -->
+      	<a href="#" class="btn">Read more</a>
+        </div>
+      </div>
+    </script>
+
     <!-- Requires halfmoon.js for the dropdowns -->
     <script src="/halfmoon-1.1.1/js/halfmoon.js"></script>
+    <script src="/jquery.tmpl.min.js"></script>
     <script src="/script.js"></script>
   </body>
 </html>

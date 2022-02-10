@@ -6,6 +6,9 @@ var threads = [];
 var threadGroups = [];
 var currentUser = undefined;
 
+var currentThreadGroup = undefined;
+var currentThread = undefined;
+
 function setTheme() {
   let theme = matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
@@ -89,18 +92,62 @@ $(document).ready(async function () {
     $("#threadView").hide();
     $("#threadGroupView").hide();
     $("#homeView").show();
+    $("#homeView").empty();
+
+    $(threadGroups).each(function (index, item) {
+      const card = $("#MyTemplate").tmpl(item);
+      $(card).appendTo("#homeView");
+      console.log(card);
+      $(card).click(function () {
+        threadGroupSelected(item);
+      });
+    });
   }
 
   function showThreadContent() {
     $("#threadGroupView").hide();
     $("#homeView").hide();
     $("#threadView").show();
+    $("#threadView").empty();
+
+    $.ajax({
+      url: domain + "/messages",
+      type: "GET",
+      data: {
+        threadID: currentThread.id,
+      },
+      success: function (items) {
+        if (items && items.length() > 0) {
+        } else {
+          $("#threadView").html("Thread ist noch leer.");
+        }
+      },
+      error: function () {
+        $("#threadView").html("Fehler beim Laden.");
+      },
+    });
   }
 
   function showThreadGroupContent() {
     $("#threadView").hide();
     $("#homeView").hide();
     $("#threadGroupView").show();
+    $("#threadGroupView").empty();
+
+    $(threads).each(function (index, item) {
+      if (item.groupId === currentThreadGroup.id) {
+        const card = $("#ThreadGroupTemplate").tmpl(item);
+        $(card).appendTo("#threadGroupView");
+        $(card).click(function () {
+          threadSelected(item);
+        });
+      }
+    });
+    if (
+      threads.filter((t) => t.groupId === currentThreadGroup.id).length === 0
+    ) {
+      $("#threadGroupView").html("Noch keine Threads.");
+    }
   }
 
   function loadContent(href, isInitial) {
@@ -197,7 +244,7 @@ $(document).ready(async function () {
     return breadcrumb;
   }
 
-  $("#applicationCaption").click(function (e) {
+  $("#applicationCaption").click(function () {
     refreshBreadCrumb(href);
     linkClicked(href);
     loadContent(href, false);
@@ -213,6 +260,7 @@ $(document).ready(async function () {
   }
 
   function threadSelected(thread) {
+    currentThread = thread;
     const group = threadGroups.find((g) => g.id === thread.groupId);
     const homePart = buildBreadcrumbPart("/", "Home", false);
     const threadGroupPart = buildBreadcrumbPart(
@@ -237,6 +285,7 @@ $(document).ready(async function () {
   }
 
   function threadGroupSelected(group) {
+    currentThreadGroup = group;
     const homePart = buildBreadcrumbPart("/", "Home", false);
     const threadGroupPart = buildBreadcrumbPart(
       "/" + group.caption,
