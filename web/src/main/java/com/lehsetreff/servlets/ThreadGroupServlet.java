@@ -54,15 +54,24 @@ public class ThreadGroupServlet extends HttpServlet{
 			return;
 		}
 
-		String caption = request.getParameter("threadGroupCaption");
+		String caption = (String) request.getParameter("threadGroupCaption");
         int threadGroupId = Integer.parseInt(request.getParameter("threadGroupID"));
+		String description = (String) request.getParameter("groupDescription");
         
 		if(!Extensions.isModerator(request, response) || !Extensions.isThreadGroupOwner(request, response, threadGroupId)){
 			return;
 		}
 
-		ThreadGroup tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, caption);
-		//TODO Change Description einbauen mit unterscheidung was man machen will
+		ThreadGroup tGroup = new ThreadGroup();
+
+		if (caption != null) {
+			tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, caption);
+		}
+
+		if (description != null) {
+			tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, description);
+		}
+		
 		
 		if(tGroup != null){		
             Extensions.sendJsonResponse(response, tGroup);
