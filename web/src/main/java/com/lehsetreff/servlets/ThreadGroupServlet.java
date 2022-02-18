@@ -62,22 +62,26 @@ public class ThreadGroupServlet extends HttpServlet{
 			return;
 		}
 
-		ThreadGroup tGroup = new ThreadGroup();
-
 		if (caption != null) {
-			tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, caption);
+			ThreadGroup tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, caption);
+			
+			if(tGroup != null){		
+				Extensions.sendJsonResponse(response, tGroup);
+			} else {
+				response.sendError(400, "ThreadGroup Rename failed");
+			}
 		}
 
 		if (description != null) {
-			tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, description);
+			ThreadGroup tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, description);
+		
+			if(tGroup != null){		
+				Extensions.sendJsonResponse(response, tGroup);
+			} else {
+				response.sendError(400, "Change ThreadGroup Description failed");
+			}
 		}
 		
-		
-		if(tGroup != null){		
-            Extensions.sendJsonResponse(response, tGroup);
-        } else {
-            response.sendError(400, "ThreadGroup Rename failed");
-        }
 	}
 
 

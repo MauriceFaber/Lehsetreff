@@ -67,20 +67,28 @@ public class ThreadServlet extends HttpServlet {
 		if(!Extensions.isModerator(request, response) || !Extensions.isThreadOwner(request, response, threadId)){
 			return;
 		}
-		Thread thread = new Thread();
+		
 		if (caption != null) {
-			thread = db.getThreadController().renameThread(threadId, userId, caption);
+			Thread thread = db.getThreadController().renameThread(threadId, userId, caption);
+			
+			if(thread != null){		
+				Extensions.sendJsonResponse(response, thread);
+			} else {
+				response.sendError(400, "rename Thread failed");
+			}
 		}
 
 		if (description != null) {
-			thread = db.getThreadController().changeThreadDescription(threadId, userId, description);
+			Thread thread = db.getThreadController().changeThreadDescription(threadId, userId, description);
+
+			if(thread != null){		
+				Extensions.sendJsonResponse(response, thread);
+			} else {
+				response.sendError(400, "change ThreadDescription failed");
+			}
 		}
 		
-		if(thread != null){		
-            Extensions.sendJsonResponse(response, thread);
-        } else {
-            response.sendError(400, "rename Thread failed");
-        }
+
 	}
 
 
