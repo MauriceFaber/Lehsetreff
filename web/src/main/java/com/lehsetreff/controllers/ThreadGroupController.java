@@ -4,24 +4,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
 
-import com.lehsetreff.models.*;
-import com.lehsetreff.models.Thread;
+
 import com.lehsetreff.models.ThreadGroup;
 
 public class ThreadGroupController {
 
     private Database db = Database.getInstance();
 
-    public ThreadGroup addThreadGroup(String caption, int ownerId){
+    public ThreadGroup addThreadGroup(String caption, int ownerId, String description){
         ThreadGroup tGroup = new ThreadGroup();
         
         tGroup.setCaption(caption);
         tGroup.setOwnerId(ownerId);
+        tGroup.setDescription(description);
         
         try{
-            PreparedStatement st = db.createStatement("insert into threadGroups (caption, ownerID) values (?,?)", true);
+            PreparedStatement st = db.createStatement("insert into threadGroups (caption, ownerID, groupDescription) values (?,?,?)", true);
             st.setString(1, tGroup.getCaption());
             st.setInt(2, tGroup.getOwnerId());
+            st.setString(3, tGroup.getDescription());
            
 
             st.executeUpdate();
@@ -64,6 +65,7 @@ public class ThreadGroupController {
                 tGroup = new ThreadGroup();
                 tGroup.setCaption(result.getString("caption"));
                 tGroup.setId(threadGroupId);
+                tGroup.setDescription(result.getString("groupDescription"));
             }
         } catch(Exception e){
 			tGroup = null;
@@ -82,6 +84,7 @@ public class ThreadGroupController {
                 ThreadGroup tGroup = new ThreadGroup();
                 tGroup.setCaption(rs.getString("caption"));
                 tGroup.setId(rs.getInt("ID"));
+                tGroup.setDescription(rs.getString("groupDescription"));
                 result.add(tGroup);
             }
         } catch(Exception e){
@@ -103,6 +106,26 @@ public class ThreadGroupController {
 
             if(rs.next()){
 				tGroup.setCaption(rs.getString("caption"));
+			}
+		} catch(Exception e){
+				System.out.println(e.getMessage());
+		}
+        return tGroup;
+
+    }
+
+    public ThreadGroup changeThreadGroupDescription(int threadGroupId, String description){
+        ThreadGroup tGroup = getThreadGroup(threadGroupId);
+        try {
+			PreparedStatement st = db.createStatement("update threadGroups set groupDescription = ? where ID = ?", true);
+			st.setString(1, description);
+			st.setInt(2, threadGroupId);
+
+			st.executeUpdate();
+			ResultSet rs = st.getGeneratedKeys();
+
+            if(rs.next()){
+				tGroup.setCaption(rs.getString("groupDescription"));
 			}
 		} catch(Exception e){
 				System.out.println(e.getMessage());

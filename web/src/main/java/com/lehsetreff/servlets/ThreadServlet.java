@@ -25,9 +25,10 @@ public class ThreadServlet extends HttpServlet {
 		String threadCaption = request.getParameter("threadCaption");
         int ownerId = Integer.parseInt(request.getParameter("ownerId"));
         int groupId = Integer.parseInt(request.getParameter("groupId"));
+		String threadDescription = request.getParameter("threadDescription");
 
 
-		Thread thread = db.getThreadController().addThread(threadCaption, userId, ownerId, groupId);
+		Thread thread = db.getThreadController().addThread(threadCaption, userId, ownerId, groupId, threadDescription);
 		if(thread != null){		
             Extensions.sendJsonResponse(response, thread);
         } else {
@@ -65,6 +66,8 @@ public class ThreadServlet extends HttpServlet {
 		if(!Extensions.isModerator(request, response) || !Extensions.isThreadOwner(request, response, threadId)){
 			return;
 		}
+
+		//TODO Change Description einbauen mit unterscheidung was man machen will
 		Thread thread = db.getThreadController().renameThread(threadId, userId, caption);
 		if(thread != null){		
             Extensions.sendJsonResponse(response, thread);

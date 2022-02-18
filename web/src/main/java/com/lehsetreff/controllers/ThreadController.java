@@ -7,27 +7,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
 
-import com.lehsetreff.models.*;
+
 import com.lehsetreff.models.Thread;
 
 
-import jakarta.servlet.http.HttpServletRequest;
 
 public class ThreadController {
     
     private Database db = Database.getInstance();
 
-    public Thread addThread(String caption,int userId, int ownerId, int groupId){
+    public Thread addThread(String caption,int userId, int ownerId, int groupId, String description){
         Thread thread = new Thread();
         thread.setCaption(caption);
         thread.setOwnerId(ownerId);
         thread.setGroupId(groupId);
+		thread.setDescription(description);
 
         try{
-            PreparedStatement st = db.createStatement("insert into threads (caption, ownerId, groupId) values(?,?,?)", true);
+            PreparedStatement st = db.createStatement("insert into threads (caption, ownerId, groupId, threadDescription) values(?,?,?,?)", true);
             st.setString(1, thread.getCaption());
             st.setInt(2, thread.getOwnerId());
             st.setInt(3, thread.getGroupId());
+			st.setString(4, thread.getDescription());
 
             st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
@@ -73,6 +74,7 @@ public class ThreadController {
 				thread.setCaption(result.getString("caption"));
                 thread.setGroupId(result.getInt("groupId"));
                 thread.setOwnerId(result.getInt("ownerID"));
+				thread.setDescription(result.getString("threadDescription"));
                 thread.setThreadId(threadId);
 
 				thread.setLatestMessage(result.getTimestamp("latestMessage"));
@@ -119,6 +121,7 @@ public class ThreadController {
                 thread.setThreadId(rs.getInt("ID"));
 				thread.setGroupId(threadGroupId);
 				thread.setOwnerId(rs.getInt("ownerID"));
+				thread.setDescription(rs.getString("threadDescription"));
                 result.add(thread);
             }
         } catch(Exception e){
@@ -140,6 +143,26 @@ public class ThreadController {
 
             if(rs.next()){
 				thread.setCaption(rs.getString("caption"));
+			}
+		} catch(Exception e){
+				System.out.println(e.getMessage());
+		}
+        return thread;
+
+    }
+
+	public Thread changeThreadDescription(int threadId, int userId, String description){
+        Thread thread = getThread(threadId);
+        try {
+			PreparedStatement st = db.createStatement("update threads set threadDescription = ? where ID = ?", true);
+			st.setString(1, description);
+			st.setInt(2, threadId);
+
+			st.executeUpdate();
+			ResultSet rs = st.getGeneratedKeys();
+
+            if(rs.next()){
+				thread.setCaption(rs.getString("threadDescription"));
 			}
 		} catch(Exception e){
 				System.out.println(e.getMessage());
