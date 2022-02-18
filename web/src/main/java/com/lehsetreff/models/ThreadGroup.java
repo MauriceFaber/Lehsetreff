@@ -9,6 +9,9 @@ public class ThreadGroup {
     private int id;
     private int ownerId;
     private List<Thread> threads = new ArrayList<Thread>();
+    private String description;
+
+
 
     public String getCaption() {
         return caption;
@@ -41,4 +44,12 @@ public class ThreadGroup {
         this.ownerId = ownerId;
     }
     
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

@@ -4,6 +4,7 @@ CREATE DATABASE lehsetreff;
 Create table lehsetreff.threadGroups(ID int NOT NULL AUTO_INCREMENT,
                                     caption varchar(50) NOT NULL,
                                     ownerID int NOT NULL,
+                                    groupDescription varchar(100) NOT NULL, 
                                     primary key(ID),
                                     foreign key(ownerID) References users(ID)
                                     );
@@ -14,6 +15,7 @@ Create table lehsetreff.threads(ID int NOT NULL AUTO_INCREMENT,
                                 latestMessage timestamp NOT NULL,
                                 ownerID int NOT NULL,
                                 groupID int NOT NULL,
+                                threadDescription varchar(100) NOT NULL,
                                 foreign key(ownerID) references users(ID),
                                 foreign key(groupID) references threadGroups(ID) ON DELETE CASCADE,
                                 primary key(ID)
