@@ -10,7 +10,10 @@ public class Thread implements Serializable {
     private int groupId;
     private String caption;
     private int threadId;
+    private String description;
     
+
+
     public java.sql.Timestamp latestMessage;
 	public java.sql.Timestamp latestUserMessage;
 
@@ -61,4 +64,12 @@ public class Thread implements Serializable {
 		this.latestUserMessage = timestamp;
 	}
     
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

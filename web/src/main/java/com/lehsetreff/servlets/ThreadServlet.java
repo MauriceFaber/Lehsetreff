@@ -22,12 +22,13 @@ public class ThreadServlet extends HttpServlet {
 		}
 
 		int userId = db.getUserController().getUserId(request);
-		String threadCaption = request.getParameter("threadCaption");
+		String threadCaption = (String) request.getParameter("threadCaption");
         int ownerId = Integer.parseInt(request.getParameter("ownerId"));
         int groupId = Integer.parseInt(request.getParameter("groupId"));
+		String threadDescription = (String) request.getParameter("threadDescription");
 
 
-		Thread thread = db.getThreadController().addThread(threadCaption, userId, ownerId, groupId);
+		Thread thread = db.getThreadController().addThread(threadCaption, userId, ownerId, groupId, threadDescription);
 		if(thread != null){		
             Extensions.sendJsonResponse(response, thread);
         } else {
@@ -61,16 +62,33 @@ public class ThreadServlet extends HttpServlet {
 		int threadId =Integer.parseInt(request.getParameter("threadId"));
 		int userId =Integer.parseInt(request.getParameter("userId"));
 		String caption = (String) request.getParameter("caption");
+		String description = (String) request.getParameter("threadDescription");
 
 		if(!Extensions.isModerator(request, response) || !Extensions.isThreadOwner(request, response, threadId)){
 			return;
 		}
-		Thread thread = db.getThreadController().renameThread(threadId, userId, caption);
-		if(thread != null){		
-            Extensions.sendJsonResponse(response, thread);
-        } else {
-            response.sendError(400, "rename Thread failed");
-        }
+		
+		if (caption != null) {
+			Thread thread = db.getThreadController().renameThread(threadId, userId, caption);
+			
+			if(thread != null){		
+				Extensions.sendJsonResponse(response, thread);
+			} else {
+				response.sendError(400, "rename Thread failed");
+			}
+		}
+
+		if (description != null) {
+			Thread thread = db.getThreadController().changeThreadDescription(threadId, userId, description);
+
+			if(thread != null){		
+				Extensions.sendJsonResponse(response, thread);
+			} else {
+				response.sendError(400, "change ThreadDescription failed");
+			}
+		}
+		
+
 	}
 
 

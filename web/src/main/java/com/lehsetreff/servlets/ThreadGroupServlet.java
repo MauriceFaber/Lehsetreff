@@ -26,8 +26,9 @@ public class ThreadGroupServlet extends HttpServlet{
 
 		int userId = db.getUserController().getUserId(request);
 		String caption = request.getParameter("threadGroupCaption");
+		String description = request.getParameter("groupDescription");
         
-		ThreadGroup tGroup = db.getThreadGroupController().addThreadGroup(caption, userId);
+		ThreadGroup tGroup = db.getThreadGroupController().addThreadGroup(caption, userId, description);
 		if(tGroup != null){		
             Extensions.sendJsonResponse(response, tGroup);
         } else {
@@ -53,19 +54,34 @@ public class ThreadGroupServlet extends HttpServlet{
 			return;
 		}
 
-		String caption = request.getParameter("threadGroupCaption");
+		String caption = (String) request.getParameter("threadGroupCaption");
         int threadGroupId = Integer.parseInt(request.getParameter("threadGroupID"));
+		String description = (String) request.getParameter("groupDescription");
         
 		if(!Extensions.isModerator(request, response) || !Extensions.isThreadGroupOwner(request, response, threadGroupId)){
 			return;
 		}
 
-		ThreadGroup tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, caption);
-		if(tGroup != null){		
-            Extensions.sendJsonResponse(response, tGroup);
-        } else {
-            response.sendError(400, "ThreadGroup Rename failed");
-        }
+		if (caption != null) {
+			ThreadGroup tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, caption);
+			
+			if(tGroup != null){		
+				Extensions.sendJsonResponse(response, tGroup);
+			} else {
+				response.sendError(400, "ThreadGroup Rename failed");
+			}
+		}
+
+		if (description != null) {
+			ThreadGroup tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, description);
+		
+			if(tGroup != null){		
+				Extensions.sendJsonResponse(response, tGroup);
+			} else {
+				response.sendError(400, "Change ThreadGroup Description failed");
+			}
+		}
+		
 	}
 
 
