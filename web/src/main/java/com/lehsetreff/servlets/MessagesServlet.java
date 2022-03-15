@@ -46,7 +46,8 @@ public class MessagesServlet extends HttpServlet {
     @Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 
-        int threadId = Integer.parseInt(request.getParameter("threadId"));
+		String parameter = request.getParameter("threadId");
+        int threadId = Integer.parseInt(parameter);
 		List<Message> messages = db.getMessagesController().getMessages(threadId);
 		if(messages != null){		
             Extensions.sendJsonResponse(response, messages);

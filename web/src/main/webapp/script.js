@@ -1,6 +1,6 @@
 const domain = "https://lehsetreff.de";
 // const domain = "";
-// const domain = "http://localhost:8080/lehsetreff";
+//const domain = "http://localhost:8080/lehsetreff";
 
 var threads = [];
 var threadGroups = [];
@@ -97,7 +97,6 @@ $(document).ready(async function () {
     $(threadGroups).each(function (index, item) {
       const card = $("#MyTemplate").tmpl(item);
       $(card).appendTo("#homeView");
-      console.log(card);
       $(card).click(function () {
         threadGroupSelected(item);
       });
@@ -114,10 +113,15 @@ $(document).ready(async function () {
       url: domain + "/messages",
       type: "GET",
       data: {
-        threadID: currentThread.id,
+        threadId: currentThread.threadId,
       },
       success: function (items) {
-        if (items && items.length() > 0) {
+        if (items && items.length > 0) {
+          $(items).each(function (index, item) {
+            console.log(item);
+            const msg = $("#messageTemplate").tmpl(item);
+            $(msg).appendTo("#threadView");
+          });
         } else {
           $("#threadView").html("Thread ist noch leer.");
         }

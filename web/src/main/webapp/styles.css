@@ -34,3 +34,16 @@ body {
 .sub-link {
   text-decoration: none;
 }
+
+.messageDiv small {
+  color: gray;
+  font-size: small;
+}
+
+.messageDiv h5 {
+  font-weight: bold;
+}
+
+.messageDiv {
+  padding: 0px 10px 10px 10px;
+}
