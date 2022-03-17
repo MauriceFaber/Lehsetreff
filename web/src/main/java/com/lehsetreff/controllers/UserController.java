@@ -456,8 +456,16 @@ public class UserController {
 		return false;
 	}
 
+	/**
+	 * Gibt zurück, ob der Benutzer der Thread-Gruppen-Besitzer ist.
+	 * @param threadGroupId
+	 * Die Id der ThreadGruppe.
+	 * @param request
+	 * Das Reqeust.
+	 * @return
+	 * Wahr, wenn der Benutzer der Besitzer ist, ansonsten False.
+	 */
 	public boolean isThreadGroupOwner(int threadGroupId, HttpServletRequest request){
-
 		try {
 			PreparedStatement st = db.createStatement("select ID = ? from threadGroups where ownerID = ? ", false);
 			st.setInt(1, threadGroupId);
@@ -478,16 +486,12 @@ public class UserController {
 	}
 
 	public boolean isMessageSender(int messageId, HttpServletRequest request){
-
 		try {
 			PreparedStatement st = db.createStatement("select ID = ? from messages where senderID = ? ", false);
 			st.setInt(1, messageId);
 			st.setInt(2, getUserId(request));
 
 			ResultSet result = db.executeQuery(st);
-			// if (result != null) { // Maurice geht die form auch? weil eigentlich müsste oben die Abfrage ja nur was zurückgeben wenn
-			// 	return true;		 // wenn e Naricht mit den ID und dem sender gefunden wurde oder?
-			// }
 			if(result.next()){
 				int tmp = result.getInt("ID");
 				int temp = result.getInt("ownerID");

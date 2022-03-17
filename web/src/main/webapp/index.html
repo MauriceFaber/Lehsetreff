@@ -201,14 +201,12 @@
       </div>
     </div>
 
-    <script id="MyTemplate" type="text/x-jquery-tmpl">
+    <script id="ThreadTemplate" type="text/x-jquery-tmpl">
       <div class="card">
         <h2 class="card-title">
       	${caption}
-        ${threadDescription}
         </h2>
-        <div class="text-right"> <!-- text-right = text-align: right -->
-      	<a href="#" class="btn">Read more</a>
+        <small>${description}</small>
         </div>
       </div>
     </script>
@@ -217,10 +215,8 @@
       <div class="card">
         <h2 class="card-title">
       	${caption}
-        ${groupDescription}
         </h2>
-        <div class="text-right"> <!-- text-right = text-align: right -->
-      	<a href="#" class="btn">Read more</a>
+        <small>${description}</small>
         </div>
       </div>
     </script>
