@@ -48,9 +48,11 @@ public class ThreadController {
     }
 
 	/**
-	 * 
+	 * Thread löschen
 	 * @param threadId
+	 * Die id des Threads.
 	 * @return
+	 * true bei Erfolg, false bei Misserfolg
 	 */
     public boolean deleteThread(int threadId){
 		try {
@@ -66,6 +68,13 @@ public class ThreadController {
 		return false;
 	}
 
+	/**
+	 * Gibt ein Thread Objekt zurück.
+	 * @param threadId
+	 * Die id des Threads.
+	 * @return
+	 * Thread Objekt
+	 */
     public Thread getThread(int threadId){
         Thread thread = null;
         try {
@@ -93,6 +102,17 @@ public class ThreadController {
         return thread;
     }
 
+	/**
+	 * Setzt die neuste Nachricht.
+	 * @param userId
+	 * Die id des Benutzers.
+	 * @param threadId
+	 * Die id des Threads
+	 * @param timestamp
+	 * aktuelle Zeit
+	 * @return
+	 * Thread Objekt
+	 */
     public Thread setLatestMessage(int userId, int threadId, java.sql.Timestamp timestamp) {
 		Thread thread = getThread(threadId);
 		try {
@@ -112,6 +132,13 @@ public class ThreadController {
 		return thread;
 	}
 
+	/**
+	 * Gibt eine Array-Liste mit Threads innerhalb einer Thread Gruppe zurueck. 
+	 * @param threadGroupId
+	 *  Die id der Thread Gruppe.
+	 * @return
+	 * Array-Liste mit Threads in einer Thread Gruppe.
+	 */
 	public List<Thread> getThreadsFromThreadGroup(int threadGroupId){
 		List<Thread> result = new ArrayList<Thread>();
 		
@@ -136,6 +163,17 @@ public class ThreadController {
 		return result;
 	}
 
+	/**
+	 * Aendert den Titel eines Threads.
+	 * @param threadId
+	 * Die id des Threads.
+	 * @param userId
+	 * Die id des Benutzers
+	 * @param caption
+	 * Der Titel des Threads
+	 * @return
+	 * Thread Objekt
+	 */
 	public Thread renameThread(int threadId, int userId, String caption){
         Thread thread = getThread(threadId);
         try {
@@ -156,6 +194,17 @@ public class ThreadController {
 
     }
 
+	/**
+	 * Aendert die Beschreibung eines Threads.
+	 * @param threadId
+	 * Die id des Threads.
+	 * @param userId
+	 * Die id des Benutzers.
+	 * @param description
+	 * Die Beschreibung des Threads.
+	 * @return
+	 * Thread Objekt
+	 */
 	public Thread changeThreadDescription(int threadId, int userId, String description){
         Thread thread = getThread(threadId);
         try {
