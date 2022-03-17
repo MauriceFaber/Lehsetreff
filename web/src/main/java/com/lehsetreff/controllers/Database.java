@@ -58,12 +58,23 @@ public class Database {
 		return userController;
 	}
 
+	/**
+	 * ThreadGroupController zurueckgeben, falls keiner besteht.
+	 * @return
+	 * threadGroupController
+	 */
 	public ThreadGroupController getThreadGroupController(){
 		if(threadGroupController == null){
 			threadGroupController = new ThreadGroupController();
 		}
 		return threadGroupController;
 	}
+
+	/**
+	 * ThreadController zurueckgeben, falls keiner besteht.
+	 * @return
+	 * threadController
+	 */
 
     public ThreadController getThreadController(){
 		if(threadController == null){
@@ -72,6 +83,11 @@ public class Database {
 		return threadController;
 	}
 
+	/**
+	 * MessagesController zurueckgeben, falls keiner besteht.
+	 * @return
+	 * messagesController
+	 */
 	public MessagesController getMessagesController(){
 		if(messagesController == null){
 			messagesController = new MessagesController();
@@ -79,6 +95,11 @@ public class Database {
 		return messagesController;
 	}
 
+	/**
+	 * UserRolesController zurueckgeben, falls keiner besteht.
+	 * @return
+	 * rolesController
+	 */
 	public UserRolesController getRolesController(){
 		if (rolesController == null) {
 			rolesController = new UserRolesController();
@@ -90,7 +111,7 @@ public class Database {
 	/**
 	 * Pruefung, ob eine Verbindung zur Datenbank besteht.
 	 * @return 
-	 * Erfolg oder Misserfolg der Verbindung
+	 * true bei Erfolg, false bei Misserfolg
 	 */
 	public boolean connect(){
 		try {
