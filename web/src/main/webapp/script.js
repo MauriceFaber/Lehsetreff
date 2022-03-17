@@ -95,7 +95,7 @@ $(document).ready(async function () {
     $("#homeView").empty();
 
     $(threadGroups).each(function (index, item) {
-      const card = $("#GroupTemplate").tmpl(item);
+      const card = $("#ThreadTemplate").tmpl(item);
       $(card).appendTo("#homeView");
       $(card).click(function () {
         threadGroupSelected(item);
