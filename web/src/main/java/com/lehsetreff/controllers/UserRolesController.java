@@ -25,6 +25,15 @@ public class UserRolesController {
         return result;
     }
 
+    /**
+     * Setzt die Rolle des Benutzers.
+     * @param roleId
+     * Die id der Rolle
+     * @param userId
+     * Die id des Benutzers.
+     * @return
+     * true bei Erfolg, sonst false.
+     */
     public boolean setUserRole(int roleId, int userId){
 		boolean result = false;
         try {
@@ -55,6 +64,13 @@ public class UserRolesController {
         return result;
     }
 
+    /**
+     * Gibt die Rolle des Benutzers zurueck.
+     * @param userId
+     * Die id des Benutezrs.
+     * @return
+     * Benutzer Rolle
+     */
     public UserRole getUserRole(int userId){
         UserRole role = UserRole.Guest;
         try {
