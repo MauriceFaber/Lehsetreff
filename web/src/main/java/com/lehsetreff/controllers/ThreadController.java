@@ -47,6 +47,11 @@ public class ThreadController {
         return thread;
     }
 
+	/**
+	 * 
+	 * @param threadId
+	 * @return
+	 */
     public boolean deleteThread(int threadId){
 		try {
 			PreparedStatement st = db.createStatement("delete from threads where ID = ?", true);

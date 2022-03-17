@@ -50,6 +50,14 @@ public class MessagesController {
 		return m;
 	}
 
+/**
+ * Setzt Content der Nachricht.
+ * @param m
+ * Message Objekt
+ * @param content
+ * string mit content als Inhalt
+ * @throws Exception
+ */
 	private void SetContent(Message m, String content) throws Exception {
 		switch(m.getContentId()){
 			case Text:
@@ -71,6 +79,12 @@ public class MessagesController {
 		st.executeUpdate();
 	}
 
+	/**
+	 * Get für Content der Nachricht.
+	 * @param m
+	 * Message Objekt
+	 * @throws Exception
+	 */
 	private void GetContent(Message m) throws Exception {
 		switch(m.getContentId()){
 			case Text:
@@ -86,11 +100,17 @@ public class MessagesController {
 		}
 	}
 
-
+	/**
+	 * Kennzeichnet eine Nachricht als gelöscht.
+	 * @param id
+	 * Die id der Nachricht.
+	 * @return
+	 * true bei Erfolg, false bei Misserfolg
+	 */
 	public boolean deleteMessage(int id){
 		try {
 			PreparedStatement st = db.createStatement("update messages contentType = ? and content = ? where ID = ?", true);
-			st.setInt(1, 4);
+			st.setInt(1, ContentType.DELETED.getContentId());
             st.setString(2, "");
 			st.setInt(3, id);
 			
@@ -106,6 +126,13 @@ public class MessagesController {
 		return false;
 	}
 
+	/**
+	 * Auswahl der Nachricht.
+	 * @param id
+	 * Die id der Nachricht.
+	 * @return 
+	 * Nachricht Objekt
+	 */
 	public Message getMessage(int id) {
 		Message m = null;
 		try {
@@ -131,7 +158,17 @@ public class MessagesController {
 		return m;
 	}	
 	
-
+/**
+ * Bearbeiten der Nachricht.
+ * @param content
+ * Der Inhalt der Nachricht.
+ * @param contentType
+ * Der Inhalts-Typ der Nachricht.
+ * @param messageID
+ * Die ID der Nachricht.
+ * @return
+ * Nachricht Objekt
+ */
 	public Message modifyMessage(String content , int contentType, int messageID){
 		Message m = getMessage(messageID);
 
@@ -154,6 +191,13 @@ public class MessagesController {
 		return m;
 	}
 
+	/**
+	 * Erhält eine Liste aus Nachrichten in einem Thread.
+	 * @param threadId
+	 * Die id des Threads.
+	 * @return
+	 * Liste aus Nachrichten des Threads.
+	 */
 	public List<Message> getMessages(int threadId) {
 		List<Message> result = new ArrayList<Message>();
 		try {
@@ -183,6 +227,14 @@ public class MessagesController {
 		return result;
 	}
 
+	/**
+	 * Speichert das Bild in die Datei.
+	 * @param base64
+	 * Bilddarstellung als base 64 string
+	 * @param fileName
+	 * Name der Datei.
+	 * @throws Exception
+	 */
     private void saveImageToFile(String base64, String fileName) throws Exception{
 		checkDirectory();
 
@@ -212,7 +264,7 @@ public class MessagesController {
 	 * @param fileName
 	 * Name der Datei
 	 * @return
-	 * Der Inhalt der Datei
+	 * Der Inhalt der Datei.
 	 */
 	private String getImage(String fileName){
 		String result = "";
@@ -224,6 +276,14 @@ public class MessagesController {
 		return result;
 	}
 
+	/**
+	 * Einlesen der Datei
+	 * @param path
+	 * Der Pfad der Datei.
+	 * @return
+	 * dekodierten String der Datei
+	 * @throws IOException
+	 */
 	private String readFile(String path) throws IOException {
   		byte[] encoded = Files.readAllBytes(Paths.get(path));
   		return new String(encoded);
