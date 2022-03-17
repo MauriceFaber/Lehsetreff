@@ -1,6 +1,6 @@
 const domain = "https://lehsetreff.de";
 // const domain = "";
-//const domain = "http://localhost:8080/lehsetreff";
+// const domain = "http://localhost:8080/lehsetreff";
 
 var threads = [];
 var threadGroups = [];
@@ -202,6 +202,14 @@ $(document).ready(async function () {
     history.pushState({}, null, href);
     url = href;
   }
+
+  $(window).on("popstate", function () {
+    const href = window.location.href;
+    console.log("zurück zu: ", href);
+    refreshBreadCrumb(href);
+    linkClicked(href);
+    loadContent(href, false);
+  });
 
   function countCharInString(char, string) {
     var count = 0;
