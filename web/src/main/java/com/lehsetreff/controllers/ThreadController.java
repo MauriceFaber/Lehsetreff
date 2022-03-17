@@ -133,11 +133,11 @@ public class ThreadController {
 	}
 
 	/**
-	 * Gibt eine Array-Liste mit Threads innerhalb einer Thread Gruppe zurueck. 
+	 * Gibt eine Liste mit Threads innerhalb einer Thread Gruppe zurueck. 
 	 * @param threadGroupId
 	 *  Die id der Thread Gruppe.
 	 * @return
-	 * Array-Liste mit Threads in einer Thread Gruppe.
+	 * Liste mit Threads in einer Thread Gruppe.
 	 */
 	public List<Thread> getThreadsFromThreadGroup(int threadGroupId){
 		List<Thread> result = new ArrayList<Thread>();

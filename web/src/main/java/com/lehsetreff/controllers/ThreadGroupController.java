@@ -39,6 +39,13 @@ public class ThreadGroupController {
         return tGroup;
     }
 
+    /**
+     * Loeschen einer Thread Gruppe.
+     * @param threadGroupId
+     * Die id der Thread Gruppe
+     * @return
+     * true bei Erfolg, false bei Misserfolg.
+     */
     public boolean deleteThreadGroup(int threadGroupId){
         try {
 			PreparedStatement st = db.createStatement("delete from threadGroups where ID = ?", true);
@@ -53,6 +60,13 @@ public class ThreadGroupController {
         return false;
     }
 
+    /**
+     * Gibt die Thread Gruppe zurueck.
+     * @param threadGroupId
+     * Die id der Thread Gruppe.
+     * @return
+     * Thread Gruppen Objekt
+     */
     public ThreadGroup getThreadGroup(int threadGroupId ){
         ThreadGroup tGroup = new ThreadGroup();
 
@@ -73,6 +87,11 @@ public class ThreadGroupController {
         return tGroup;
     }
 
+    /**
+     * Gibt eine Lsite mit Thread Gruppen zurueck.
+     * @return
+     * Liste mit Thread Gruppen Objekten
+     */
     public List<ThreadGroup> getThreadGroups(){
         List<ThreadGroup> result = new ArrayList<ThreadGroup>();
 
@@ -94,6 +113,15 @@ public class ThreadGroupController {
         return result;
     }
 
+    /**
+     * Aendert den Namend er Thread Gruppe.
+     * @param threadGroupId
+     * Die id der Thread Gruppe.
+     * @param caption
+     * Der Titel der Thread Gruppe.
+     * @return
+     * Thread Gruppe Objekt
+     */
     public ThreadGroup renameThreadGroup(int threadGroupId, String caption){
         ThreadGroup tGroup = getThreadGroup(threadGroupId);
         try {
@@ -114,6 +142,15 @@ public class ThreadGroupController {
 
     }
 
+    /**
+     * Aendert die Beschreibung der Thread Gruppe.
+     * @param threadGroupId
+     * Die id der Thread Gruppe.
+     * @param description
+     * Die Beschreibung der Thread Gruppe
+     * @return
+     * Thread Gruppe Objekt
+     */
     public ThreadGroup changeThreadGroupDescription(int threadGroupId, String description){
         ThreadGroup tGroup = getThreadGroup(threadGroupId);
         try {
