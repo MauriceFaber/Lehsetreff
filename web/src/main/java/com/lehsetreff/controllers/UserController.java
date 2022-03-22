@@ -293,6 +293,7 @@ public class UserController {
 		return result;
 	}
 
+
 	private String readFile(String path) throws IOException {
   		byte[] encoded = Files.readAllBytes(Paths.get(path));
   		return new String(encoded);
@@ -435,6 +436,15 @@ public class UserController {
 		return u;
 	}
 
+	/**
+	 * Ueberpruefe, ob Benutzer den Thread besitzt.
+	 * @param threadId
+	 * Die id des Threads.
+	 * @param request
+	 * Servlet Anfrage
+	 * @return
+	 * true bei Erfolg, sonst false.
+	 */
 	public boolean isThreadOwner(int threadId, HttpServletRequest request){
 
 		try {
@@ -485,6 +495,15 @@ public class UserController {
 		return false;
 	}
 
+	/**
+	 * Gibt zurueck, ob der Benutzer die Nachricht gesendet hat.
+	 * @param messageId
+	 * Die id der Nachricht.
+	 * @param request
+	 * Servlet Anfrage
+	 * @return
+	 * true bei Erfolg, sonst false
+	 */
 	public boolean isMessageSender(int messageId, HttpServletRequest request){
 		try {
 			PreparedStatement st = db.createStatement("select ID = ? from messages where senderID = ? ", false);

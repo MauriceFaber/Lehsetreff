@@ -192,7 +192,7 @@ public class MessagesController {
 	}
 
 	/**
-	 * Erhält eine Liste aus Nachrichten in einem Thread.
+	 * Gibt eine Liste aus Nachrichten in einem Thread zurück.
 	 * @param threadId
 	 * Die id des Threads.
 	 * @return
