@@ -3,11 +3,13 @@ package com.lehsetreff.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.meshenger.models.User;
+
 public class ThreadGroup {
     
     private String caption;
     private int id;
-    private int ownerId;
+    private User owner;
     private List<Thread> threads = new ArrayList<Thread>();
     private String description;
 
@@ -34,12 +36,12 @@ public class ThreadGroup {
         this.id = id;
     }
 
-    public int getOwnerId() {
-        return ownerId;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
     
     public String getDescription() {

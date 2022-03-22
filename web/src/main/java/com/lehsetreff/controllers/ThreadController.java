@@ -105,7 +105,7 @@ public class ThreadController {
                 thread.setCaption(rs.getString("caption"));
                 thread.setThreadId(rs.getInt("ID"));
 				int groupId = rs.getInt("threadID");
-				int ownerId = rs.getInt("senderID");
+				int ownerId = rs.getInt("ownerID");
 				thread.setGroup(db.getThreadGroupController().getThreadGroup(groupId));
 				thread.setOwner(db.getUserController().getUser(ownerId, false));
 				thread.setDescription(rs.getString("threadDescription"));

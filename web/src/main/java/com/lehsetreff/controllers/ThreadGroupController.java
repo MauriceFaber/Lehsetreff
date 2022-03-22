@@ -15,16 +15,15 @@ public class ThreadGroupController {
         ThreadGroup tGroup = new ThreadGroup();
         
         tGroup.setCaption(caption);
-        tGroup.setOwnerId(ownerId);
+        tGroup.setOwner(db.getUserController().getUser(ownerId, false));
         tGroup.setDescription(description);
         
         try{
             PreparedStatement st = db.createStatement("insert into threadGroups (caption, ownerID, groupDescription) values (?,?,?)", true);
             st.setString(1, tGroup.getCaption());
-            st.setInt(2, tGroup.getOwnerId());
+            st.setInt(2, tGroup.getOwner().getId());
             st.setString(3, tGroup.getDescription());
            
-
             st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
 
@@ -79,6 +78,8 @@ public class ThreadGroupController {
                 tGroup = new ThreadGroup();
                 tGroup.setCaption(result.getString("caption"));
                 tGroup.setId(threadGroupId);
+				int ownerId = result.getInt("ownerID");
+				tGroup.setOwner(db.getUserController().getUser(ownerId, false));
                 tGroup.setDescription(result.getString("groupDescription"));
             }
         } catch(Exception e){
@@ -103,6 +104,8 @@ public class ThreadGroupController {
                 ThreadGroup tGroup = new ThreadGroup();
                 tGroup.setCaption(rs.getString("caption"));
                 tGroup.setId(rs.getInt("ID"));
+				int ownerId = rs.getInt("ownerID");
+				tGroup.setOwner(db.getUserController().getUser(ownerId, false));
                 tGroup.setDescription(rs.getString("groupDescription"));
                 result.add(tGroup);
             }
