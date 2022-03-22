@@ -40,8 +40,6 @@ public class MessagesController {
 				m.setId(id);
 				SetContent(m, content);
 				m = getMessage(id);
-				db.getThreadController().setLatestMessage(senderId, threadId,timestamp);
-				//db.getThreadController().setLatestUserMessage(threadId, senderId);
 			}
 		} catch(Exception e){
 				m = new Message();
@@ -147,9 +145,11 @@ public class MessagesController {
 				m.setContent(result.getString("content"), ContentType.values()[result.getInt("contentType")]);
 				GetContent(m);
 				m.setTimeStamp(result.getTimestamp("dateAndTime"));
-				m.setThreadId(result.getInt("threadID"));
-				m.setSenderId(result.getInt("senderID"));
-				User sender = db.getUserController().getUser(m.getSenderId(), false);
+				int threadId = result.getInt("threadID");
+				int senderId = result.getInt("senderID");
+				m.setThread(db.getThreadController().getThread(threadId));
+				m.setSender(db.getUserController().getUser(senderId, false));
+				User sender = db.getUserController().getUser(m.getSender().getId(), false);
 				m.setSenderName(sender.getName());
 			}
 		} catch(Exception e){
@@ -212,9 +212,10 @@ public class MessagesController {
 				m.setContent(rs.getString("content"), ContentType.values()[rs.getInt("contentType")]);
 				GetContent(m);
 				m.setTimeStamp(rs.getTimestamp("dateAndTime"));
-				m.setThreadId(rs.getInt("threadID"));
-				m.setSenderId(rs.getInt("senderID"));
-				User sender = db.getUserController().getUser(m.getSenderId(), false);
+				int senderId = rs.getInt("senderID");
+				m.setThread(db.getThreadController().getThread(threadId));
+				m.setSender(db.getUserController().getUser(senderId, false));
+				User sender = db.getUserController().getUser(m.getSender().getId(), false);
 				m.setSenderName(sender.getName());
 				result.add(m);
 			}

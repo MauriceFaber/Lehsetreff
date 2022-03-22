@@ -1,44 +1,44 @@
 package com.lehsetreff.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.meshenger.models.User;
 
 public class Thread implements Serializable {
     
     private static final long serialVersionUID = 2L;
 
-    private int ownerId;
-    private int groupId;
     private String caption;
-    private int threadId;
+    private int id;
     private String description;
-    
+	private ThreadGroup threadGroup;
+	private User owner;
+	private List<Message> messages = new ArrayList<Message>();
 
-
-    public java.sql.Timestamp latestMessage;
-	public java.sql.Timestamp latestUserMessage;
-
-    public int getOwnerId() {
-        return ownerId;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
-    public int getThreadId() {
-        return threadId;
+    public int getThread() {
+        return id;
     }
 
     public void setThreadId(int threadId) {
-        this.threadId = threadId;
+        this.id = threadId;
     }
 
-    public int getGroupId() {
-        return groupId;
+    public ThreadGroup getGroup() {
+        return threadGroup;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
+    public void setGroup(ThreadGroup group) {
+        this.threadGroup = group;
     }
 
     public String getCaption() {
@@ -49,19 +49,8 @@ public class Thread implements Serializable {
         this.caption = caption;
     }
 
-    public java.sql.Timestamp getlatestMessage(){
-		return latestMessage;
-	}
-	public void setLatestMessage(java.sql.Timestamp timestamp){
-		this.latestMessage = timestamp;
-	}
-
-	public java.sql.Timestamp getLatestUserMessage(){
-		return latestUserMessage;
-	}
-
-	public void setLatestUserMessage(java.sql.Timestamp timestamp){
-		this.latestUserMessage = timestamp;
+	public List<Message> getMessages(){
+		return messages;
 	}
     
     public String getDescription() {
@@ -71,5 +60,4 @@ public class Thread implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

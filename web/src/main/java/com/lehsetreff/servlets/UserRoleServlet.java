@@ -1,10 +1,8 @@
 package com.lehsetreff.servlets;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.lehsetreff.controllers.Database;
-import com.lehsetreff.models.Thread;
 import com.lehsetreff.models.UserRole;
 
 import jakarta.servlet.ServletException;

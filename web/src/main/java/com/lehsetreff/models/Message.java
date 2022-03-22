@@ -2,19 +2,20 @@ package com.lehsetreff.models;
 
 import java.sql.Timestamp;
 
+import com.meshenger.models.User;
+
 public class Message {
     
 //private
 	private int id;
-	private int senderId;
-	private int threadId;
 	private String content;
 	private ContentType contentId;
 	private Timestamp timeStamp;
     private boolean wasModified;
     private String senderName; //Maurice Senpai brauche ma das hier noch?
 
-
+	private Thread thread;
+	private User sender;
 
 //public
 
@@ -23,22 +24,23 @@ public class Message {
     public int getId(){
         return id;
     }
+
     public void setId(int id){
         this.id = id;
     }
 
-    public int getSenderId(){
-        return senderId;
+    public User getSender(){
+        return sender;
     }
-    public void setSenderId(int id){
-        this.senderId = id;
+    public void setSender(User sender){
+        this.sender = sender;
     }
 
-    public int getThreadId(){
-        return threadId;
+    public Thread getThread(){
+        return thread;
     }
-    public void setThreadId(int id){
-        this.threadId = id;
+    public void setThread(Thread thread){
+        this.thread = thread;
     }
 
     public String getContent(){

@@ -1,16 +1,11 @@
 package com.lehsetreff.controllers;
 
-import java.sql.Timestamp;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
 
 
 import com.lehsetreff.models.Thread;
-
-
 
 public class ThreadController {
     
@@ -19,15 +14,16 @@ public class ThreadController {
     public Thread addThread(String caption,int userId, int ownerId, int groupId, String description){
         Thread thread = new Thread();
         thread.setCaption(caption);
-        thread.setOwnerId(ownerId);
-        thread.setGroupId(groupId);
+		
+		thread.setOwner(db.getUserController().getUser(ownerId, false));
+		thread.setGroup(db.getThreadGroupController().getThreadGroup(groupId));
 		thread.setDescription(description);
 
         try{
             PreparedStatement st = db.createStatement("insert into threads (caption, ownerId, groupId, threadDescription) values(?,?,?,?)", true);
             st.setString(1, thread.getCaption());
-            st.setInt(2, thread.getOwnerId());
-            st.setInt(3, thread.getGroupId());
+            st.setInt(2, thread.getOwner().getId());
+            st.setInt(3, thread.getGroup().getId());
 			st.setString(4, thread.getDescription());
 
             st.executeUpdate();
@@ -35,10 +31,6 @@ public class ThreadController {
 
             if(rs.next()){
                 thread = getThread(rs.getInt("ID"));
-                OffsetDateTime utc = OffsetDateTime.now(ZoneOffset.UTC);
-				Timestamp timestamp =  new Timestamp(utc.toInstant().toEpochMilli());
-				thread.setLatestMessage(timestamp);
-				//setLatestUserMessage(thread.getThreadId(), userId);
             }
         }catch(Exception e){
                 System.out.println(e.getMessage());
@@ -77,14 +69,12 @@ public class ThreadController {
 			if(result.next()){
 				thread = new Thread();
 				thread.setCaption(result.getString("caption"));
-                thread.setGroupId(result.getInt("groupId"));
-                thread.setOwnerId(result.getInt("ownerID"));
+				int groupId = result.getInt("groupId");
+				int ownerId = result.getInt("ownerID");
+				thread.setOwner(db.getUserController().getUser(ownerId, false));
+				thread.setGroup(db.getThreadGroupController().getThreadGroup(groupId));
 				thread.setDescription(result.getString("threadDescription"));
                 thread.setThreadId(threadId);
-
-				thread.setLatestMessage(result.getTimestamp("latestMessage"));
-				//Timestamp latestUserMessage = getLatestUserMessage(userId, thread);
-				//thread.setLatestUserMessage(latestUserMessage);
 			}
 		} catch(Exception e){
 			thread = null;
@@ -92,25 +82,6 @@ public class ThreadController {
 
         return thread;
     }
-
-    public Thread setLatestMessage(int userId, int threadId, java.sql.Timestamp timestamp) {
-		Thread thread = getThread(threadId);
-		try {
-			PreparedStatement st = db.createStatement("update threads set latestMessage = ? where ID = ?", true);
-			st.setTimestamp(1, timestamp);
-			st.setInt(2, threadId);
-
-			st.executeUpdate();
-			ResultSet rs = st.getGeneratedKeys();
-
-            if(rs.next()){
-				thread.setLatestMessage(rs.getTimestamp("latestMessage"));
-			}
-		} catch(Exception e){
-				System.out.println(e.getMessage());
-		}
-		return thread;
-	}
 
 	public List<Thread> getThreadsFromThreadGroup(int threadGroupId){
 		List<Thread> result = new ArrayList<Thread>();
@@ -124,8 +95,10 @@ public class ThreadController {
                 Thread thread = new Thread();
                 thread.setCaption(rs.getString("caption"));
                 thread.setThreadId(rs.getInt("ID"));
-				thread.setGroupId(threadGroupId);
-				thread.setOwnerId(rs.getInt("ownerID"));
+				int groupId = rs.getInt("threadID");
+				int ownerId = rs.getInt("senderID");
+				thread.setGroup(db.getThreadGroupController().getThreadGroup(groupId));
+				thread.setOwner(db.getUserController().getUser(ownerId, false));
 				thread.setDescription(rs.getString("threadDescription"));
                 result.add(thread);
             }
@@ -175,34 +148,4 @@ public class ThreadController {
         return thread;
 
     }
-
-    // public void setLatestUserMessage(int threadId, int userId) {
-	// 	try {
-	// 		PreparedStatement st = db.createStatement("update thread_users set latestMessage = ? where userID = ? and ID = ?", false);
-	// 		OffsetDateTime utc = OffsetDateTime.now(ZoneOffset.UTC);
-	// 		Timestamp timestamp =  new Timestamp(utc.toInstant().toEpochMilli());
-	// 		st.setTimestamp(1, timestamp);
-	// 		st.setInt(2, userId);
-	// 		st.setInt(3, threadId);
-	// 		st.executeUpdate();
-	// 	} catch(Exception e){
-	// 		System.out.println(e.getMessage());
-	// 	}
-	// }
-
-    // private Timestamp getLatestUserMessage(int userId, Thread thread){
-	// 	try {
-	// 		PreparedStatement st = db.createStatement("select * from thread_users where ID = ? and userID = ?", false);
-	// 		st.setInt(1, thread.getThreadId());
-	// 		st.setInt(2, userId);
-
-	// 		ResultSet rs = db.executeQuery(st);
-
-	// 		if(rs.next()){
-	// 			return rs.getTimestamp("latestMessage");
-	// 		}
-	// 	} catch(Exception e){
-	// 	}
-	// 	return thread.getlatestMessage();
-	// }
 }

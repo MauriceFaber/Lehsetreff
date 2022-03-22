@@ -11,8 +11,6 @@ public class ThreadGroup {
     private List<Thread> threads = new ArrayList<Thread>();
     private String description;
 
-
-
     public String getCaption() {
         return caption;
     }
