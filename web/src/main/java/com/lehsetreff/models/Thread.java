@@ -25,7 +25,7 @@ public class Thread implements Serializable {
         this.owner = owner;
     }
 
-    public int getThread() {
+    public int getThreadId() {
         return id;
     }
 

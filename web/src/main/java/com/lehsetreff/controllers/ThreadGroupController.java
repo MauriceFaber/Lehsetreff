@@ -88,6 +88,32 @@ public class ThreadGroupController {
         return tGroup;
     }
 
+
+    /**
+     * Gibt die Thread Gruppe zurueck.
+     * @param threadGroupName
+     * Die id der Thread Gruppe.
+     * @return
+     * Thread Gruppen Objekt
+     */
+    public ThreadGroup getThreadGroup(String threadGroupName ){
+        ThreadGroup tGroup = new ThreadGroup();
+
+        try {
+			PreparedStatement st = db.createStatement("select * from threadGroups where LOWER(caption) = ?", false);
+			st.setString(1, threadGroupName);
+
+			ResultSet result = db.executeQuery(st);
+            if(result.next()){
+				int id = result.getInt("ID");
+				tGroup = getThreadGroup(id);
+            }
+        } catch(Exception e){
+			tGroup = null;
+		}
+        return tGroup;
+    }
+
     /**
      * Gibt eine Lsite mit Thread Gruppen zurueck.
      * @return

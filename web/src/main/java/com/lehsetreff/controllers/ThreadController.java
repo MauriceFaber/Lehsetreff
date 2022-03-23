@@ -92,6 +92,32 @@ public class ThreadController {
         return thread;
     }
 
+	/**
+	 * Gibt ein Thread Objekt zurück.
+	 * @param threadName
+	 * Die id des Threads.
+	 * @return der thread
+	 * Thread Objekt
+	 */
+    public Thread getThread(String threadName){
+        Thread thread = null;
+        try {
+			PreparedStatement st = db.createStatement("select * from threads where LOWER(caption) = ?", false);
+			st.setString(1, threadName);
+
+			ResultSet result = db.executeQuery(st);
+
+			if(result.next()){
+				int id = result.getInt("ID");
+				thread = getThread(id);
+			}
+		} catch(Exception e){
+			thread = null;
+		}
+
+        return thread;
+    }
+
 	public List<Thread> getThreadsFromThreadGroup(int threadGroupId){
 		List<Thread> result = new ArrayList<Thread>();
 		

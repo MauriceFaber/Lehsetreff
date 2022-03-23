@@ -41,7 +41,13 @@ public class ThreadServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 		String idString = request.getParameter("threadGroupID");
-		int threadGroupId = Integer.parseInt(idString);
+		int threadGroupId = -1;
+		if(idString != null){
+			threadGroupId = Integer.parseInt(idString);
+		}else {
+			String name = request.getParameter("threadGroupName");
+			threadGroupId = db.getThreadGroupController().getThreadGroup(name).getId();
+		}
 
 		List<Thread> threads = db.getThreadController().getThreadsFromThreadGroup(threadGroupId);
 		if(threads != null){		
