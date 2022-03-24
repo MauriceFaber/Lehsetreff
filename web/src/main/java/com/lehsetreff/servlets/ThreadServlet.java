@@ -40,10 +40,32 @@ public class ThreadServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
-		String idString = request.getParameter("threadGroupID");
+		String threadIdString = request.getParameter("threadGroupID");
+			String threadName = request.getParameter("threadName");
+			int threadId = -1;
+		if(threadIdString != null){
+			threadId = Integer.parseInt(threadIdString);
+		}else if(threadName != null){
+			threadId = db.getThreadController().getThread(threadName).getThreadId();
+		}
+
+		if(threadId != -1){
+			Thread thread = db.getThreadController().getThread(threadId);
+			if(thread != null){		
+        	    Extensions.sendJsonResponse(response, thread);
+				return;
+        	} else {
+        	    response.sendError(400, "get Thread failed");
+				return;
+        	}
+		}
+
+
+		String threadGroupIdString = request.getParameter("threadGroupID");
+
 		int threadGroupId = -1;
-		if(idString != null){
-			threadGroupId = Integer.parseInt(idString);
+		if(threadGroupIdString != null){
+			threadGroupId = Integer.parseInt(threadGroupIdString);
 		}else {
 			String name = request.getParameter("threadGroupName");
 			threadGroupId = db.getThreadGroupController().getThreadGroup(name).getId();
@@ -56,8 +78,6 @@ public class ThreadServlet extends HttpServlet {
             response.sendError(400, "get Threads from ThreadGroup failed");
         }
 	}
-
-
 
 	@Override
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
