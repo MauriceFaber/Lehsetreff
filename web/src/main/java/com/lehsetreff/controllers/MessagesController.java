@@ -22,6 +22,9 @@ public class MessagesController {
 
 	public Message addMessage(String content, int contentType, int threadId, int senderId) throws Exception{
 		Message m = null;
+		if(content == null || content.trim() == ""){
+			return m;
+		}
 		try {
 			PreparedStatement st = db.createStatement("insert into messages (contentType, dateAndTime, threadID, senderID) values(?,?,?,?)", true);
 			st.setInt(1, contentType);
