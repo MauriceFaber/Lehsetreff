@@ -1,6 +1,8 @@
 package com.meshenger.models;
 import java.io.Serializable;
 
+import com.lehsetreff.models.UserRole;
+
 public class User implements Serializable {
 
 //private
@@ -10,6 +12,7 @@ public class User implements Serializable {
 	private String apiKey;
 	private String passphrase;
 	private String avatar;
+	private UserRole role;
 
 //public
 
@@ -53,5 +56,13 @@ public class User implements Serializable {
 
 	public String getAvatarPath(String folder){
 		return folder + "/avatar_" + id + ".txt";
+	}
+
+	public void setUserRole(UserRole role){
+		this.role = role;
+	}
+
+	public UserRole getUserRole(){
+		return role;
 	}
 }

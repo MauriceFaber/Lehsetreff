@@ -28,11 +28,12 @@ public class ThreadGroupController {
             ResultSet rs = st.getGeneratedKeys();
 
             if(!rs.next()){
-              tGroup = null;
+				tGroup = null;
             }
 
         }catch(Exception e){
-                System.out.println(e.getMessage());
+              tGroup = null;
+			  System.out.println(e.getMessage());
         }
         
         return tGroup;
@@ -165,7 +166,8 @@ public class ThreadGroupController {
 				tGroup.setCaption(rs.getString("caption"));
 			}
 		} catch(Exception e){
-				System.out.println(e.getMessage());
+			tGroup = null;
+			System.out.println(e.getMessage());
 		}
         return tGroup;
 

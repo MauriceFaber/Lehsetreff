@@ -333,7 +333,7 @@ public class UserController {
 				u = new User();
 				u.setId(result.getInt("ID"));
 				u.setName(result.getString("userName"));
-
+				u.setUserRole(db.getRolesController().getUserRole(u.getId()));
 				u.setAvatar(getImage(result.getString("avatar")));
 			}
 		} catch(Exception e){
@@ -363,6 +363,7 @@ public class UserController {
 				u.setName(result.getString("userName"));
 				u.setApiKey(result.getString("apiKey"));
 				u.setAvatar(getImage(result.getString("avatar")));
+				u.setUserRole(db.getRolesController().getUserRole(u.getId()));
 			}
 		} catch(Exception e){
 			u = null;
@@ -390,6 +391,7 @@ public class UserController {
 				u = new User();
 				u.setId(result.getInt("ID"));
 				u.setName(result.getString("userName"));
+				u.setUserRole(db.getRolesController().getUserRole(u.getId()));
 				if(withAvatar){
 					u.setAvatar(getImage(result.getString("avatar")));
 				}
@@ -426,6 +428,9 @@ public class UserController {
 				u.setApiKey(result.getString("apiKey"));
 				String tmpPassphrase = result.getString("passphrase");
 				boolean isAuth = auth.authenticate(passphrase.toCharArray(), tmpPassphrase);
+
+				u.setUserRole(db.getRolesController().getUserRole(u.getId()));
+
 				if(!isAuth){
 					u = null;
 				}
@@ -477,17 +482,13 @@ public class UserController {
 	 */
 	public boolean isThreadGroupOwner(int threadGroupId, HttpServletRequest request){
 		try {
-			PreparedStatement st = db.createStatement("select ID = ? from threadGroups where ownerID = ? ", false);
+			PreparedStatement st = db.createStatement("select * from threadGroups where ID = ? and ownerID = ? ", false);
 			st.setInt(1, threadGroupId);
 			st.setInt(2, getUserId(request));
 
 			ResultSet result = db.executeQuery(st);
 			if(result.next()){
-				int tmp = result.getInt("ID");
-				int temp = result.getInt("ownerID");
-				if (tmp == threadGroupId && temp == getUserId(request)){
-					return true;
-				}
+				return true;
 			}
 		} catch (Exception e) {
 			return false;

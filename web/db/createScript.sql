@@ -7,6 +7,7 @@ Create table lehsetreff.threadGroups(ID int NOT NULL AUTO_INCREMENT,
                                     groupDescription varchar(100) NOT NULL, 
                                     primary key(ID),
                                     foreign key(ownerID) References users(ID)
+--                                  CONSTRAINT (caption)
                                     );
 
 
