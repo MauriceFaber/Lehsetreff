@@ -1,9 +1,11 @@
 package com.lehsetreff.servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.lehsetreff.controllers.Database;
 import com.lehsetreff.models.UserRole;
+import com.meshenger.models.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
@@ -24,8 +26,8 @@ public class UserRoleServlet extends HttpServlet {
 			return;
 		}
 
-		int userId = db.getUserController().getUserId(request);
-        int roleId = Integer.parseInt(request.getParameter("roleID"));
+		int userId = Integer.parseInt(request.getParameter("userId"));
+        int roleId = Integer.parseInt(request.getParameter("roleId"));
 
 		boolean result = db.getRolesController().setUserRole(roleId, userId);
 		if(result){		
@@ -37,14 +39,36 @@ public class UserRoleServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int userId = db.getUserController().getUserId(request);
+		if(!Extensions.isAuthenticated(request, response)){
+			return;
+		}
 
-		UserRole role = db.getRolesController().getUserRole(userId);
-        if(role != null){		
-            Extensions.sendJsonResponse(response, role);
-        } else {
-            response.sendError(400, "Get Role failed");
-        }
-    }
-    
+		String userMode = (String)request.getParameter("userMode");
+		String withAvatars = (String)request.getParameter("withAvatars");
+		Boolean avatars = withAvatars != null && withAvatars == "true";
+		
+		if(userMode.compareTo("allUsers") == 0){
+			if(!Extensions.isAdmin(request, response)){
+				return;
+			}
+
+			List<User> users = db.getUserController().getUsers(avatars);
+			if(users == null){
+				response.sendError(400);
+			} else {
+				Extensions.sendJsonResponse(response, users);
+			}
+    	} else {
+			String userIdString = (String)request.getParameter("userMode");
+			int userId = Integer.parseInt(userIdString);
+
+			User u = db.getUserController().getUser(userId, avatars);
+
+			if(u == null){
+				response.sendError(400);
+			} else {
+				Extensions.sendJsonResponse(response, u);
+			}
+		}
+	}
 }

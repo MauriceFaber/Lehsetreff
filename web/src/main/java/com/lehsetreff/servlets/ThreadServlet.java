@@ -22,13 +22,19 @@ public class ThreadServlet extends HttpServlet {
 		}
 
 		int userId = db.getUserController().getUserId(request);
-		String threadCaption = (String) request.getParameter("threadCaption");
-        int ownerId = Integer.parseInt(request.getParameter("ownerId"));
-        int groupId = Integer.parseInt(request.getParameter("groupId"));
-		String threadDescription = (String) request.getParameter("threadDescription");
+		String threadCaption = (String) request.getParameter("caption");
+		
+		String groupIdString = request.getParameter("groupId");
+		String groupName = request.getParameter("groupName");
+		int groupId = -1;
+		if(groupIdString != null){
+			groupId = Integer.parseInt(groupIdString);
+		}else{
+			groupId = db.getThreadGroupController().getThreadGroup(groupName).getId();
+		}
+		String threadDescription = (String) request.getParameter("description");
 
-
-		Thread thread = db.getThreadController().addThread(threadCaption, userId, ownerId, groupId, threadDescription);
+		Thread thread = db.getThreadController().addThread(threadCaption, userId, userId, groupId, threadDescription);
 		if(thread != null){		
             Extensions.sendJsonResponse(response, thread);
         } else {
@@ -88,7 +94,7 @@ public class ThreadServlet extends HttpServlet {
 		int threadId =Integer.parseInt(request.getParameter("threadId"));
 		int userId =Integer.parseInt(request.getParameter("userId"));
 		String caption = (String) request.getParameter("caption");
-		String description = (String) request.getParameter("threadDescription");
+		String description = (String) request.getParameter("description");
 
 		if(!Extensions.isModerator(request, response) || !Extensions.isThreadOwner(request, response, threadId)){
 			return;

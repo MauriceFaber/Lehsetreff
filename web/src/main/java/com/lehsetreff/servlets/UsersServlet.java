@@ -1,6 +1,7 @@
 package com.lehsetreff.servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
@@ -46,11 +47,27 @@ public class UsersServlet extends HttpServlet {
 			return;
 		}
 
-		User u = db.getUserController().getUser(request, true);
-		if(u == null){
-			response.sendError(400);
-		} else {
-			Extensions.sendJsonResponse(response, u);
+		String idString = request.getParameter("id");
+		String name = request.getParameter("name");
+		int id = -1;
+		if(idString != null){
+			id = Integer.parseInt(idString);
+		}else{
+			id = db.getUserController().getUser(name).getId();
 		}
+
+		User u;
+		if(id != -1){
+			u = db.getUserController().getUser(id, true);
+		}else{
+			u = db.getUserController().getUser(request, true);
+		}
+		
+			if(u == null){
+				response.sendError(400);
+			} else {
+				Extensions.sendJsonResponse(response, u);
+			}
+		
 	}
 }

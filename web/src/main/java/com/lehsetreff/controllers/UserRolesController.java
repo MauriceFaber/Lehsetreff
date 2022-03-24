@@ -39,23 +39,20 @@ public class UserRolesController {
         try {
 			boolean isRoleSet = isRoleSet(userId);
 			if(!isRoleSet){
-            	PreparedStatement st = db.createStatement("insert into userRoles (roleID, userID) values (?, ?)", false);
+            	PreparedStatement st = db.createStatement("insert into userRoles (roleID, userID) values (?, ?)", true);
             	st.setInt(1, roleId);
             	st.setInt(2, userId);
-	
-            	ResultSet rs = db.executeQuery(st);
-            	if (rs.next()){
-            	    result = true;
-            	}
+
+				st.executeUpdate();
+            	return true;
 			}else{
-            	PreparedStatement st = db.createStatement("update userRoles set roleID = ? where userID =?", false);
+            	PreparedStatement st = db.createStatement("update userRoles set roleID = ? where userID =?", true);
             	st.setInt(1, roleId);
             	st.setInt(2, userId);
-	
-            	ResultSet rs = db.executeQuery(st);
-            	if (rs.next()){
-            	    result = true;
-            	}
+
+
+				st.executeUpdate();
+            	return true;
 			}
         } catch (Exception e) {
             result = false;

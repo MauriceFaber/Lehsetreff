@@ -22,7 +22,7 @@ public class MessagesController {
 
 	public Message addMessage(String content, int contentType, int threadId, int senderId) throws Exception{
 		Message m = null;
-		if(content == null || content.trim() == ""){
+		if(content == null || content.trim().length() == 0){
 			return m;
 		}
 		try {

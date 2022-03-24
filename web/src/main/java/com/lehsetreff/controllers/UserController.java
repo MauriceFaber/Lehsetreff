@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.meshenger.models.User;
@@ -400,6 +402,28 @@ public class UserController {
 			u = null;
 		}
 		return u;
+	}
+
+	public List<User> getUsers(Boolean withAvatar){
+		List<User> users = new ArrayList<User>();
+		try {
+			PreparedStatement st = db.createStatement("select * from users", false);
+
+			ResultSet result = db.executeQuery(st);
+			while(result.next()){
+				User u  = new User();
+				u.setId(result.getInt("ID"));
+				u.setName(result.getString("userName"));
+				u.setUserRole(db.getRolesController().getUserRole(u.getId()));
+				if(withAvatar){
+					u.setAvatar(getImage(result.getString("avatar")));
+				}
+				users.add(u);
+			}
+		} catch(Exception e){
+			users = null;
+		}
+		return users;
 	}
 
 	/**
