@@ -43,23 +43,26 @@ public class UsersServlet extends HttpServlet {
 	 */
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
-		if(!Extensions.isAuthenticated(request, response)){
-			return;
-		}
+
 
 		String idString = request.getParameter("id");
 		String name = request.getParameter("name");
 		int id = -1;
 		if(idString != null){
 			id = Integer.parseInt(idString);
-		}else{
+		}else if(name != null){
 			id = db.getUserController().getUser(name).getId();
 		}
+
+
 
 		User u;
 		if(id != -1){
 			u = db.getUserController().getUser(id, true);
 		}else{
+			if(!Extensions.isAuthenticated(request, response)){
+				return;
+			}
 			u = db.getUserController().getUser(request, true);
 		}
 		
