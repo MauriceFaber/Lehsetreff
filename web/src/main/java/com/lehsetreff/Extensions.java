@@ -66,6 +66,14 @@ public class Extensions {
 		}
 		return true;
 	}
+	
+	public static boolean isModOrThreadOwner(HttpServletRequest request, HttpServletResponse response, int threadId) throws IOException{
+		if(!db.getUserController().isModerator(request) && !db.getUserController().isThreadOwner(threadId, request)){
+			response.sendError(401, "no moderator or thradOwner");
+			return false;
+		}
+		return true;
+	}
 
 	public static boolean isSender(HttpServletRequest request, HttpServletResponse response, int messageID) throws IOException{
 		if(!db.getUserController().isMessageSender(messageID, request)){

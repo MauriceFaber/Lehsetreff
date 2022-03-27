@@ -46,7 +46,7 @@ public class ThreadServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
-		String threadIdString = request.getParameter("threadGroupID");
+		String threadIdString = request.getParameter("threadId");
 		String threadName = request.getParameter("threadName");
 		String groupName = request.getParameter("groupName");
 		int threadId = -1;
@@ -92,17 +92,17 @@ public class ThreadServlet extends HttpServlet {
 			return;
 		}
 
-		int threadId =Integer.parseInt(request.getParameter("threadId"));
-		int userId =Integer.parseInt(request.getParameter("userId"));
-		String caption = (String) request.getParameter("caption");
-		String description = (String) request.getParameter("description");
+		int threadId =Integer.parseInt(Extensions.getParameterFromMap(request, "threadId"));
+		String caption = (String) Extensions.getParameterFromMap(request, "caption");
+		String description = (String) Extensions.getParameterFromMap(request, "description");
 
-		if(!Extensions.isModerator(request, response) || !Extensions.isThreadOwner(request, response, threadId)){
+
+		if(!Extensions.isModOrThreadOwner(request, response, threadId)){
 			return;
 		}
 		
 		if (caption != null) {
-			Thread thread = db.getThreadController().renameThread(threadId, userId, caption);
+			Thread thread = db.getThreadController().renameThread(threadId, caption);
 			
 			if(thread != null){		
 				Extensions.sendJsonResponse(response, thread);
@@ -112,7 +112,7 @@ public class ThreadServlet extends HttpServlet {
 		}
 
 		if (description != null) {
-			Thread thread = db.getThreadController().changeThreadDescription(threadId, userId, description);
+			Thread thread = db.getThreadController().changeThreadDescription(threadId, description);
 
 			if(thread != null){		
 				Extensions.sendJsonResponse(response, thread);
@@ -134,7 +134,7 @@ public class ThreadServlet extends HttpServlet {
 		}
 
 		int threadId = Integer.parseInt(Extensions.getParameterFromMap(request, "threadId"));
-		if(!Extensions.isThreadOwner(request, response, threadId)){
+		if(!Extensions.isModOrThreadOwner(request, response, threadId)){
 			Extensions.removeHashmap(request);
 			return;
 		}

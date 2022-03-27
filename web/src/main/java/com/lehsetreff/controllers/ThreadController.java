@@ -110,7 +110,7 @@ public class ThreadController {
 
 			PreparedStatement st = db.createStatement("select * from threads where LOWER(caption) = ? and groupID = ?", false);
 			st.setString(1, threadName);
-			st.setInt(1, group.getId());
+			st.setInt(2, group.getId());
 
 			ResultSet result = db.executeQuery(st);
 
@@ -155,14 +155,12 @@ public class ThreadController {
 	 * Aendert den Titel eines Threads.
 	 * @param threadId
 	 * Die id des Threads.
-	 * @param userId
-	 * Die id des Benutzers
 	 * @param caption
 	 * Der Titel des Threads
 	 * @return
 	 * Thread Objekt
 	 */
-	public Thread renameThread(int threadId, int userId, String caption){
+	public Thread renameThread(int threadId, String caption){
         Thread thread = getThread(threadId);
         try {
 			PreparedStatement st = db.createStatement("update threads set caption = ? where ID = ?", true);
@@ -186,14 +184,12 @@ public class ThreadController {
 	 * Aendert die Beschreibung eines Threads.
 	 * @param threadId
 	 * Die id des Threads.
-	 * @param userId
-	 * Die id des Benutzers.
 	 * @param description
 	 * Die Beschreibung des Threads.
 	 * @return
 	 * Thread Objekt
 	 */
-	public Thread changeThreadDescription(int threadId, int userId, String description){
+	public Thread changeThreadDescription(int threadId, String description){
         Thread thread = getThread(threadId);
         try {
 			PreparedStatement st = db.createStatement("update threads set threadDescription = ? where ID = ?", true);
