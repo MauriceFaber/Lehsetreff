@@ -28,7 +28,6 @@ public class MessagesServlet extends HttpServlet {
         int threadId = Integer.parseInt(request.getParameter("threadId"));
 		String content = request.getParameter("content");
        
-       
         try {
             Message m = db.getMessagesController().addMessage(content, contentType, threadId, userId);
             if(m != null){		
@@ -51,7 +50,8 @@ public class MessagesServlet extends HttpServlet {
 			threadId = Integer.parseInt(parameter);
 		}else {
 			String name = request.getParameter("threadName");
-			threadId = db.getThreadController().getThread(name).getThreadId();
+			String groupName = request.getParameter("groupName");
+			threadId = db.getThreadController().getThread(groupName, name).getThreadId();
 		}
 		List<Message> messages = db.getMessagesController().getMessages(threadId);
 		if(messages != null){		

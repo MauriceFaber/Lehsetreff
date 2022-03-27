@@ -45,7 +45,7 @@ public class UserRoleServlet extends HttpServlet {
 
 		String userMode = (String)request.getParameter("userMode");
 		String withAvatars = (String)request.getParameter("withAvatars");
-		Boolean avatars = withAvatars != null && withAvatars == "true";
+		Boolean avatars = withAvatars.compareTo("true") == 0;
 		
 		if(userMode.compareTo("allUsers") == 0){
 			if(!Extensions.isAdmin(request, response)){

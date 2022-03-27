@@ -98,6 +98,7 @@ public class ThreadGroupController {
      * Thread Gruppen Objekt
      */
     public ThreadGroup getThreadGroup(String threadGroupName ){
+		threadGroupName = threadGroupName.toLowerCase();
         ThreadGroup tGroup = new ThreadGroup();
 
         try {

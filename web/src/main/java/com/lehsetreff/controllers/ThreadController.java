@@ -6,6 +6,7 @@ import java.util.*;
 
 
 import com.lehsetreff.models.Thread;
+import com.lehsetreff.models.ThreadGroup;
 
 public class ThreadController {
     
@@ -99,11 +100,17 @@ public class ThreadController {
 	 * @return der thread
 	 * Thread Objekt
 	 */
-    public Thread getThread(String threadName){
+    public Thread getThread(String groupName, String threadName){
+		groupName = groupName.toLowerCase();
+		threadName = threadName.toLowerCase();
         Thread thread = null;
         try {
-			PreparedStatement st = db.createStatement("select * from threads where LOWER(caption) = ?", false);
+
+			ThreadGroup group = db.getThreadGroupController().getThreadGroup(groupName);
+
+			PreparedStatement st = db.createStatement("select * from threads where LOWER(caption) = ? and groupID = ?", false);
 			st.setString(1, threadName);
+			st.setInt(1, group.getId());
 
 			ResultSet result = db.executeQuery(st);
 
