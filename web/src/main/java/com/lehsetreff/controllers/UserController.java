@@ -250,6 +250,11 @@ public class UserController {
 	 * Benutzerobjekt
 	 */
 	public User login(String userName, String passphrase){
+		userName = userName.trim();
+		passphrase = passphrase.trim();
+		if(userName.isEmpty() || passphrase.isEmpty()){
+			return null;
+		}
 		User u = getUser(userName, passphrase);
 		return u;
 	}
