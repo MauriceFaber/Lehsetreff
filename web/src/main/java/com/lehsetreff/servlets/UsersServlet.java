@@ -25,15 +25,14 @@ public class UsersServlet extends HttpServlet {
         boolean isNameValid = userName != null && !userName.isEmpty();
         boolean isPassphraseValid = passphrase != null && !passphrase.isEmpty();
 
-		boolean success = false;
         if (isPassphraseValid && isNameValid){
             User u = db.getUserController().addUser(userName, passphrase);
 			if(u != null){
-				success = true;
 				Extensions.sendJsonResponse(response, u);
+			}else {
+				response.sendError(400);
 			}
-        }
-        if(!success) {
+        }else  {
             response.sendError(400);
         }
 	}
