@@ -34,7 +34,7 @@ public class ThreadServlet extends HttpServlet {
 		}
 		String threadDescription = (String) request.getParameter("description");
 
-		Thread thread = db.getThreadController().addThread(threadCaption, userId, userId, groupId, threadDescription);
+		Thread thread = db.getThreadController().addThread(threadCaption, userId, groupId, threadDescription);
 		if(thread != null){		
             Extensions.sendJsonResponse(response, thread);
         } else {

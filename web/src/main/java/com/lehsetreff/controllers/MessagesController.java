@@ -25,6 +25,7 @@ public class MessagesController {
 		if(content == null || content.trim().length() == 0){
 			return m;
 		}
+		content = content.trim();
 		try {
 			PreparedStatement st = db.createStatement("insert into messages (contentType, dateAndTime, threadID, senderID) values(?,?,?,?)", true);
 			st.setInt(1, contentType);
@@ -173,6 +174,10 @@ public class MessagesController {
  * Nachricht Objekt
  */
 	public Message modifyMessage(String content , int contentType, int messageID){
+		if(content == null || content.trim().length() == 0){
+			return null;
+		}
+		content = content.trim();
 		Message m = getMessage(messageID);
 
 		try {

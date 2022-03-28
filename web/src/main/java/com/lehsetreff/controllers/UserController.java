@@ -85,6 +85,11 @@ public class UserController {
 	 * Den Benutzer selbst
 	 */
 	public User addUser(String name, String passphrase) {
+		name = name.trim();
+		passphrase = passphrase.trim();
+		if(name.length() == 0 || passphrase.length() == 0){
+			return null;
+		}
 		User u = null;
 		try {
 			String key = generateUniqueApiKey();

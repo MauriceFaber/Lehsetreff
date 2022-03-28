@@ -12,6 +12,8 @@ public class ThreadGroupController {
     private Database db = Database.getInstance();
 
     public ThreadGroup addThreadGroup(String caption, int ownerId, String description){
+		caption = caption.trim();
+		description = description.trim();
         ThreadGroup tGroup = new ThreadGroup();
         
         tGroup.setCaption(caption);
@@ -98,7 +100,7 @@ public class ThreadGroupController {
      * Thread Gruppen Objekt
      */
     public ThreadGroup getThreadGroup(String threadGroupName ){
-		threadGroupName = threadGroupName.toLowerCase();
+		threadGroupName = threadGroupName.toLowerCase().trim();
         ThreadGroup tGroup = new ThreadGroup();
 
         try {
@@ -154,6 +156,7 @@ public class ThreadGroupController {
      * Thread Gruppe Objekt
      */
     public ThreadGroup renameThreadGroup(int threadGroupId, String caption){
+		caption = caption.trim();
         ThreadGroup tGroup = getThreadGroup(threadGroupId);
         try {
 			PreparedStatement st = db.createStatement("update threadGroups set caption = ? where ID = ?", true);
@@ -184,6 +187,7 @@ public class ThreadGroupController {
      * Thread Gruppe Objekt
      */
     public ThreadGroup changeThreadGroupDescription(int threadGroupId, String description){
+		description = description.trim();
         ThreadGroup tGroup = getThreadGroup(threadGroupId);
         try {
 			PreparedStatement st = db.createStatement("update threadGroups set groupDescription = ? where ID = ?", true);
