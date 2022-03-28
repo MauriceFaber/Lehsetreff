@@ -14,6 +14,10 @@ public class ThreadGroupController {
     public ThreadGroup addThreadGroup(String caption, int ownerId, String description){
 		caption = caption.trim();
 		description = description.trim();
+
+		if(caption.length() == 0 || description.length() == 0) {
+			return null;	
+		}
         ThreadGroup tGroup = new ThreadGroup();
         
         tGroup.setCaption(caption);
@@ -157,6 +161,9 @@ public class ThreadGroupController {
      */
     public ThreadGroup renameThreadGroup(int threadGroupId, String caption){
 		caption = caption.trim();
+		if(caption.length() == 0){
+			return null;
+		}
         ThreadGroup tGroup = getThreadGroup(threadGroupId);
         try {
 			PreparedStatement st = db.createStatement("update threadGroups set caption = ? where ID = ?", true);
@@ -188,6 +195,9 @@ public class ThreadGroupController {
      */
     public ThreadGroup changeThreadGroupDescription(int threadGroupId, String description){
 		description = description.trim();
+		if(description.length() == 0){
+			return null;
+		}
         ThreadGroup tGroup = getThreadGroup(threadGroupId);
         try {
 			PreparedStatement st = db.createStatement("update threadGroups set groupDescription = ? where ID = ?", true);

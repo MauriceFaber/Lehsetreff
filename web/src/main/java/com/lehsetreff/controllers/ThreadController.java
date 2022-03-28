@@ -16,8 +16,12 @@ public class ThreadController {
         Thread thread = new Thread();
 		caption = caption.trim();
 		description = description.trim();
-        thread.setCaption(caption);
+
+		if(caption.length() == 0 || description.length() == 0){
+			return null;
+		}
 		
+        thread.setCaption(caption);
 		thread.setOwner(db.getUserController().getUser(ownerId, false));
 		thread.setGroup(db.getThreadGroupController().getThreadGroup(groupId));
 		thread.setDescription(description);
@@ -164,6 +168,9 @@ public class ThreadController {
 	 */
 	public Thread renameThread(int threadId, String caption){
 		caption = caption.trim();
+		if(caption.length() == 0){
+			return null;
+		}
         Thread thread = getThread(threadId);
         try {
 			PreparedStatement st = db.createStatement("update threads set caption = ? where ID = ?", true);
@@ -194,6 +201,11 @@ public class ThreadController {
 	 */
 	public Thread changeThreadDescription(int threadId, String description){
 		description = description.trim();
+
+		if(description.length() == 0){
+			return null;
+		}
+
         Thread thread = getThread(threadId);
         try {
 			PreparedStatement st = db.createStatement("update threads set threadDescription = ? where ID = ?", true);
