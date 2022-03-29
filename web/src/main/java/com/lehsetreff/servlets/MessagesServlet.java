@@ -69,8 +69,10 @@ public class MessagesServlet extends HttpServlet {
 			Message m = db.getMessagesController().getMessage(messageId);
 			if(m != null){		
 				Extensions.sendJsonResponse(response, m);
+				return;
 			} else {
 				response.sendError(400, "get Message failed");
+				return;
 			}
 		}else{
 			String name = request.getParameter("threadName");
