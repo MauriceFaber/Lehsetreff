@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lehsetreff.models.*;
-import com.meshenger.models.User;
 
 /**
  * Stellt den MessageController dar.
@@ -166,8 +165,6 @@ public class MessagesController {
 				int senderId = result.getInt("senderID");
 				m.setThread(db.getThreadController().getThread(threadId));
 				m.setSender(db.getUserController().getUser(senderId, false));
-				User sender = db.getUserController().getUser(m.getSender().getId(), false);
-				m.setSenderName(sender.getName());
 				m.setWasModified(result.getBoolean("wasModified"));
 			}
 		} catch(Exception e){
