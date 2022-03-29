@@ -136,7 +136,7 @@ public class MessagesServlet extends HttpServlet {
 
 		int messageId = Integer.parseInt(Extensions.getParameterFromMap(request, "messageId"));
 
-		if(!Extensions.isSender(request, response, messageId)){
+		if(!Extensions.isModOrSender(request, response, messageId)){
 			return;
 		}
 		try{
