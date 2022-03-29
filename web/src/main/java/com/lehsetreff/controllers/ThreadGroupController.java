@@ -7,10 +7,24 @@ import java.util.*;
 
 import com.lehsetreff.models.ThreadGroup;
 
+/**
+ * Stellt den ThreadGroupController dar.
+ */
 public class ThreadGroupController {
 
     private Database db = Database.getInstance();
 
+    /**
+     * Fügt eine Thread Gruppe hinzu.
+     * @param caption
+     * Die Ueberschrift der Thread Gruppe.
+     * @param ownerId
+     * Die Besitzer ID der Thread Gruppe.
+     * @param description
+     * Die Beschreibung der Thread Gruppe.
+     * @return
+     * Thread Gruppen Objekt
+     */
     public ThreadGroup addThreadGroup(String caption, int ownerId, String description){
 		caption = caption.trim();
 		description = description.trim();

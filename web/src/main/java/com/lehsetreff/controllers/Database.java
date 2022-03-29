@@ -23,7 +23,6 @@ public class Database {
 		return IMAGE_DIRECTORY;
 	}
 	
-
 	private Connection con;
 	private static Database db;
 
@@ -124,8 +123,6 @@ public class Database {
 			return false;
 		}
 	}
-
-
 	
 	/**
 	 * Erstellen der SQL Statements.

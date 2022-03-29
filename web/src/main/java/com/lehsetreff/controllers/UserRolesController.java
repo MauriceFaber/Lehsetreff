@@ -5,9 +5,19 @@ import com.lehsetreff.models.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/**
+ * Stellt den UserRolesController dar.
+ */
 public class UserRolesController {
     private Database db = Database.getInstance();
 
+    /**
+     * Prueft, ob Benutzer Rolle gesetzt ist.
+     * @param userId
+     * Die ID des Benutzers.
+     * @return
+     * false bei Misserfolg, sonst true
+     */
 	private boolean isRoleSet(int userId){
 		boolean result = false;
         try {

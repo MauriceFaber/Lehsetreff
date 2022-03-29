@@ -8,10 +8,26 @@ import java.util.*;
 import com.lehsetreff.models.Thread;
 import com.lehsetreff.models.ThreadGroup;
 
+/**
+ * Stellt den ThreadController dar.
+ */
 public class ThreadController {
     
     private Database db = Database.getInstance();
 
+	/**
+	 * Fuegt einen Thread hinzu.
+	 * @param caption
+	 * Die Ueberschrift des Threads
+	 * @param ownerId
+	 * Die Besitzer ID des Threads.
+	 * @param groupId
+	 * Die Gruppen ID des Threads.
+	 * @param description
+	 * Die Beschreibung des Threads.
+	 * @return
+	 * Thread Objekt
+	 */
     public Thread addThread(String caption, int ownerId, int groupId, String description){
         Thread thread = new Thread();
 		caption = caption.trim();
