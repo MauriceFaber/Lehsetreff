@@ -60,10 +60,21 @@ public class MessagesServlet extends HttpServlet {
     @Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 		String parameter = request.getParameter("threadId");
+		String messageIdString = request.getParameter("messageId");
         int threadId = -1;
 		if(parameter != null){
 			threadId = Integer.parseInt(parameter);
-		}else {
+		}else if(messageIdString != null){
+			int messageId = Integer.parseInt(messageIdString);
+			Message m = db.getMessagesController().getMessage(messageId);
+			if(m != null){		
+				Extensions.sendJsonResponse(response, m);
+				return;
+			} else {
+				response.sendError(400, "get Message failed");
+				return;
+			}
+		}else{
 			String name = request.getParameter("threadName");
 			String groupName = request.getParameter("groupName");
 			threadId = db.getThreadController().getThread(groupName, name).getThreadId();
