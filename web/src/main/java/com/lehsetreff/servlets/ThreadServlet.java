@@ -15,6 +15,10 @@ public class ThreadServlet extends HttpServlet {
     
     private Database db = Database.getInstance();
 
+	/**
+	 * Erstelle Thread, falls Person
+	 * authentifiziert und Benutzer ist.
+	 */
     @Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		if(!Extensions.isAuthenticated(request, response)){
@@ -47,7 +51,9 @@ public class ThreadServlet extends HttpServlet {
 	}
 
 
-	
+	/**
+	 * Lade Threads.
+	 */
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 		String threadIdString = request.getParameter("threadId");
@@ -90,6 +96,10 @@ public class ThreadServlet extends HttpServlet {
         }
 	}
 
+	/**
+	 * Bearbeitet den Thread, falls Person
+	 * authentifiziert, Moderator oder Thread Besitzer ist.
+	 */
 	@Override
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 		if(!Extensions.isAuthenticated(request, response)){
@@ -130,7 +140,10 @@ public class ThreadServlet extends HttpServlet {
 	}
 
 
-
+	/**
+	 * Loesche Thread, falls Person
+	 * authentifiziert und Moderator ist.
+	 */
 	@Override
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 		if(!Extensions.isAuthenticated(request, response)){

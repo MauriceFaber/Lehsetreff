@@ -121,7 +121,8 @@ public class MessagesServlet extends HttpServlet {
 
 
 	/**
-	 * 
+	 * Loesche Nachricht, falls Person
+	 * authentifiziert, Benutzer oder Sender ist.
 	 */
     @Override
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  

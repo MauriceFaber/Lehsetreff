@@ -17,7 +17,10 @@ public class ThreadGroupServlet extends HttpServlet{
     private Database db = Database.getInstance();
 
 
-
+	/**
+	 * Erstelle Thread Gruppe, falls Person
+	 * authentifiziert und Moderator ist.
+	 */
     @Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		if(!Extensions.isAuthenticated(request, response)){
@@ -52,6 +55,9 @@ public class ThreadGroupServlet extends HttpServlet{
         }
 	}
 
+	/**
+	 * Lade Thread Gruppen.
+	 */
 
     @Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
@@ -70,7 +76,10 @@ public class ThreadGroupServlet extends HttpServlet{
         }
 	}
 
-
+	/**
+	 * Bearbeitet die Thread Gruppe, falls Person
+	 * authentifiziert und Moderator ist.
+	 */
     @Override
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		if(!Extensions.isAuthenticated(request, response)){
@@ -111,7 +120,10 @@ public class ThreadGroupServlet extends HttpServlet{
 		
 	}
 
-
+	/**
+	 * Loesche Thread Gruppe, falls Person 
+	 * authentifiziert und Moderator ist.
+	 */
     @Override
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 		if(!Extensions.isAuthenticated(request, response)){
