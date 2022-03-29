@@ -17,6 +17,9 @@ import com.lehsetreff.models.UserRole;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Stellt den UserController dar.
+ */
 public class UserController {
     private Database db = Database.getInstance();
 

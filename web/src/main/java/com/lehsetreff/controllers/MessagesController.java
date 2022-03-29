@@ -16,10 +16,26 @@ import java.util.List;
 import com.lehsetreff.models.*;
 import com.meshenger.models.User;
 
-
+/**
+ * Stellt den MessageController dar.
+ */
 public class MessagesController {
     private Database db = Database.getInstance();
 
+	/**
+	 * Fuegt eine Nachricht in einen Thread hinzu.
+	 * @param content
+	 * Der Inhalt der Nachricht.
+	 * @param contentType
+	 * Der Inhalttyp der Nachricht.
+	 * @param threadId
+	 * Die ID des Threads.
+	 * @param senderId
+	 * Die ID des Senders.
+	 * @return
+	 * Message Objekt
+	 * @throws Exception
+	 */
 	public Message addMessage(String content, int contentType, int threadId, int senderId) throws Exception{
 		Message m = null;
 		if(content == null || content.trim().length() == 0){

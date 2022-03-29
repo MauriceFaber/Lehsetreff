@@ -8,11 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.google.gson.Gson;
-import com.lehsetreff.models.DbConfig;
-
 public class Database {
-	DbConfig config;
+	private static final String CONNECTION_STRING = "jdbc:mysql://raspberrypi:3306/lehsetreff";
+    private static final String USER_NAME = "lehsetreffuser22";
+	private static final String PASSWORD = "Lehserkalation22";
+	private static final String IMAGE_DIRECTORY = "/lehsetreff/images";
 
 	/**
 	 * Bild-Speicherort einer Nachricht zurueckgeben.
@@ -20,19 +20,9 @@ public class Database {
 	 * IMAGE_DIRECTORY
 	 */
 	public String getImagesDirectory(){
-		return config.imageDirectory;
+		return IMAGE_DIRECTORY;
 	}
 	
-	public Database(){
-		//String configFilePath = "dbConfig.json";
-		//config = new Gson().fromJson(configFilePath, DbConfig.class); 
-		config = new DbConfig();
-		config.username = "lehsetreffuser22";
-		config.password = "Lehserkalation22";
-		config.connectionString = "jdbc:mysql://raspberrypi:3306/lehsetreff";
-		config.imageDirectory = "/lehsetreff/images";
-	}
-
 	private Connection con;
 	private static Database db;
 
@@ -125,7 +115,7 @@ public class Database {
 	public boolean connect(){
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection(config.connectionString, config.username, config.password);
+			con = DriverManager.getConnection(CONNECTION_STRING, USER_NAME, PASSWORD);
 			return true;
 		} catch (Exception e){
 			con = null;
@@ -133,8 +123,6 @@ public class Database {
 			return false;
 		}
 	}
-
-
 	
 	/**
 	 * Erstellen der SQL Statements.
