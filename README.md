@@ -3,7 +3,7 @@
 ## Getting started
 
 Zunächst muss eine Json-Datei zur Datenbankkonfiguration angelegt werden.
-Im Ordner: src/main/java/com/lehsetreff/controllers
+Im Ordner: web/src/main/java/com/lehsetreff/controllers
 Dateiname: dbConfig.json
 Inhalt:
 {
