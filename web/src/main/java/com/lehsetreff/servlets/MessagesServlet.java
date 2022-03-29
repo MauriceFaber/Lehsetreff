@@ -11,12 +11,12 @@ import com.lehsetreff.models.Message;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 
-
-
 public class MessagesServlet extends HttpServlet {
 
     Database db = Database.getInstance();
-
+/**
+ * Erstelle Nachricht, falls Person authentifiziert und Benutzer ist.
+ */
     @Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		if(!Extensions.isAuthenticated(request, response)){
@@ -57,6 +57,9 @@ public class MessagesServlet extends HttpServlet {
 	
 	}
 
+	/**
+	 * Lade Nachrichten des Threads.
+	 */
     @Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 		String parameter = request.getParameter("threadId");
@@ -87,7 +90,10 @@ public class MessagesServlet extends HttpServlet {
         }
 	}
 
-
+	/**
+	 * Bearbeitet die Nachricht, falls Person authentifiziert 
+	 * und Benutzer ist.
+	 */
     @Override
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		if(!Extensions.isAuthenticated(request, response)){
@@ -114,6 +120,9 @@ public class MessagesServlet extends HttpServlet {
 	}
 
 
+	/**
+	 * 
+	 */
     @Override
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 		if(!Extensions.isAuthenticated(request, response)){
