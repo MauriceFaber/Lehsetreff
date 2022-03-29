@@ -3,8 +3,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Stellt einen Chatraum dar.
+ */
 public class Chatroom implements Serializable {
-	//private
+//private
 	private static final long serialVersionUID = 2L;
 
 	private int id;

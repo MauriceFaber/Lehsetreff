@@ -3,6 +3,9 @@ import java.io.Serializable;
 
 import com.lehsetreff.models.UserRole;
 
+/**
+ * Stellt einen Benutzer dar.
+ */
 public class User implements Serializable {
 
 //private
