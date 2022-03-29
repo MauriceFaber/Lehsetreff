@@ -138,7 +138,7 @@ public class ThreadServlet extends HttpServlet {
 		}
 
 		int threadId = Integer.parseInt(Extensions.getParameterFromMap(request, "threadId"));
-		if(!Extensions.isModOrThreadOwner(request, response, threadId)){
+		if(!Extensions.isModerator(request, response)){
 			Extensions.removeHashmap(request);
 			return;
 		}
