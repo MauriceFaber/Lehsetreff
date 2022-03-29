@@ -486,7 +486,7 @@ public class UserController {
 	public boolean isThreadOwner(int threadId, HttpServletRequest request){
 
 		try {
-			PreparedStatement st = db.createStatement("select ID = ? from threads where ownerID = ? ", false);
+			PreparedStatement st = db.createStatement("select * from threads where ID = ? and ownerID = ? ", false);
 			st.setInt(1, threadId);
 			st.setInt(2, getUserId(request));
 

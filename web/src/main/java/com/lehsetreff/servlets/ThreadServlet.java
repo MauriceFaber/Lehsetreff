@@ -95,15 +95,16 @@ public class ThreadServlet extends HttpServlet {
 		if(!Extensions.isAuthenticated(request, response)){
 			return;
 		}
-
 		int threadId =Integer.parseInt(Extensions.getParameterFromMap(request, "threadId"));
-		String caption = (String) Extensions.getParameterFromMap(request, "caption");
-		String description = (String) Extensions.getParameterFromMap(request, "description");
-
 
 		if(!Extensions.isModOrThreadOwner(request, response, threadId)){
 			return;
 		}
+
+		String caption = (String) Extensions.getParameterFromMap(request, "caption");
+		String description = (String) Extensions.getParameterFromMap(request, "description");
+
+
 		
 		if (caption != null) {
 			Thread thread = db.getThreadController().renameThread(threadId, caption);
