@@ -15,6 +15,7 @@ public class Message {
 	private Timestamp timeStamp;
     private boolean wasModified;
 
+	private String additional;
 	private Thread thread;
 	private User sender;
 
@@ -71,4 +72,12 @@ public class Message {
     public String getImagePath(String folder){
         return folder + "/img_" + id + ".txt";
     }
+
+	public String getAdditional(){
+		return additional;
+	}
+
+	public void setAdditional(String additional){
+		this.additional = additional;
+	}
 }

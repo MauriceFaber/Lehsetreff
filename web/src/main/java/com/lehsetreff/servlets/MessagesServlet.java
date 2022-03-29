@@ -42,9 +42,11 @@ public class MessagesServlet extends HttpServlet {
 			threadIdString = Extensions.getParameterFromMap(request, "threadId");
 		}
         int threadId = Integer.parseInt(threadIdString);
+		
+		String additional = request.getParameter("additional");
        
         try {
-            Message m = db.getMessagesController().addMessage(content, contentType, threadId, userId);
+            Message m = db.getMessagesController().addMessage(content, contentType, threadId, userId, additional);
             if(m != null){		
                 Extensions.sendJsonResponse(response, m);
             } else {
@@ -53,8 +55,6 @@ public class MessagesServlet extends HttpServlet {
         } catch (Exception e) {
             response.sendError(400,"add Message failed");
         }
-		
-	
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class MessagesServlet extends HttpServlet {
 		if (!Extensions.isSender(request, response, messageId)){
 			return;
 		}
-		Message m = db.getMessagesController().modifyMessage(content, contentType,messageId);
+		Message m = db.getMessagesController().modifyMessage(content, contentType,messageId, null);
 		if(m != null){		
 			Extensions.sendJsonResponse(response, m);
 		} else {

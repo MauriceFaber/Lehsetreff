@@ -35,20 +35,33 @@ public class MessagesController {
 	 * Message Objekt
 	 * @throws Exception
 	 */
-	public Message addMessage(String content, int contentType, int threadId, int senderId) throws Exception{
+	public Message addMessage(String content, int contentType, int threadId, int senderId, String additional) throws Exception{
+		int quotedMessageId = -1;
+		if(contentType == ContentType.Quote.getContentId()){
+			if(additional == null || additional.trim().isEmpty()){
+				return null;
+			}
+			quotedMessageId = Integer.parseInt(additional);
+			Message quotedMessage = getMessage(quotedMessageId);
+			if(quotedMessage == null){
+				return null;
+
+			}
+		}
 		Message m = null;
 		if(content == null || content.trim().length() == 0){
 			return m;
 		}
 		content = content.trim();
 		try {
-			PreparedStatement st = db.createStatement("insert into messages (contentType, dateAndTime, threadID, senderID) values(?,?,?,?)", true);
+			PreparedStatement st = db.createStatement("insert into messages (contentType, dateAndTime, threadID, senderID, additional) values(?,?,?,?,?)", true);
 			st.setInt(1, contentType);
 			OffsetDateTime utc = OffsetDateTime.now(ZoneOffset.UTC);
 			Timestamp timestamp =  new Timestamp(utc.toInstant().toEpochMilli());
 			st.setTimestamp(2,timestamp);
 			st.setInt(3, threadId);
 			st.setInt(4, senderId);
+			st.setString(5, additional.trim());
 
 			st.executeUpdate();
 			ResultSet rs = st.getGeneratedKeys();
@@ -57,7 +70,7 @@ public class MessagesController {
 				m = new Message();
 				m.setContent(content, ContentType.values()[contentType]);
 				m.setId(id);
-				SetContent(m, content);
+				SetContent(m, content, rs.getString("additional"));
 				m = getMessage(id);
 			}
 		} catch(Exception e){
@@ -75,12 +88,13 @@ public class MessagesController {
  * string mit content als Inhalt
  * @throws Exception
  */
-	private void SetContent(Message m, String content) throws Exception {
+	private void SetContent(Message m, String content, String additional) throws Exception {
 		switch(m.getContentId()){
 			case Text:
             case Link:
             case Quote:
 			m.setContent(content, m.getContentId());
+			m.setAdditional(additional);
 			break;
 			case Image:
 			String imgPath = m.getImagePath(db.getImagesDirectory());
@@ -166,6 +180,7 @@ public class MessagesController {
 				m.setThread(db.getThreadController().getThread(threadId));
 				m.setSender(db.getUserController().getUser(senderId, false));
 				m.setWasModified(result.getBoolean("wasModified"));
+				m.setAdditional(result.getString("additional"));
 			}
 		} catch(Exception e){
 			m = null;
@@ -184,9 +199,21 @@ public class MessagesController {
  * @return
  * Nachricht Objekt
  */
-	public Message modifyMessage(String content , int contentType, int messageID){
+	public Message modifyMessage(String content, int contentType, int messageID, String additional){
 		if(content == null){
 			return null;
+		}
+		int quotedMessageId = -1;
+		if(contentType == ContentType.Quote.getContentId()){
+			if(additional == null || additional.trim().isEmpty()){
+				return null;
+			}
+			quotedMessageId = Integer.parseInt(additional);
+			Message quotedMessage = getMessage(quotedMessageId);
+			if(quotedMessage == null){
+				return null;
+
+			}
 		}
 		content = content.trim();
 		Message m = getMessage(messageID);
@@ -201,6 +228,7 @@ public class MessagesController {
 			ResultSet rs = st.getGeneratedKeys();
 
             if(rs.next()){
+				m = getMessage(m.getId());
 				return m;
 			}
 		} catch(Exception e){
