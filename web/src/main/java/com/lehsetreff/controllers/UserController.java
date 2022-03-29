@@ -540,14 +540,14 @@ public class UserController {
 	 */
 	public boolean isMessageSender(int messageId, HttpServletRequest request){
 		try {
-			PreparedStatement st = db.createStatement("select ID = ? from messages where senderID = ? ", false);
+			PreparedStatement st = db.createStatement("select * from messages where ID = ? and senderID = ? ", false);
 			st.setInt(1, messageId);
 			st.setInt(2, getUserId(request));
 
 			ResultSet result = db.executeQuery(st);
 			if(result.next()){
 				int tmp = result.getInt("ID");
-				int temp = result.getInt("ownerID");
+				int temp = result.getInt("senderID");
 				if (tmp == messageId && temp == getUserId(request)){
 					return true;
 				}

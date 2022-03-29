@@ -47,10 +47,6 @@ public class Message {
         return content;
     }
     public void setContent(String content, ContentType type){
-		if(content == null || content.isEmpty()){
-			content = "empty content";
-			type = ContentType.Empty;
-		}
         this.content = content;
         contentId = type;
     }

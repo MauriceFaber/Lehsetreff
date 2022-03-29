@@ -24,8 +24,13 @@ public class Database {
 	}
 	
 	public Database(){
-		String configFilePath = "dbConfig.json";
-		config = new Gson().fromJson(configFilePath, DbConfig.class); 
+		//String configFilePath = "dbConfig.json";
+		//config = new Gson().fromJson(configFilePath, DbConfig.class); 
+		config = new DbConfig();
+		config.username = "lehsetreffuser22";
+		config.password = "Lehserkalation22";
+		config.connectionString = "jdbc:mysql://raspberrypi:3306/lehsetreff";
+		config.imageDirectory = "/lehsetreff/images";
 	}
 
 	private Connection con;

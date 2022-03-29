@@ -92,7 +92,6 @@ public class MessagesController {
 			case Text:
             case Link:
             case Quote:
-			case Empty:
 			break;
 			case Image:
 			String imgPath = m.getContent();
@@ -112,14 +111,13 @@ public class MessagesController {
 	 */
 	public boolean deleteMessage(int id){
 		try {
-			PreparedStatement st = db.createStatement("update messages contentType = ? and content = ? where ID = ?", true);
+			PreparedStatement st = db.createStatement("update messages set contentType = ?, content = ?, wasModified = true where ID = ?", true);
 			st.setInt(1, ContentType.DELETED.getContentId());
             st.setString(2, "");
 			st.setInt(3, id);
 			
 			st.executeUpdate();
 			ResultSet rs = st.getGeneratedKeys();
-
             if(rs.next()){
 				return true;
 			}
@@ -175,14 +173,14 @@ public class MessagesController {
  * Nachricht Objekt
  */
 	public Message modifyMessage(String content , int contentType, int messageID){
-		if(content == null || content.trim().length() == 0){
+		if(content == null){
 			return null;
 		}
 		content = content.trim();
 		Message m = getMessage(messageID);
 
 		try {
-			PreparedStatement st = db.createStatement("update messages contentType = ? and content = ? where ID = ?", true);
+			PreparedStatement st = db.createStatement("update messages set contentType = ?, content = ?, wasModified = true where ID = ?", true);
 			st.setInt(1, contentType);
             st.setString(2, content);
 			st.setInt(3, messageID);
