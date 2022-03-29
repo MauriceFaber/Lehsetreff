@@ -75,6 +75,14 @@ public class Extensions {
 		return true;
 	}
 
+	public static boolean isModOrSender(HttpServletRequest request, HttpServletResponse response, int messageId) throws IOException{
+		if(!db.getUserController().isModerator(request) && !db.getUserController().isMessageSender(messageId, request)){
+			response.sendError(401, "no moderator or sender");
+			return false;
+		}
+		return true;
+	}
+
 	public static boolean isSender(HttpServletRequest request, HttpServletResponse response, int messageID) throws IOException{
 		if(!db.getUserController().isMessageSender(messageID, request)){
 			response.sendError(401, "not the sender");
