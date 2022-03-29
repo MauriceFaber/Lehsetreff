@@ -6,6 +6,9 @@ import java.util.List;
 
 import com.meshenger.models.User;
 
+/**
+ * Stellt einen Thread dar.
+ */
 public class Thread implements Serializable {
     
     private static final long serialVersionUID = 2L;
@@ -16,6 +19,8 @@ public class Thread implements Serializable {
 	private ThreadGroup threadGroup;
 	private User owner;
 	private List<Message> messages = new ArrayList<Message>();
+
+    //getter und setter
 
     public User getOwner() {
         return owner;

@@ -5,6 +5,10 @@ import java.util.List;
 
 import com.meshenger.models.User;
 
+/**
+ * Stellt eine ThreadGruppe dar.
+ */
+
 public class ThreadGroup {
     
     private String caption;
@@ -12,6 +16,8 @@ public class ThreadGroup {
     private User owner;
     private List<Thread> threads = new ArrayList<Thread>();
     private String description;
+
+    //getter und setter
 
     public String getCaption() {
         return caption;

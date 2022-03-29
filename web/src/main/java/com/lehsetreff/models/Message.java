@@ -4,20 +4,19 @@ import java.sql.Timestamp;
 
 import com.meshenger.models.User;
 
+/**
+ * Stellt eine Nachricht dar.
+ */
 public class Message {
     
-//private
 	private int id;
 	private String content;
 	private ContentType contentId;
 	private Timestamp timeStamp;
     private boolean wasModified;
-    private String senderName; //Maurice Senpai brauche ma das hier noch?
 
 	private Thread thread;
 	private User sender;
-
-//public
 
 //getter und setter
 
@@ -67,14 +66,6 @@ public class Message {
     }
     public void setWasModified(boolean wasModified) {
         this.wasModified = wasModified;
-    }
-
-    public void setSenderName(String name) {
-        this.senderName = name;
-    }
-
-    public String getSenderName() {
-        return senderName;
     }
 
     public String getImagePath(String folder){
