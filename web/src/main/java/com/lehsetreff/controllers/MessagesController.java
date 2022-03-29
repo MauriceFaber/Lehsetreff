@@ -92,6 +92,7 @@ public class MessagesController {
 			case Text:
             case Link:
             case Quote:
+			case DELETED:
 			break;
 			case Image:
 			String imgPath = m.getContent();
