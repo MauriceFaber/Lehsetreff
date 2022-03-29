@@ -2,6 +2,9 @@ package com.meshenger.models;
 
 import java.sql.Timestamp;
 
+/**
+ * Stellt eine Nachricht dar.
+ */
 public class Message {
 
 //private

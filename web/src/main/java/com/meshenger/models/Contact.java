@@ -1,5 +1,8 @@
 package com.meshenger.models;
 
+/**
+ * Stellt einen Kontakt eines Benutzers dar.
+ */
 public class Contact {
 //private
 	private int contactOwnerId;

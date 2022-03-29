@@ -1,5 +1,8 @@
 package com.lehsetreff.models;
 
+/**
+ * Enum fuer Kontent Typen.
+ */
 public enum ContentType {
     Text(0),
     Image(1),
@@ -9,8 +12,15 @@ public enum ContentType {
 
     private int contentId;
 
+    /**
+     * Legt den Kontent Typ fest
+     * @param contentId
+     * Die ID des Kontents.
+     */
     private ContentType(final int contentId){ this.contentId = contentId;}
 
+    //getter und setter
+    
     public int getContentId(){
         return contentId;
     }
