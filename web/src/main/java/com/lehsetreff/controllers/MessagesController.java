@@ -41,6 +41,7 @@ public class MessagesController {
 			if(additional == null || additional.trim().isEmpty()){
 				return null;
 			}
+			additional = additional.trim();
 			quotedMessageId = Integer.parseInt(additional);
 			Message quotedMessage = getMessage(quotedMessageId);
 			if(quotedMessage == null){
@@ -54,28 +55,27 @@ public class MessagesController {
 		}
 		content = content.trim();
 		try {
-			PreparedStatement st = db.createStatement("insert into messages (contentType, dateAndTime, threadID, senderID, additional) values(?,?,?,?,?)", true);
+
+			PreparedStatement st = db.createStatement("insert into messages (contentType, dateAndTime, threadID, senderID, content, additional) values(?,?,?,?,?,?)", true);
 			st.setInt(1, contentType);
 			OffsetDateTime utc = OffsetDateTime.now(ZoneOffset.UTC);
 			Timestamp timestamp =  new Timestamp(utc.toInstant().toEpochMilli());
 			st.setTimestamp(2,timestamp);
 			st.setInt(3, threadId);
 			st.setInt(4, senderId);
-			st.setString(5, additional.trim());
+			st.setString(5, content);
+			st.setString(6, additional);
 
 			st.executeUpdate();
 			ResultSet rs = st.getGeneratedKeys();
             if(rs.next()){
 				int id = rs.getInt(1);
-				m = new Message();
-				m.setContent(content, ContentType.values()[contentType]);
-				m.setId(id);
-				SetContent(m, content, rs.getString("additional"));
 				m = getMessage(id);
+				SetContent(m, content, additional);		
 			}
 		} catch(Exception e){
-				m = new Message();
-				m.setContent(e.getMessage(), ContentType.Text);
+			m = new Message();
+			m.setContent(e.getMessage(), ContentType.Text);
 		}
 		return m;
 	}
