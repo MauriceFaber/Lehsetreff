@@ -24,13 +24,15 @@ public class ThreadGroupServlet extends HttpServlet{
 			return;
 		}
 
+		if(!Extensions.isModerator(request, response)){
+			return;
+		}
+
 		int userId = db.getUserController().getUserId(request);
 		String caption = request.getParameter("caption");
 		String description = request.getParameter("description");
 
-		if(!Extensions.isModerator(request, response)){
-			return;
-		}
+
 
 		if(caption == null || caption.length() == 0){
 			response.sendError(401, "caption null or empty");
@@ -80,7 +82,7 @@ public class ThreadGroupServlet extends HttpServlet{
         int threadGroupId = Integer.parseInt(idString);
 		String description = Extensions.getParameterFromMap(request, "description");
         
-		if(!Extensions.isModerator(request, response) || !Extensions.isThreadGroupOwner(request, response, threadGroupId)){
+		if(!Extensions.isModerator(request, response)){
 			return;
 		}
 
@@ -118,7 +120,7 @@ public class ThreadGroupServlet extends HttpServlet{
 		}
 
 		int threadGroupId = Integer.parseInt(Extensions.getParameterFromMap(request, "id"));
-		if(!Extensions.isThreadGroupOwner(request, response, threadGroupId)){
+		if(!Extensions.isModerator(request, response)){
 			return;
 		}
 		try{

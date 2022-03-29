@@ -83,17 +83,9 @@ public class Extensions {
 		return true;
 	}
 
-	public static boolean isThreadOwner(HttpServletRequest request, HttpServletResponse response, int threadID) throws IOException{
-		if(!db.getUserController().isThreadOwner(threadID, request)){
-			response.sendError(401, "not the owner");
-			return false;
-		}
-		return true;
-	}
-
-	public static boolean isThreadGroupOwner(HttpServletRequest request, HttpServletResponse response, int threadGroupID) throws IOException{
-		if(!db.getUserController().isThreadGroupOwner(threadGroupID, request)){
-			response.sendError(401, "not the group owner");
+	public static boolean isUser(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		if(!db.getUserController().isUser(request)){
+			response.sendError(401, "not a user");
 			return false;
 		}
 		return true;

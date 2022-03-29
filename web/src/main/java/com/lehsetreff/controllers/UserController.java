@@ -299,11 +299,10 @@ public class UserController {
 	 * Der Inhalt der Datei
 	 */
 	private String getImage(String fileName){
-		String result = "";
+		String result = "https://png.pngtree.com/png-vector/20190114/ourlarge/pngtree-vector-avatar-icon-png-image_313572.jpg";
 		try {
 			result = readFile(fileName);
 		}catch(Exception e){
-			result = null;
 		}
 		return result;
 	}
@@ -490,7 +489,7 @@ public class UserController {
 	public boolean isThreadOwner(int threadId, HttpServletRequest request){
 
 		try {
-			PreparedStatement st = db.createStatement("select ID = ? from threads where ownerID = ? ", false);
+			PreparedStatement st = db.createStatement("select * from threads where ID = ? and ownerID = ? ", false);
 			st.setInt(1, threadId);
 			st.setInt(2, getUserId(request));
 
@@ -544,14 +543,14 @@ public class UserController {
 	 */
 	public boolean isMessageSender(int messageId, HttpServletRequest request){
 		try {
-			PreparedStatement st = db.createStatement("select ID = ? from messages where senderID = ? ", false);
+			PreparedStatement st = db.createStatement("select * from messages where ID = ? and senderID = ? ", false);
 			st.setInt(1, messageId);
 			st.setInt(2, getUserId(request));
 
 			ResultSet result = db.executeQuery(st);
 			if(result.next()){
 				int tmp = result.getInt("ID");
-				int temp = result.getInt("ownerID");
+				int temp = result.getInt("senderID");
 				if (tmp == messageId && temp == getUserId(request)){
 					return true;
 				}

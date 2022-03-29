@@ -23,10 +23,25 @@ public class MessagesServlet extends HttpServlet {
 			return;
 		}
 
+		if(!Extensions.isUser(request, response)){
+			return;
+		}
+
 		int userId = db.getUserController().getUserId(request);
-        int contentType = Integer.parseInt(request.getParameter("contentType"));
-        int threadId = Integer.parseInt(request.getParameter("threadId"));
+		String contentTypeString = request.getParameter("contentType");
+		if(contentTypeString == null){
+			contentTypeString = Extensions.getParameterFromMap(request, "contentType");
+		}
 		String content = request.getParameter("content");
+		if(content == null){
+			content = Extensions.getParameterFromMap(request, "content");
+		}
+        int contentType = Integer.parseInt(contentTypeString);
+		String threadIdString = request.getParameter("threadId");
+		if(threadIdString == null){
+			threadIdString = Extensions.getParameterFromMap(request, "threadId");
+		}
+        int threadId = Integer.parseInt(threadIdString);
        
         try {
             Message m = db.getMessagesController().addMessage(content, contentType, threadId, userId);
@@ -68,17 +83,22 @@ public class MessagesServlet extends HttpServlet {
 			return;
 		}
 
+        if(!Extensions.isUser(request, response)){
+			return;
+		}
+
 		String content = request.getParameter("content");
         int messageId = Integer.parseInt(request.getParameter("messageID"));
         int contentType = Integer.parseInt(request.getParameter("contentType"));
         
-		if (Extensions.isSender(request, response, messageId)){
-			Message m = db.getMessagesController().modifyMessage(content, contentType,messageId);
-			if(m != null){		
-				Extensions.sendJsonResponse(response, m);
-			} else {
-				response.sendError(400, "Modify Message failed");
-			}
+		if (!Extensions.isSender(request, response, messageId)){
+			return;
+		}
+		Message m = db.getMessagesController().modifyMessage(content, contentType,messageId);
+		if(m != null){		
+			Extensions.sendJsonResponse(response, m);
+		} else {
+			response.sendError(400, "Modify Message failed");
 		}
 	}
 
@@ -87,6 +107,10 @@ public class MessagesServlet extends HttpServlet {
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 		if(!Extensions.isAuthenticated(request, response)){
 			Extensions.removeHashmap(request);
+			return;
+		}
+
+        if(!Extensions.isUser(request, response)){
 			return;
 		}
 
