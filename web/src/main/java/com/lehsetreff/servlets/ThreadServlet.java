@@ -21,6 +21,10 @@ public class ThreadServlet extends HttpServlet {
 			return;
 		}
 
+		if(!Extensions.isUser(request, response)){
+			return;
+		}
+
 		int userId = db.getUserController().getUserId(request);
 		String threadCaption = (String) request.getParameter("caption");
 		

@@ -296,11 +296,10 @@ public class UserController {
 	 * Der Inhalt der Datei
 	 */
 	private String getImage(String fileName){
-		String result = "";
+		String result = "https://png.pngtree.com/png-vector/20190114/ourlarge/pngtree-vector-avatar-icon-png-image_313572.jpg";
 		try {
 			result = readFile(fileName);
 		}catch(Exception e){
-			result = null;
 		}
 		return result;
 	}

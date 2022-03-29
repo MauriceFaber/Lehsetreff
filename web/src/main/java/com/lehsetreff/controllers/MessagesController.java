@@ -92,6 +92,7 @@ public class MessagesController {
 			case Text:
             case Link:
             case Quote:
+			case Empty:
 			break;
 			case Image:
 			String imgPath = m.getContent();
@@ -215,23 +216,11 @@ public class MessagesController {
 			ResultSet rs = db.executeQuery(st);
 
 			while(rs.next()){
-				Message m = new Message();
-				m.setId(rs.getInt("ID"));
-				m.setContent(rs.getString("content"), ContentType.values()[rs.getInt("contentType")]);
-				GetContent(m);
-				m.setTimeStamp(rs.getTimestamp("dateAndTime"));
-				int senderId = rs.getInt("senderID");
-				m.setThread(db.getThreadController().getThread(threadId));
-				m.setSender(db.getUserController().getUser(senderId, false));
-				User sender = db.getUserController().getUser(m.getSender().getId(), false);
-				m.setSenderName(sender.getName());
+				Message m = getMessage(rs.getInt("ID"));
 				result.add(m);
 			}
-
 			} catch(Exception e){
 			result.clear();
-			Message t = new Message();
-			t.setContent(e.getMessage(), ContentType.Text);
 		}
 		return result;
 	}
@@ -245,6 +234,7 @@ public class MessagesController {
 	 * @throws Exception
 	 */
     private void saveImageToFile(String base64, String fileName) throws Exception{
+		base64 = base64.replace(" ", "+");
 		checkDirectory();
 
 		Path p = Paths.get(fileName);
@@ -276,11 +266,12 @@ public class MessagesController {
 	 * Der Inhalt der Datei.
 	 */
 	private String getImage(String fileName){
-		String result = "";
+		String result = "https://www.publicdomainpictures.net/pictures/280000/nahled/not-found-image-15383864787lu.jpg";
 		try {
 			result = readFile(fileName);
+			result = result.replaceAll("\\s+","");
+
 		}catch(Exception e){
-			result = null;
 		}
 		return result;
 	}
