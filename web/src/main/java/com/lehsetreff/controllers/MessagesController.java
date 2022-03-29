@@ -128,18 +128,15 @@ public class MessagesController {
 	 */
 	public boolean deleteMessage(int id){
 		try {
-			PreparedStatement st = db.createStatement("update messages set contentType = ?, content = ?, wasModified = true where ID = ?", true);
+			PreparedStatement st = db.createStatement("update messages set contentType = ?, content = ?, wasModified = TRUE where ID = ?", true);
 			st.setInt(1, ContentType.DELETED.getContentId());
             st.setString(2, "");
 			st.setInt(3, id);
 			
 			st.executeUpdate();
-			ResultSet rs = st.getGeneratedKeys();
-            if(rs.next()){
-				return true;
-			}
+		    return true;
 		} catch(Exception e){
-				System.out.println(e.getMessage());
+			System.out.println(e.getMessage());
 		}
 		return false;
 	}
@@ -171,6 +168,7 @@ public class MessagesController {
 				m.setSender(db.getUserController().getUser(senderId, false));
 				User sender = db.getUserController().getUser(m.getSender().getId(), false);
 				m.setSenderName(sender.getName());
+				m.setWasModified(result.getBoolean("wasModified"));
 			}
 		} catch(Exception e){
 			m = null;
@@ -197,7 +195,7 @@ public class MessagesController {
 		Message m = getMessage(messageID);
 
 		try {
-			PreparedStatement st = db.createStatement("update messages set contentType = ?, content = ?, wasModified = true where ID = ?", true);
+			PreparedStatement st = db.createStatement("update messages set contentType = ?, content = ?, wasModified = TRUE where ID = ?", true);
 			st.setInt(1, contentType);
             st.setString(2, content);
 			st.setInt(3, messageID);
