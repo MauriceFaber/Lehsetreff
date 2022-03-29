@@ -56,7 +56,7 @@ public class MessagesController {
 		content = content.trim();
 		try {
 
-			PreparedStatement st = db.createStatement("insert into messages (contentType, dateAndTime, threadID, senderID, content, additional) values(?,?,?,?,?)", true);
+			PreparedStatement st = db.createStatement("insert into messages (contentType, dateAndTime, threadID, senderID, content, additional) values(?,?,?,?,?,?)", true);
 			st.setInt(1, contentType);
 			OffsetDateTime utc = OffsetDateTime.now(ZoneOffset.UTC);
 			Timestamp timestamp =  new Timestamp(utc.toInstant().toEpochMilli());
