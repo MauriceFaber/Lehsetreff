@@ -8,7 +8,7 @@ Dateiname: dbConfig.json
 Inhalt:
 {
 "imageDirectory": "/lehsetreff/images",
-"connectionString": "jdbc:mysql://raspberrypi:3306/lehsetreff",
-"username": "lehsetreffuser22",
-"password": "Lehserkalation22"
+"connectionString": "jdbc:mysql://url:3306/database",
+"username": "",
+"password": ""
 }
