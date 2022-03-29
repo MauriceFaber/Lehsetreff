@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.lehsetreff.controllers.Database;
-import com.lehsetreff.models.UserRole;
 import com.meshenger.models.User;
 
 import jakarta.servlet.ServletException;
@@ -16,6 +15,10 @@ public class UserRoleServlet extends HttpServlet {
 
     private Database db = Database.getInstance();
 
+	/**
+	 * Erstellt Benutzer Rolle, falls Person
+	 * authentifiziert und Admin ist.
+	 */
     @Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		if(!Extensions.isAuthenticated(request, response)){
@@ -37,6 +40,10 @@ public class UserRoleServlet extends HttpServlet {
         }
 	}
 
+	/**
+	 * Lade Benutzer Rollen, falls Person
+	 * authentifiziert und Admin ist.
+	 */
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(!Extensions.isAuthenticated(request, response)){

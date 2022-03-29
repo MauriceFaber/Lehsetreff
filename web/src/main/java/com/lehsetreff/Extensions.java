@@ -40,7 +40,7 @@ public class Extensions {
      * @param response
      * Antwort.
      * @return
-     * Benutzer authentifiziert.
+     * true, falls Benutzer authentifiziert, sonst false
      * @throws IOException
      */
 	public static boolean isAuthenticated(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -51,6 +51,16 @@ public class Extensions {
 		return true;
 	}
 
+	/**
+	 * Prueft, ob Benutzer Admin ist.
+	 * @param request
+	 * HTTP Request.
+	 * @param response
+	 * Antwort.
+	 * @return
+	 * true, falls Benutzer Admin ist, sonst false.
+	 * @throws IOException
+	 */
 	public static boolean isAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		if(!db.getUserController().isAdmin(request)){
 			response.sendError(401, "no admin rights");
@@ -59,6 +69,16 @@ public class Extensions {
 		return true;
 	}
 	
+	/**
+	 * Prueft, ob Benutzer Moderator ist.
+	 * @param request
+	 * HTTP Request.
+	 * @param response
+	 * Antwort.
+	 * @return
+	 * true, falls Benutzer Moderator ist, sonst false.
+	 * @throws IOException
+	 */
 	public static boolean isModerator(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		if(!db.getUserController().isModerator(request)){
 			response.sendError(401, "no moderator rights");
@@ -67,6 +87,16 @@ public class Extensions {
 		return true;
 	}
 	
+	/**
+	 * Prueft, ob Benutzer Moderator oder Besitzer ist.
+	 * @param request
+	 * HTTP Request.
+	 * @param response
+	 * Antwort.
+	 * @return
+	 * true, falls Benutzer Moderator oder Thread Besitzer ist, sonst false.
+	 * @throws IOException
+	 */
 	public static boolean isModOrThreadOwner(HttpServletRequest request, HttpServletResponse response, int threadId) throws IOException{
 		if(!db.getUserController().isModerator(request) && !db.getUserController().isThreadOwner(threadId, request)){
 			response.sendError(401, "no moderator or thradOwner");
@@ -75,6 +105,16 @@ public class Extensions {
 		return true;
 	}
 
+	/**
+	 * Prueft, ob Benutzer Moderator oder Sender der Nachricht ist.
+	 * @param request
+	 * HTTP Request.
+	 * @param response
+	 * Antwort.
+	 * @return
+	 * true, falls Benutzer Moderator oder Sender ist, sonst false.
+	 * @throws IOException
+	 */
 	public static boolean isModOrSender(HttpServletRequest request, HttpServletResponse response, int messageId) throws IOException{
 		if(!db.getUserController().isModerator(request) && !db.getUserController().isMessageSender(messageId, request)){
 			response.sendError(401, "no moderator or sender");
@@ -83,6 +123,16 @@ public class Extensions {
 		return true;
 	}
 
+	/**
+	 * Prueft, ob Benutzer Sender der Nachricht ist.
+	 * @param request
+	 * HTTP Request.
+	 * @param response
+	 * Antwort.
+	 * @return
+	 * true, falls Benutzer Sender ist, sonst false.
+	 * @throws IOException
+	 */
 	public static boolean isSender(HttpServletRequest request, HttpServletResponse response, int messageID) throws IOException{
 		if(!db.getUserController().isMessageSender(messageID, request)){
 			response.sendError(401, "not the sender");
@@ -91,6 +141,16 @@ public class Extensions {
 		return true;
 	}
 
+	/**
+	 * Prueft, ob Benutzer Admin ist.
+	 * @param request
+	 * HTTP Request.
+	 * @param response
+	 * Antwort.
+	 * @return
+	 * true, falls Person Benutzer ist, sonst false.
+	 * @throws IOException
+	 */
 	public static boolean isUser(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		if(!db.getUserController().isUser(request)){
 			response.sendError(401, "not a user");
