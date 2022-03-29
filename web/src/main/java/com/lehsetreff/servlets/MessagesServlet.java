@@ -104,9 +104,9 @@ public class MessagesServlet extends HttpServlet {
 			return;
 		}
 
-		String content = request.getParameter("content");
-        int messageId = Integer.parseInt(request.getParameter("messageID"));
-        int contentType = Integer.parseInt(request.getParameter("contentType"));
+		String content = Extensions.getParameterFromMap(request,"content");
+        int messageId = Integer.parseInt(Extensions.getParameterFromMap(request, "messageID"));
+        int contentType = Integer.parseInt(Extensions.getParameterFromMap(request,"contentType"));
         
 		if (!Extensions.isSender(request, response, messageId)){
 			return;
