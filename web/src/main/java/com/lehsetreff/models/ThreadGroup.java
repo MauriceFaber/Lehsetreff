@@ -10,12 +10,11 @@ import com.meshenger.models.User;
  */
 
 public class ThreadGroup {
-    
     private String caption;
     private int id;
     private User owner;
-    private List<Thread> threads = new ArrayList<Thread>();
     private String description;
+    private List<Thread> threads = new ArrayList<Thread>();
 
     //getter und setter
 

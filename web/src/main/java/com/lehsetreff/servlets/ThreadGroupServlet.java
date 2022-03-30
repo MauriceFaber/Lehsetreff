@@ -62,8 +62,14 @@ public class ThreadGroupServlet extends HttpServlet{
     @Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 		String idString = (String)request.getParameter("id");
+		String groupName = request.getParameter("groupName");
+		int id = -1;
 		if(idString != null){
-			int id = Integer.parseInt(idString);
+			id = Integer.parseInt(idString);
+		}else if(groupName != null){
+			id = db.getThreadGroupController().getThreadGroup(groupName).getId();
+		}
+		if(id > 0){
 			ThreadGroup group = db.getThreadGroupController().getThreadGroup(id);
 			Extensions.sendJsonResponse(response, group);
 			return;

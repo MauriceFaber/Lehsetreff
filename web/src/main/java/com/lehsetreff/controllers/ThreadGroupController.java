@@ -102,6 +102,7 @@ public class ThreadGroupController {
 				int ownerId = result.getInt("ownerID");
 				tGroup.setOwner(db.getUserController().getUser(ownerId, false));
                 tGroup.setDescription(result.getString("groupDescription"));
+				tGroup.setMembers(db.getThreadController().getThreadsFromThreadGroup(tGroup.getId()));
             }
         } catch(Exception e){
 			tGroup = null;
