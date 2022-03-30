@@ -71,4 +71,38 @@ public class UsersServlet extends HttpServlet {
 			}
 		
 	}
+
+	/**
+	 * Avatar ueberpruefen, User aus Datenbank entnehmen und Avatar in Userobjekt und Datenbank setzen.
+	 */
+    @Override
+	public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
+		if(!Extensions.isAuthenticated(request, response)){
+			Extensions.removeHashmap(request);
+			return;
+		}
+
+        String avatar = Extensions.getParameterFromMap(request, "avatar");
+		avatar = avatar.replace("%3A", ":");
+		avatar = avatar.replace("%3B", ";");
+		avatar = avatar.replace("%2C", ",");
+		avatar = avatar.replace("%2F", "/");
+
+        boolean isAvatarValid = avatar != null;
+
+        User u = db.getUserController().getUser(request, false); 
+
+        if (isAvatarValid){ 
+			u.setAvatar(avatar);
+        } 
+
+		u = db.getUserController().updateUser(u.getId(), avatar);
+		if (u != null){
+        	Extensions.sendJsonResponse(response, u);
+			Extensions.removeHashmap(request);
+			return;
+		}
+		Extensions.removeHashmap(request);
+		response.sendError(400);
+    }   
 }

@@ -1,7 +1,9 @@
 package com.lehsetreff.controllers;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -530,6 +532,70 @@ public class UserController {
 			return false;
 		}
 		return false;
+	}
+
+	/**
+	 * Aktualisiert den Avatar eines Benutzers.
+	 * @param id
+	 * Id des Benutzers
+	 * @param newAvatar
+	 * Avatar als base64
+	 * @return
+	 * Benutzerobjekt
+	 */
+	public User updateUser(int id, String newAvatar){
+		User u = getUser(id, false);
+		try {
+			String path = u.getAvatarPath(db.getAvatarsDirectory());
+			saveImageToFile(newAvatar, path);
+
+			PreparedStatement st = db.createStatement("update users set avatar = ? where ID = ?", true);
+			st.setString(1, path);
+			st.setInt(2, id);
+
+			st.executeUpdate();
+			ResultSet rs = st.getGeneratedKeys();
+
+            if(rs.next()){
+				u = getUser(id, true);
+			}
+		} catch(Exception e){
+				System.out.println(e.getMessage());
+		}
+		return u;
+	}
+
+	/**
+	 * Speichert das Bild in die Datei.
+	 * @param base64
+	 * Bilddarstellung als base 64 string
+	 * @param fileName
+	 * Name der Datei.
+	 * @throws Exception
+	 */
+    private void saveImageToFile(String base64, String fileName) throws Exception{
+		base64 = base64.replace(" ", "+");
+		checkDirectory();
+
+		Path p = Paths.get(fileName);
+		if(!Files.exists(p)){
+			Files.createFile(p);
+		}
+		FileWriter w = new FileWriter(fileName);
+		w.write(base64);
+		w.close();
+	}
+
+	/**
+	 * Pruefen, ob für die abzuspeichernde Avatar-Datei ein Verzeichnis existiert, wenn false
+	 * wird das Verzeichnis angelegt.
+	 * @throws Exception
+	 */
+	private void checkDirectory() throws Exception{
+		Path p = Paths.get(db.getImagesDirectory());
+		if(!Files.exists(p)){
+			Files.createDirectories(p);
+		}
 	}
 
 	/**

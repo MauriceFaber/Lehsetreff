@@ -13,6 +13,7 @@ public class Database {
     private static final String USER_NAME = "lehsetreffuser22";
 	private static final String PASSWORD = "Lehserkalation22";
 	private static final String IMAGE_DIRECTORY = "/lehsetreff/images";
+	private static final String AVATAR_DIRECTORY = "/meshenger/images";
 
 	/**
 	 * Bild-Speicherort einer Nachricht zurueckgeben.
@@ -21,6 +22,15 @@ public class Database {
 	 */
 	public String getImagesDirectory(){
 		return IMAGE_DIRECTORY;
+	}
+
+	/**
+	 * Bild-Speicherort eines Avatars zurueckgeben.
+	 * @return 
+	 * AVATAR_DIRECTORY
+	 */
+	public String getAvatarsDirectory(){
+		return AVATAR_DIRECTORY;
 	}
 	
 	private Connection con;
