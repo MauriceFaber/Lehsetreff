@@ -36,6 +36,7 @@ public class MessagesController {
 	 * @throws Exception
 	 */
 	public Message addMessage(String content, int contentType, int threadId, int senderId, String additional) throws Exception{
+		Message m = null;
 		int quotedMessageId = -1;
 		if(contentType == ContentType.Quote.getContentId()){
 			if(additional == null || additional.trim().isEmpty()){
@@ -49,13 +50,11 @@ public class MessagesController {
 
 			}
 		}
-		Message m = null;
 		if(content == null || content.trim().length() == 0){
-			return m;
+			return null;
 		}
 		content = content.trim();
-		try {
-
+			try {
 			PreparedStatement st = db.createStatement("insert into messages (contentType, dateAndTime, threadID, senderID, content, additional) values(?,?,?,?,?,?)", true);
 			st.setInt(1, contentType);
 			OffsetDateTime utc = OffsetDateTime.now(ZoneOffset.UTC);
@@ -63,6 +62,11 @@ public class MessagesController {
 			st.setTimestamp(2,timestamp);
 			st.setInt(3, threadId);
 			st.setInt(4, senderId);
+			String tmpContent = "";
+			if(contentType == ContentType.Image.getContentId()){
+				tmpContent = content;
+				content = "";
+			}
 			st.setString(5, content);
 			st.setString(6, additional);
 
@@ -71,11 +75,10 @@ public class MessagesController {
             if(rs.next()){
 				int id = rs.getInt(1);
 				m = getMessage(id);
-				SetContent(m, content, additional);		
+				SetContent(m, tmpContent);		
 			}
 		} catch(Exception e){
-			m = new Message();
-			m.setContent(e.getMessage(), ContentType.Text);
+			m = null;
 		}
 		return m;
 	}
@@ -88,13 +91,11 @@ public class MessagesController {
  * string mit content als Inhalt
  * @throws Exception
  */
-	private void SetContent(Message m, String content, String additional) throws Exception {
+	private void SetContent(Message m, String content) throws Exception {
 		switch(m.getContentId()){
 			case Text:
             case Link:
             case Quote:
-			m.setContent(content, m.getContentId());
-			m.setAdditional(additional);
 			break;
 			case Image:
 			String imgPath = m.getImagePath(db.getImagesDirectory());
