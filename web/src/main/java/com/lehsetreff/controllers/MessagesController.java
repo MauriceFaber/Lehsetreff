@@ -63,9 +63,9 @@ public class MessagesController {
 			st.setInt(3, threadId);
 			st.setInt(4, senderId);
 			String tmpContent = "";
-			if(contentType == ContentType.Image.getContentId()){
 				tmpContent = content;
-				content = "";
+				if(contentType == ContentType.Image.getContentId()){
+					content = "";
 			}
 			st.setString(5, content);
 			st.setString(6, additional);
@@ -75,7 +75,8 @@ public class MessagesController {
             if(rs.next()){
 				int id = rs.getInt(1);
 				m = getMessage(id);
-				SetContent(m, tmpContent);		
+					SetContent(m, tmpContent);		
+					
 			}
 		} catch(Exception e){
 			m = null;
