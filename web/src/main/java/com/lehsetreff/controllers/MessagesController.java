@@ -2,6 +2,7 @@ package com.lehsetreff.controllers;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -135,7 +136,7 @@ public class MessagesController {
 	}
 
 	/**
-	 * Kennzeichnet eine Nachricht als gelöscht.
+	 * Kennzeichnet eine Nachricht als gelöscht bzw. löscht eine als gelöschte Nachricht endgültig.
 	 * @param id
 	 * Die id der Nachricht.
 	 * @return
@@ -143,12 +144,18 @@ public class MessagesController {
 	 */
 	public boolean deleteMessage(int id){
 		try {
-			PreparedStatement st = db.createStatement("update messages set contentType = ?, content = ?, wasModified = TRUE where ID = ?", true);
-			st.setInt(1, ContentType.DELETED.getContentId());
-            st.setString(2, "");
-			st.setInt(3, id);
-			
-			st.executeUpdate();
+            boolean finallyDelete = getMessage(id).getContentId() == ContentType.DELETED; 
+			if(finallyDelete){
+				PreparedStatement st = db.createStatement("delete from messages where ID = ?", true);
+				st.setInt(1, id);
+				st.executeUpdate();
+			}else {
+				PreparedStatement st = db.createStatement("update messages set contentType = ?, content = ?, wasModified = TRUE where ID = ?", true);
+				st.setInt(1, ContentType.DELETED.getContentId());
+            	st.setString(2, "");
+				st.setInt(3, id);
+				st.executeUpdate();
+			}
 		    return true;
 		} catch(Exception e){
 			System.out.println(e.getMessage());

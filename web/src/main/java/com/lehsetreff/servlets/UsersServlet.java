@@ -1,6 +1,7 @@
 package com.lehsetreff.servlets;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
@@ -87,6 +88,8 @@ public class UsersServlet extends HttpServlet {
 		avatar = avatar.replace("%3B", ";");
 		avatar = avatar.replace("%2C", ",");
 		avatar = avatar.replace("%2F", "/");
+		avatar = URLDecoder.decode(avatar, "UTF-8");
+
 
         boolean isAvatarValid = avatar != null;
 

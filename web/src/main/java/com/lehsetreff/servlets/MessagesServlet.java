@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.lehsetreff.Extensions;
 import com.lehsetreff.controllers.Database;
+import com.lehsetreff.models.ContentType;
 import com.lehsetreff.models.Message;
 
 
@@ -36,6 +37,7 @@ public class MessagesServlet extends HttpServlet {
 		String content = request.getParameter("content");
 		if(content == null){
 			content = Extensions.getParameterFromMap(request, "content");
+			content = URLDecoder.decode(content, "UTF-8");
 		}
         int contentType = Integer.parseInt(contentTypeString);
 		String threadIdString = request.getParameter("threadId");
@@ -80,7 +82,9 @@ public class MessagesServlet extends HttpServlet {
 			}
 		}else{
 			String name = request.getParameter("threadName");
+			name = URLDecoder.decode(name, "UTF-8");
 			String groupName = request.getParameter("groupName");
+			groupName = URLDecoder.decode(groupName, "UTF-8");
 			threadId = db.getThreadController().getThread(groupName, name).getThreadId();
 		}
 		List<Message> messages = db.getMessagesController().getMessages(threadId);
@@ -141,6 +145,14 @@ public class MessagesServlet extends HttpServlet {
 		if(!Extensions.isModOrSender(request, response, messageId)){
 			return;
 		}
+
+		Message m = db.getMessagesController().getMessage(messageId);
+		if(m.getContentId().getContentId() == ContentType.DELETED.getContentId()){
+			if(!Extensions.isModerator(request, response)){
+				return;
+			}
+		}
+
 		try{
 			boolean result = db.getMessagesController().deleteMessage(messageId);
 			if(result){
