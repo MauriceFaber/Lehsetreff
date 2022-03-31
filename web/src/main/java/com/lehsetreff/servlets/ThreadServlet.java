@@ -1,6 +1,7 @@
 package com.lehsetreff.servlets;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import com.lehsetreff.controllers.Database;
@@ -114,8 +115,6 @@ public class ThreadServlet extends HttpServlet {
 		String caption = (String) Extensions.getParameterFromMap(request, "caption");
 		String description = (String) Extensions.getParameterFromMap(request, "description");
 
-
-		
 		if (caption != null) {
 			Thread thread = db.getThreadController().renameThread(threadId, caption);
 			
@@ -127,6 +126,7 @@ public class ThreadServlet extends HttpServlet {
 		}
 
 		if (description != null) {
+			description = URLDecoder.decode(description, "UTF-8");
 			Thread thread = db.getThreadController().changeThreadDescription(threadId, description);
 
 			if(thread != null){		

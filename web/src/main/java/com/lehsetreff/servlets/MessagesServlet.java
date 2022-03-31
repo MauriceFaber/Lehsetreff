@@ -1,6 +1,7 @@
 package com.lehsetreff.servlets;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import com.lehsetreff.Extensions;
@@ -103,8 +104,8 @@ public class MessagesServlet extends HttpServlet {
         if(!Extensions.isUser(request, response)){
 			return;
 		}
-
 		String content = Extensions.getParameterFromMap(request,"content");
+		content = URLDecoder.decode(content, "UTF-8");
         int messageId = Integer.parseInt(Extensions.getParameterFromMap(request, "messageID"));
         int contentType = Integer.parseInt(Extensions.getParameterFromMap(request,"contentType"));
         

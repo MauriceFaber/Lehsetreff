@@ -2,6 +2,7 @@ package com.lehsetreff.servlets;
 
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import com.lehsetreff.controllers.Database;
@@ -119,6 +120,7 @@ public class ThreadGroupServlet extends HttpServlet{
 		}
 
 		if (description != null) {
+			description = URLDecoder.decode(description, "UTF-8");
 			ThreadGroup tGroup = db.getThreadGroupController().changeThreadGroupDescription(threadGroupId, description);
 		
 			if(tGroup != null){		
