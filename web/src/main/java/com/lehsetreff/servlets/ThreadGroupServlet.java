@@ -34,19 +34,19 @@ public class ThreadGroupServlet extends HttpServlet{
 
 		int userId = db.getUserController().getUserId(request);
 		String caption = request.getParameter("caption");
-		caption = URLDecoder.decode(caption, "UTF-8");
 		String description = request.getParameter("description");
-		description = URLDecoder.decode(description, "UTF-8");
 
 		if(caption == null || caption.length() == 0){
 			response.sendError(401, "caption null or empty");
 			return;
 		}
+		caption = URLDecoder.decode(caption, "UTF-8");
 
 		if(description == null || description.length() == 0){
 			response.sendError(401, "caption null or empty");
 			return;
 		}
+		description = URLDecoder.decode(description, "UTF-8");
         
 		ThreadGroup tGroup = db.getThreadGroupController().addThreadGroup(caption, userId, description);
 		if(tGroup != null){		
@@ -64,11 +64,11 @@ public class ThreadGroupServlet extends HttpServlet{
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {  
 		String idString = request.getParameter("id");
 		String groupName = request.getParameter("groupName");
-		groupName = URLDecoder.decode(groupName, "UTF-8");
 		int id = -1;
 		if(idString != null){
 			id = Integer.parseInt(idString);
 		}else if(groupName != null){
+			groupName = URLDecoder.decode(groupName, "UTF-8");
 			id = db.getThreadGroupController().getThreadGroup(groupName).getId();
 		}
 		if(id > -1){
@@ -99,17 +99,16 @@ public class ThreadGroupServlet extends HttpServlet{
 		}
 
 		String caption = Extensions.getParameterFromMap(request, "caption");
-		caption = URLDecoder.decode(caption, "UTF-8");
 		String idString = Extensions.getParameterFromMap(request, "id");
         int threadGroupId = Integer.parseInt(idString);
 		String description = Extensions.getParameterFromMap(request, "description");
-		description = URLDecoder.decode(description, "UTF-8");
         
 		if(!Extensions.isModerator(request, response)){
 			return;
 		}
 
 		if (caption != null) {
+			caption = URLDecoder.decode(caption, "UTF-8");
 			ThreadGroup tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, caption);
 			
 			if(description == null || tGroup == null){
@@ -123,6 +122,7 @@ public class ThreadGroupServlet extends HttpServlet{
 		}
 
 		if (description != null) {
+			description = URLDecoder.decode(description, "UTF-8");
 			ThreadGroup tGroup = db.getThreadGroupController().changeThreadGroupDescription(threadGroupId, description);
 		
 			if(tGroup != null){		
