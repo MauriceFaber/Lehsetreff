@@ -32,7 +32,6 @@ public class ThreadServlet extends HttpServlet {
 
 		int userId = db.getUserController().getUserId(request);
 		String threadCaption = (String) request.getParameter("caption");
-		threadCaption = URLDecoder.decode(threadCaption, "UTF-8");
 		
 		String groupIdString = request.getParameter("groupId");
 		String groupName = request.getParameter("groupName");
@@ -40,11 +39,9 @@ public class ThreadServlet extends HttpServlet {
 		if(groupIdString != null){
 			groupId = Integer.parseInt(groupIdString);
 		}else{
-			groupName = URLDecoder.decode(groupName, "UTF-8");
 			groupId = db.getThreadGroupController().getThreadGroup(groupName).getId();
 		}
 		String threadDescription = (String) request.getParameter("description");
-		threadDescription = URLDecoder.decode(threadDescription, "UTF-8");
 
 		Thread thread = db.getThreadController().addThread(threadCaption, userId, groupId, threadDescription);
 		if(thread != null){		
@@ -67,8 +64,6 @@ public class ThreadServlet extends HttpServlet {
 		if(threadIdString != null){
 			threadId = Integer.parseInt(threadIdString);
 		}else if(threadName != null && groupName != null){
-			threadName = URLDecoder.decode(threadName, "UTF-8");
-			groupName = URLDecoder.decode(groupName, "UTF-8");
 			threadId = db.getThreadController().getThread(groupName, threadName).getThreadId();
 		}
 
@@ -91,7 +86,6 @@ public class ThreadServlet extends HttpServlet {
 			threadGroupId = Integer.parseInt(threadGroupIdString);
 		}else {
 			String name = request.getParameter("threadGroupName");
-			name = URLDecoder.decode(name, "UTF-8");
 			threadGroupId = db.getThreadGroupController().getThreadGroup(name).getId();
 		}
 
@@ -122,7 +116,6 @@ public class ThreadServlet extends HttpServlet {
 		String description = (String) Extensions.getParameterFromMap(request, "description");
 
 		if (caption != null) {
-			caption = URLDecoder.decode(caption, "UTF-8");
 			Thread thread = db.getThreadController().renameThread(threadId, caption);
 			
 			if(thread != null){		
@@ -133,7 +126,6 @@ public class ThreadServlet extends HttpServlet {
 		}
 
 		if (description != null) {
-			description = URLDecoder.decode(description, "UTF-8");
 			Thread thread = db.getThreadController().changeThreadDescription(threadId, description);
 
 			if(thread != null){		

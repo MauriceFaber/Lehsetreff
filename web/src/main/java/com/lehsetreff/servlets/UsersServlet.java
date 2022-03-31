@@ -84,11 +84,10 @@ public class UsersServlet extends HttpServlet {
 		}
 
         String avatar = Extensions.getParameterFromMap(request, "avatar");
-		avatar = avatar.replace("%3A", ":");
-		avatar = avatar.replace("%3B", ";");
-		avatar = avatar.replace("%2C", ",");
-		avatar = avatar.replace("%2F", "/");
-		avatar = URLDecoder.decode(avatar, "UTF-8");
+		// avatar = avatar.replace("%3A", ":");
+		// avatar = avatar.replace("%3B", ";");
+		// avatar = avatar.replace("%2C", ",");
+		// avatar = avatar.replace("%2F", "/");
 
 
         boolean isAvatarValid = avatar != null;

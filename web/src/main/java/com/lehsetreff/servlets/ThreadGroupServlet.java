@@ -40,13 +40,11 @@ public class ThreadGroupServlet extends HttpServlet{
 			response.sendError(401, "caption null or empty");
 			return;
 		}
-		caption = URLDecoder.decode(caption, "UTF-8");
 
 		if(description == null || description.length() == 0){
 			response.sendError(401, "caption null or empty");
 			return;
 		}
-		description = URLDecoder.decode(description, "UTF-8");
         
 		ThreadGroup tGroup = db.getThreadGroupController().addThreadGroup(caption, userId, description);
 		if(tGroup != null){		
@@ -68,7 +66,6 @@ public class ThreadGroupServlet extends HttpServlet{
 		if(idString != null){
 			id = Integer.parseInt(idString);
 		}else if(groupName != null){
-			groupName = URLDecoder.decode(groupName, "UTF-8");
 			id = db.getThreadGroupController().getThreadGroup(groupName).getId();
 		}
 		if(id > -1){
@@ -108,7 +105,6 @@ public class ThreadGroupServlet extends HttpServlet{
 		}
 
 		if (caption != null) {
-			caption = URLDecoder.decode(caption, "UTF-8");
 			ThreadGroup tGroup = db.getThreadGroupController().renameThreadGroup(threadGroupId, caption);
 			
 			if(description == null || tGroup == null){
@@ -122,7 +118,6 @@ public class ThreadGroupServlet extends HttpServlet{
 		}
 
 		if (description != null) {
-			description = URLDecoder.decode(description, "UTF-8");
 			ThreadGroup tGroup = db.getThreadGroupController().changeThreadGroupDescription(threadGroupId, description);
 		
 			if(tGroup != null){		

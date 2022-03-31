@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
@@ -213,7 +214,15 @@ public class Extensions {
 			parameters = values.get(req);
 		}
 		if(parameters.containsKey(key)){
-			return parameters.get(key);
+			String tmp = parameters.get(key);
+			if(tmp != null){
+				try{
+				tmp = URLDecoder.decode(tmp, "UTF-8");
+				}catch(Exception e){
+
+				}
+			}
+			return tmp;
 		}
 		return null;
 	}

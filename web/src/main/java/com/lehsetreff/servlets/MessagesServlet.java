@@ -35,11 +35,7 @@ public class MessagesServlet extends HttpServlet {
 			contentTypeString = Extensions.getParameterFromMap(request, "contentType");
 		}
 		String content = request.getParameter("content");
-		if(content == null){
-			content = Extensions.getParameterFromMap(request, "content");
-			content = URLDecoder.decode(content, "UTF-8");
-		}
-        int contentType = Integer.parseInt(contentTypeString);
+		int contentType = Integer.parseInt(contentTypeString);
 		String threadIdString = request.getParameter("threadId");
 		if(threadIdString == null){
 			threadIdString = Extensions.getParameterFromMap(request, "threadId");
@@ -82,9 +78,7 @@ public class MessagesServlet extends HttpServlet {
 			}
 		}else{
 			String name = request.getParameter("threadName");
-			name = URLDecoder.decode(name, "UTF-8");
 			String groupName = request.getParameter("groupName");
-			groupName = URLDecoder.decode(groupName, "UTF-8");
 			threadId = db.getThreadController().getThread(groupName, name).getThreadId();
 		}
 		List<Message> messages = db.getMessagesController().getMessages(threadId);
@@ -109,7 +103,6 @@ public class MessagesServlet extends HttpServlet {
 			return;
 		}
 		String content = Extensions.getParameterFromMap(request,"content");
-		content = URLDecoder.decode(content, "UTF-8");
         int messageId = Integer.parseInt(Extensions.getParameterFromMap(request, "messageID"));
         int contentType = Integer.parseInt(Extensions.getParameterFromMap(request,"contentType"));
         
